@@ -1,5 +1,5 @@
 <template>
-    <el-submenu index="1" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+    <el-submenu index="2" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
         <template slot="title"><i class="el-icon-message"></i>阶段一</template>
         <el-menu-item-group>
             <el-menu-item @click="openForm" index="1-0" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">新建任务 
@@ -77,12 +77,11 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click.stop="closeForm">取 消</el-button>
-                    <el-button type="primary" @click.stop="closeForm">确 定</el-button>
+                    <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
                 </div>
             </el-dialog>
 
-          
-          
+
           <project-task></project-task>
 
         </el-menu-item-group>
@@ -93,9 +92,16 @@
 <script>
 import ProjectTask from './ProjectTask.vue';
 export default {
+    props:['stageNumber'],
     data() {
       return {
         dialogFormVisible: false,
+        formLabelWidth: '120px',
+        taskMessage:{
+              taskID:'',
+              taskProgress:'',
+        },
+        task:[],
         form: {
           name: '',
           time: '',
@@ -110,10 +116,16 @@ export default {
             'boss','god'
           ],
         },
-        formLabelWidth: '120px'
+
       };
     },
     methods : {
+        /*获取表单数据*/
+        getFormInfo(){
+            const oneTask = {taskDetail:this.form.detail,taskTime:this.form.time}
+            this.task.unshift(oneTask)
+        },
+
         openForm(){
             console.log("111");
             if (!this.dialogFormVisible)

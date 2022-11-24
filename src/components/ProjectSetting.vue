@@ -13,7 +13,7 @@
             <div style="margin: 20px 0;">
               <el-form :label-position="left" label-width="70px"  :model="projectMessage">
                 <el-form-item label="项目名称">
-                  <el-input v-model="projectMessage.name"></el-input>
+                  <el-input v-model="projectMessage.projectName"></el-input>
                 </el-form-item>
                 <el-form-item label="负责人">
                   <el-input v-model="projectMessage.projectDesigner"></el-input>
@@ -42,7 +42,8 @@
               </el-form>
             </div>
           </el-submenu>
-          <project-stage></project-stage>
+
+          <project-stage :stageNumber="stageNumber"></project-stage>
           
           
         </el-menu>
@@ -90,7 +91,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click.stop="closeForm">取 消</el-button>
-                    <el-button type="primary" @click.stop="closeForm">确 定</el-button>
+                    <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
                 </div>
             </el-dialog>
               <el-button type="primary" @click="save">保存项目</el-button>
@@ -112,21 +113,26 @@ export default {
     name : "proj-set",
     data(){
       return {
+        stageNumber:0,
         dialogFormVisible: false,
         formLabelWidth: '120px',
+
+        task:[],
         projectMessage: {
-          name: '吉林大学业务流程系统软件项目',
-          projectDesigner: '朱晓东',
-          projectCreateTime: '2022-10-29',
-          projectTime : '',
-          projectDetail : '2020级软件工程课程大作业',
-          projectIsdone : '0'
+          projectID: "56",
+          projectDesignerName: '朱晓东',
+          projectName: "吉林大学业务流程系统软件项目",
+          projectDesignerID: 450000197704085570,
+          projectCreateTime: "1977-01-14 13:19:52",
+          projectEmitTime: "2022-11-21 21:00:45",
+          projectDetail:'2020级软件工程课程大作业',
+          projectSaveTime: "2022-11-21 21:00:45",
+          projectIsdone: false,
         },
         form :{
           time: '',
           name: '',
           detail: '',
-
         },
       }
     },
@@ -134,6 +140,21 @@ export default {
         ProjectStage
     },
     methods : {
+        /*阶段表收集并传入Create*/
+        getFormInfo(){
+            const oneStage = {stageName:this.form.name,stageDetail:this.form.detail,
+                                stageIsdone:false,stageTime:this.form.time}
+            this.$emit('addStage',oneStage)
+            this.stageNumber++
+
+            this.dialogFormVisible = false;
+        },
+
+
+
+
+
+
         save(){
             this.$message({
             type: 'success',
