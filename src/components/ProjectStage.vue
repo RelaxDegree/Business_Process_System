@@ -1,9 +1,18 @@
 <template>
-    <el-submenu index="2" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
-        <template slot="title"><i class="el-icon-message"></i>阶段一</template>
+    <el-submenu :index=stageNum style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+        <template slot="title">
+            <!--<el-button @click="delStage" type="danger" class="el-icon-delete" style="height: 28px; width:28px" circle></el-button>-->
+            <i class="el-icon-message"></i>阶段{{stageNum}}
+        </template>
         <el-menu-item-group>
-            <el-menu-item @click="openForm" index="1-0" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">新建任务 
+            <el-menu-item
+                    @click="openForm"
+                    index="-1"
+                    style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+                新建任务
             </el-menu-item>
+
+
             <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
                 <el-form :model="form">
                     <el-form-item label="任务名称" :label-width="formLabelWidth">
@@ -82,7 +91,14 @@
             </el-dialog>
 
 
-          <project-task></project-task>
+          <project-task
+                  v-for="(t,index) of task"
+                  :key="index"
+                  :taskNum="index"
+                  :taskNum1="stageNum"
+                  :thisTask=t
+                  @deleteTask="deleteTask"
+          ></project-task>
 
         </el-menu-item-group>
     </el-submenu>
@@ -90,9 +106,13 @@
 </template>
 
 <script>
+import store from '../store/index';
 import ProjectTask from './ProjectTask.vue';
 export default {
-    props:['stageNumber'],
+    name : 'proj-stage',
+    store ,
+    components : {ProjectTask},
+    props:['stageNum','thisStage'],
     data() {
       return {
         dialogFormVisible: false,
@@ -106,37 +126,54 @@ export default {
           name: '',
           time: '',
           detail: '',
-          Compileusers : [
-            '小明','小红','只因','坤坤','小明','小红','只因','坤坤'
-          ],
-          Reviewusers : [
-            '2233','7788'
-          ],
-          Signusers : [
-            'boss','god'
-          ],
+          Compileusers : ['小明','小红','只因','坤坤'],
+          Reviewusers : ['2233','7788'],
+          Signusers : ['boss','god'],
         },
 
       };
     },
     methods : {
-        /*获取表单数据*/
+        /*获取task表单数据*/
         getFormInfo(){
-            const oneTask = {taskDetail:this.form.detail,taskTime:this.form.time}
-            this.task.unshift(oneTask)
-        },
-
-        openForm(){
-            console.log("111");
-            if (!this.dialogFormVisible)
-                this.dialogFormVisible = true; 
-
+            const oneTask = {   taskDetail:this.form.detail,
+                                taskTime:this.form.time,
+                                taskFather:this.stageNum,
+                                taskName:this.form.name,
+                                taskCompileusers:this.form.Compileusers,
+                                taskReviewusers:this.form.Reviewusers,
+                                taskSignusers:this.form.Signusers,
+                                stageNum:this.stageNum,
+            }
+            this.task.push(oneTask);
+            this.$store.commit('ADDTASK',oneTask);
+            this.closeForm()
         },
         closeForm(){
-            console.log("222");
-
+            this.form = {name: '', time: '', detail: '',
+                        Compileusers : ['小明','小红','只因','坤坤'],
+                        Reviewusers : ['2233','7788'],
+                        Signusers : ['boss','god'],}
             this.dialogFormVisible = false;
         },
+        openForm(){
+            if (!this.dialogFormVisible)
+                this.dialogFormVisible = true;
+        },
+        /*删除一个任务*/
+        deleteTask(value){
+            this.task = this.task.filter((p)=>{
+                return p !== value
+            })
+        },
+        /*触发deleteStage事件*/
+        delStage(){
+            this.$emit('deleteStage',this.thisStage)
+        },
+
+
+
+
         closeCompileusers(tag) {
         this.form.Compileusers.splice(this.form.Compileusers.indexOf(tag), 1);
         },
@@ -146,15 +183,7 @@ export default {
         closeSignusers(tag) {
         this.form.Signusers.splice(this.form.Signusers.indexOf(tag), 1);
         },
-       
-      
-      
     },
-    components : {
-        ProjectTask
-    },
-    name : 'proj-stage',
-
 }
 </script>
 

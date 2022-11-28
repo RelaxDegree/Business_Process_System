@@ -8,10 +8,10 @@
 
       <el-main>
         <el-menu> 
-          <el-submenu index="0" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+          <el-submenu index="abcd" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
             <template slot="title"><i class="el-icon-menu"></i>项目基本信息</template>
             <div style="margin: 20px 0;">
-              <el-form :label-position="left" label-width="70px"  :model="projectMessage">
+              <el-form label-width="70px"  :model="projectMessage">
                 <el-form-item label="项目名称">
                   <el-input v-model="projectMessage.projectName"></el-input>
                 </el-form-item>
@@ -43,11 +43,18 @@
             </div>
           </el-submenu>
 
-          <project-stage :stageNumber="stageNumber"></project-stage>
-          
-          
+          <project-stage
+                  v-for="(s,index) of this.$store.state.stage"
+                  :key="(index+1).toString()"
+                  :stageNum="(index+1).toString()"
+                  :thisStage="s"
+                  @deleteStage="deleteStage"
+          ></project-stage>
         </el-menu>
       </el-main>
+
+
+
       <el-footer>
         <p height="10px"></p>
         <el-row>
@@ -58,7 +65,8 @@
           </el-col>
           <el-col :span="16" :offset="6">
             <div>
-              <el-button plain @click="openForm">+</el-button>
+              <el-button plain @click="openForm" style="margin-right: 10px">+</el-button>
+
               <el-dialog title="阶段创建" :visible.sync="dialogFormVisible">
                 <el-form :model="form">
                     <el-form-item label="阶段名称" :label-width="formLabelWidth">
@@ -82,11 +90,11 @@
                     </el-form-item>
                     <el-form-item label="阶段描述" :label-width="formLabelWidth">
                         <el-input
-                      type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 4}"
-                      placeholder="请输入内容"
-                      v-model="form.detail">
-                    </el-input>
+                          type="textarea"
+                          :autosize="{ minRows: 2, maxRows: 4}"
+                          placeholder="请输入内容"
+                          v-model="form.detail">
+                        </el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -94,6 +102,7 @@
                     <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
                 </div>
             </el-dialog>
+
               <el-button type="primary" @click="save">保存项目</el-button>
               <el-button type="success" @click="push">发布项目</el-button>
             </div>
@@ -109,14 +118,16 @@
 
 <script>
 import ProjectStage from './ProjectStage.vue';
+import store from '../store/index';
 export default {
+    store,
     name : "proj-set",
     data(){
       return {
-        stageNumber:0,
         dialogFormVisible: false,
         formLabelWidth: '120px',
 
+        stage:[],
         task:[],
         projectMessage: {
           projectID: "56",
@@ -136,22 +147,35 @@ export default {
         },
       }
     },
-    components : {
-        ProjectStage
-    },
+    components : {ProjectStage},
     methods : {
         /*阶段表收集并传入Create*/
         getFormInfo(){
-            const oneStage = {stageName:this.form.name,stageDetail:this.form.detail,
-                                stageIsdone:false,stageTime:this.form.time}
-            this.$emit('addStage',oneStage)
-            this.stageNumber++
-
+            const oneStage = {  stageName:this.form.name,
+                                stageDetail:this.form.detail,
+                                stageIsdone:false,
+                                stageTime:this.form.time,}
+            // this.stage.push(oneStage)
+            this.$store.commit('ADDSTAGE',oneStage);
+            /*this.$emit('addStage',oneStage)*/
+            this.closeForm()
+        },
+        /*关闭dialog*/
+        closeForm(){
+            this.form ={time: '',name: '',detail:''}
             this.dialogFormVisible = false;
         },
-
-
-
+        /*打开dialog*/
+        openForm(){
+            if (!this.dialogFormVisible)
+                this.dialogFormVisible = true;
+        },
+        /*删除某一个阶段*/
+        deleteStage(value){
+            this.stage = this.stage.filter((p)=>{
+                return p !== value
+            })
+        },
 
 
 
@@ -166,17 +190,6 @@ export default {
             type: 'success',
             message: '项目发布成功!'
           });
-        },
-        openForm(){
-            if (!this.dialogFormVisible)
-                this.dialogFormVisible = true; 
-            // if (this.dialogFormVisible)
-            // {
-            //     this.dialogFormVisible = false;
-            // } 
-        },
-        closeForm(){
-            this.dialogFormVisible = false;
         },
     }
 

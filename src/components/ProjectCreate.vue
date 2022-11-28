@@ -16,7 +16,10 @@
 <script>
   import ProjectGraph from './ProjectGraph.vue'
   import ProjectSetting from './ProjectSetting.vue'
+  
+import store from '../store/index';
   export default {
+    store : store,
     name : 'proj-create',
     components : {
       ProjectSetting,
@@ -25,21 +28,16 @@
     data(){
       return{
         stage:[],
-
       }
     },
     methods: {
       /*接受阶段表的数据*/
       addStage(value){
-        this.stage.unshift(value)
-        /*console.log(value)*/
+        this.$stage.commit('ADDSTAGE',value)
       },
-
-
-
-      handleClick(tab, event) {
+      /*handleClick(tab, event) {
         console.log(tab, event);
-      }
+      }*/
     }
   }
 </script>
