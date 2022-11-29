@@ -53,10 +53,21 @@ import store from '../store/index';
 export default {
     name : "proj-graph",
     store,
+    watch:{
+		'$store.state.nowStage'(newVal,oldVal)
+        {
+			//对数据执行操作
+          this.activeName = newVal
+	    },
+        // activeName(newVal)
+        // {
+        //     this.$store.commit('SETNOWSTAGE','newVal')
+        // }
+    },
     data (){
         return {
             constName : '阶段',
-            activeName : 'first',
+            activeName : 'default',
             data : {
                 
             }

@@ -8,14 +8,15 @@ import ElementUI from 'element-ui';
 // 引入elementUI的全部样式
 import Vuex from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css';
-import * as echarts from 'echarts'
 import store from './store/index'
-Vue.prototype.$echarts = echarts //挂载在原型，组件内使用直接this.$echarts调用
+import axios from 'axios';
+
 
 Vue.config.productionTip = false
 // 关闭vue的生产提示
 Vue.use(ElementUI);
 Vue.use(Vuex);
+Vue.prototype.$axios = axios
 // 应用element
 new Vue({
   store : store,

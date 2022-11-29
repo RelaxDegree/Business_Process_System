@@ -9,6 +9,7 @@ export default new Vuex.Store({
     stage : [],
     task : [],
     taskFather : [],
+    nowStage : [],
   },
   getters: {
     
@@ -22,6 +23,11 @@ export default new Vuex.Store({
     ADDTASK(state, value)
     {
         state.task.push(value)
+    },
+    SETNOWSTAGE(state, value)
+    {
+        state.nowStage = value
+        // console.log(value)
     }
   },
   // 操作异步操作mutation

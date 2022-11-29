@@ -1,9 +1,6 @@
 <template>
     
     <div>
-        <el-button type="info" @click="makeNode" >新建</el-button>
-        <el-button type="info" @click="zoom" >测试</el-button>
-
         <div ref="container" id="container">
         </div>
     </div>
@@ -47,10 +44,8 @@ export default {
       {
 			//对数据执行操作
           var node = newVal[newVal.length - 1]
-          console.log(this.stageNum)
           if (node.stageNum == this.stageNum)
           {
-            
             this.makeNode(node.taskName, node.taskDetail)
           }            
 		  }

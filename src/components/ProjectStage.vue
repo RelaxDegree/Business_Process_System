@@ -16,12 +16,12 @@
             <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
                 <el-form :model="form">
                     <el-form-item label="任务名称" :label-width="formLabelWidth">
-                        <el-col :span="11">
+                        <el-col >
                             <el-input v-model="form.name" style="width : 400px"></el-input>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="任务起止时间" :label-width="formLabelWidth">
-                        <el-col :span="11">
+                        <el-col >
                         <div class="block" style="width : 100%">
                             <el-date-picker
                               v-model="form.time"
@@ -35,7 +35,7 @@
                     </el-col>
                     </el-form-item>
                     <el-form-item label="参与编写人员" :label-width="formLabelWidth">
-                        <el-col :span="20">
+                        <el-col >
                             <el-tag
                             :key="tag"
                             v-for="tag in form.Compileusers"
@@ -48,7 +48,7 @@
                         </el-col>
                     </el-form-item>
                     <el-form-item label="参与审阅人员" :label-width="formLabelWidth">
-                        <el-col :span="11">
+                        <el-col >
                             <el-tag
                             :key="tag"
                             v-for="tag in form.Reviewusers"
@@ -58,11 +58,11 @@
                             @close="closeReviewusers(tag)">
                             {{tag}}
                             </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" >+</el-button>
+                            <el-button type="primary" style="margin-left : 10px" size="mini" @click='getUserList'>+</el-button>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="参与会签人员" :label-width="formLabelWidth">
-                        <el-col :span="11" >
+                        <el-col  >
                             <el-tag
                             :key="tag"
                             v-for="tag in form.Signusers"
@@ -156,6 +156,20 @@ export default {
                         Signusers : ['boss','god'],}
             this.dialogFormVisible = false;
         },
+        getUserList(){
+
+            this.$axios.get('http://127.0.0.1:4523/m1/1954906-0-default/checkuser', {
+            params: {
+                ID: 12345
+            }
+            }).then(function (response) {
+            console.log(response.data);
+            }).catch(function (error) {
+            console.log(error);
+            });
+
+        },
+        
         openForm(){
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;
@@ -172,10 +186,9 @@ export default {
         },
 
 
-
-
         closeCompileusers(tag) {
-        this.form.Compileusers.splice(this.form.Compileusers.indexOf(tag), 1);
+            this.form.Compileusers.splice(this.form.Compileusers.indexOf(tag), 1);
+
         },
         closeReviewusers(tag) {
         this.form.Reviewusers.splice(this.form.Reviewusers.indexOf(tag), 1);
@@ -188,5 +201,7 @@ export default {
 </script>
 
 <style>
-
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
 </style>

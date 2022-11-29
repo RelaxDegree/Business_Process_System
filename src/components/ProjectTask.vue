@@ -29,7 +29,7 @@
                 </el-col>
                 </el-form-item>
                 <el-form-item label="参与编写人员" :label-width="formLabelWidth">
-                    <el-col :span="11">
+                    <el-col :offset="0">
                         <el-tag
                         :key="tag"
                         v-for="tag in thisTask.Compileusers"
@@ -42,7 +42,7 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item label="参与审阅人员" :label-width="formLabelWidth">
-                    <el-col :span="9">
+                    <el-col >
                         <el-tag
                         :key="tag"
                         v-for="tag in thisTask.Reviewusers"
@@ -56,7 +56,7 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item label="参与会签人员" :label-width="formLabelWidth">
-                    <el-col :span="9">
+                    <el-col >
                         <el-tag
                         :key="tag"
                         v-for="tag in thisTask.Signusers"

@@ -7,7 +7,7 @@
       </el-header>
 
       <el-main>
-        <el-menu> 
+        <el-menu @open="handleOpen"> 
           <el-submenu index="abcd" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
             <template slot="title"><i class="el-icon-menu"></i>项目基本信息</template>
             <div style="margin: 20px 0;">
@@ -176,7 +176,9 @@ export default {
                 return p !== value
             })
         },
-
+        handleOpen(key, keyPath) {
+            this.$store.commit('SETNOWSTAGE', key)
+        },
 
 
         save(){
