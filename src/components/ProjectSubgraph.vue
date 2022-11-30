@@ -46,7 +46,7 @@ export default {
           var node = newVal[newVal.length - 1]
           if (node.stageNum == this.stageNum)
           {
-            this.makeNode(node.taskName, node.taskDetail)
+            this.makeNode(newVal.length - 1, node.taskName, node.taskDetail)
           }            
 		  }
 	},
@@ -56,10 +56,11 @@ export default {
     },
     methods: {
     
-    makeNode(taskName, taskDetail){
+    makeNode(taskID,taskName, taskDetail){
         this.data.nodes[this.data.nodes.length] = new Shape.Rect({
             x: 40,
             y: 40,
+            id : taskID,
             width: 200,
             height: 68,
             attrs: { 
@@ -139,7 +140,7 @@ export default {
         },
         items: [
       {
-        id: 'port1',
+        id: taskID + 'port',
         group: 'out',
       }]
     }
@@ -246,9 +247,16 @@ export default {
             // console.log(node.store.data.position.x)
 
             cell.attr('body/stroke', 'red')
+        }),
+        this.graph.on('edge:added', ({edge}) => {
+            // node.store.data.position.x += 200
+            // console.log(node.store.data.position.x)
+            if (edge.target.constructor ==  Cell.prototype)
+            {
+              console.log(edge.source,edge.target)
+            }
 
         })
-
     }
   }
 }

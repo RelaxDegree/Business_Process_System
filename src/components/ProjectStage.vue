@@ -14,6 +14,59 @@
 
 
             <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
+                <!-- 二级对话框 -->
+                <el-dialog
+                    width="40%"
+                    title="添加项目组人员"
+                    :visible.sync="innerVisible"
+                    append-to-body>
+                    <el-table
+                        :data="users"
+                        style="width: 100%">
+
+                        <el-table-column
+                        label="姓名"
+                        width="260">
+                        
+                        <template slot-scope="scope">
+                            <el-row>
+                                <el-col>
+                                    <div>
+                                        <el-avatar :size="40" :src="scope.row.headPic"></el-avatar>
+                                        <p>{{ scope.row.name }}</p>
+                                    </div>
+                                </el-col>
+                                <el-col>
+                                    <div slot="reference" class="name-wrapper">
+                                        <el-tag size="medium">{{ scope.row.name }}</el-tag>
+                                    </div>
+                                </el-col>
+                                
+                                
+                            </el-row>
+                            
+                            <!-- <p>姓名: {{ scope.row.name }}</p> -->
+                            
+  
+                        </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">审批</el-button>
+                            <el-button
+                            size="mini"
+                            type="warning"
+                            @click="handleDelete(scope.$index, scope.row)">会签</el-button>
+                        </template>
+                        </el-table-column>
+                    </el-table>
+                </el-dialog>
                 <el-form :model="form">
                     <el-form-item label="任务名称" :label-width="formLabelWidth">
                         <el-col >
@@ -44,7 +97,7 @@
                             @close="closeCompileusers(tag)">
                             {{tag}}
                             </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" >+</el-button>
+                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="getUserList(0)">+</el-button>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="参与审阅人员" :label-width="formLabelWidth">
@@ -58,7 +111,7 @@
                             @close="closeReviewusers(tag)">
                             {{tag}}
                             </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" @click='getUserList'>+</el-button>
+                            <el-button type="primary" style="margin-left : 10px" size="mini" @click='getUserList(1)'>+</el-button>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="参与会签人员" :label-width="formLabelWidth">
@@ -72,7 +125,7 @@
                             @close="closeSignusers(tag)">
                             {{tag}}
                             </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" >+</el-button>
+                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="getUserLis(2)">+</el-button>
                         </el-col>
                     </el-form-item>
                     <el-form-item label="任务描述" :label-width="formLabelWidth">
@@ -116,6 +169,7 @@ export default {
     data() {
       return {
         dialogFormVisible: false,
+        innerVisible : false,
         formLabelWidth: '120px',
         taskMessage:{
               taskID:'',
@@ -126,11 +180,12 @@ export default {
           name: '',
           time: '',
           detail: '',
-          Compileusers : ['小明','小红','只因','坤坤'],
-          Reviewusers : ['2233','7788'],
-          Signusers : ['boss','god'],
+          Compileusers : [],
+          Reviewusers : [],
+          Signusers : [],
         },
-
+        users : [],
+        user : [],
       };
     },
     methods : {
@@ -156,20 +211,29 @@ export default {
                         Signusers : ['boss','god'],}
             this.dialogFormVisible = false;
         },
-        getUserList(){
-
+        getUserList(type){
+            this.innerVisible = true;
             this.$axios.get('http://127.0.0.1:4523/m1/1954906-0-default/checkuser', {
             params: {
                 ID: 12345
             }
-            }).then(function (response) {
-            console.log(response.data);
+            }).then((response)=> {
+
+                // this.users = JSON.parse(JSON.stringify(response.data.data.user))
+                for (var i of response.data.data.user)
+                {
+                    this.users.push(i)
+                    console.log(i)
+                }
+
             }).catch(function (error) {
             console.log(error);
             });
+            
+
 
         },
-        
+
         openForm(){
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;

@@ -23,6 +23,7 @@ export default new Vuex.Store({
     ADDTASK(state, value)
     {
         state.task.push(value)
+        state.taskFather.push('-1')
     },
     SETNOWSTAGE(state, value)
     {
