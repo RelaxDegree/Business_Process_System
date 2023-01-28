@@ -6,19 +6,19 @@
 
             任务{{taskNum+1}}
         </el-menu-item>
-
+<!-- 点击打开任务信息表单 -->
         <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
             <el-form :model="thisTask">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-col :span="11">
-                        <el-input v-bind:value="thisTask.taskName" style="width : 400px"></el-input>
+                        <el-input v-model="thisTask.taskName" style="width : 400px"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="任务起止时间" :label-width="formLabelWidth">
                     <el-col :span="11">
                     <div class="block" style="width : 100%">
                         <el-date-picker
-                          v-bind:value="thisTask.taskTime"
+                          v-model="thisTask.taskTime"
                           type="datetimerange"
                           range-separator="至"
                           start-placeholder="发布日期"
@@ -74,7 +74,7 @@
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
                   placeholder="请输入内容"
-                  v-bind:value="thisTask.taskDetail">
+                  v-model="thisTask.taskDetail">
                 </el-input>
                 </el-form-item>
             </el-form>
@@ -89,21 +89,29 @@
 <script>
 export default {
     name : 'proj-task',
-    props:['taskNum','thisTask','taskNum1'],
+    props:['taskNum','thisTask','stageNum'],
     data() {
         return {
             formLabelWidth: '120px',
             dialogFormVisible: false,
+            taskdata : {},
         }
+    },
+    mounted() {
+        this.init();
     },
     computed : {
         indexName : {
             get(){
-                return this.taskNum1 + '-' + this.taskNum
+                return this.stageNum + '-' + this.taskNum
             }
         }
     },  
     methods : {
+        init(){
+            this.taskdata = this.thisTask;
+            // console.log(this.taskdata);
+        },
         openForm(){
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;
