@@ -56,11 +56,11 @@ export default {
     },
     methods: {
     
-    makeNode(taskID,taskName, taskDetail){
+    makeNode(taskID, taskName, taskDetail){
         this.data.nodes[this.data.nodes.length] = new Shape.Rect({
             x: 40,
             y: 40,
-            id : taskID,
+            id : 'node' + taskID,
             width: 200,
             height: 68,
             attrs: { 
@@ -138,9 +138,10 @@ export default {
                 },
             },
         },
+        // 输入桩ID前面加上port标识
         items: [
       {
-        id: taskID + 'port',
+        id:  'port' + taskID,
         group: 'out',
       }]
     }
@@ -248,15 +249,36 @@ export default {
 
             cell.attr('body/stroke', 'red')
         }),
-        this.graph.on('edge:added', ({edge}) => {
+        // 创建的边连接节点后触发的事件
+        this.graph.on('edge:connected', ({edge}) => {
             // node.store.data.position.x += 200
             // console.log(node.store.data.position.x)
-            if (edge.target.constructor ==  Cell.prototype)
-            {
-              console.log(edge.source,edge.target)
-            }
+            // console.log(edge) 
+            let out = edge.source.port
+            out = out.slice(4, out.length)
+            let tar = edge.target.cell
+            tar = tar.slice(4, tar.length)
 
-        })
+            this.$store.commit("ADDTASKSON", {fa : out , son : tar})
+
+        }),
+        this.graph.on('edge:removed', ({edge}) => {
+
+            // console.log(edge) 
+            let out = edge.source.port
+            out = out.slice(4, out.length)
+            let tar = edge.target.cell
+            tar = tar.slice(4, tar.length)
+            this.$store.commit("DELETETASKSON", {fa : out , son : tar})
+        }),
+        this.graph.on('node:moved', ({node}) => {
+
+          console.log(node) 
+          let id = node.id
+          id = id.slice(4, id.length)
+          this.$store.commit("MOVETASK", {idx : id , 
+            x : node.store.data.position.x , y : node.store.data.position.y})
+          })
     }
   }
 }

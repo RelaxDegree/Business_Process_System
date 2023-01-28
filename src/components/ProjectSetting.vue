@@ -42,7 +42,7 @@
               </el-form>
             </div>
           </el-submenu>
-
+            <!-- s 是阶段对象  index是顺序索引值 -->
           <project-stage
                   v-for="(s,index) of this.$store.state.stage"
                   :key="(index+1).toString()"
@@ -66,7 +66,7 @@
           <el-col :span="16" :offset="6">
             <div>
               <el-button plain @click="openForm" style="margin-right: 10px">+</el-button>
-
+                <!-- 点击加号键  弹出新增阶段的表单 -->
               <el-dialog title="阶段创建" :visible.sync="dialogFormVisible">
                 <el-form :model="form">
                     <el-form-item label="阶段名称" :label-width="formLabelWidth">
@@ -101,7 +101,7 @@
                     <el-button @click.stop="closeForm">取 消</el-button>
                     <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
                 </div>
-            </el-dialog>
+              </el-dialog>
 
               <el-button type="primary" @click="save">保存项目</el-button>
               <el-button type="success" @click="push">发布项目</el-button>
