@@ -51,7 +51,7 @@ export default new Vuex.Store({
           if (i === parseInt(para.fa))
           {
             state.task[i].son.push(para.son);
-            console.log(state.task[i].son)
+            // console.log(state.task[i].son)
             break
           }
         }
@@ -65,11 +65,12 @@ export default new Vuex.Store({
           if (i === parseInt(para.fa))
           {
             state.task[i].son = state.task[i].son.filter((x) => x !== para.son);
-            console.log(state.task[i].son)
+            // console.log(state.task[i].son)
             break
           }
         }
     },
+    // 任务节点移动 更新位置坐标
     MOVETASK(state, para)
     {
       for (var i = 0 ; i < state.task.length ; i ++)

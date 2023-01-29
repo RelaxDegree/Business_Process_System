@@ -262,6 +262,7 @@ export default {
             this.$store.commit("ADDTASKSON", {fa : out , son : tar})
 
         }),
+        // 边删除的触发事件
         this.graph.on('edge:removed', ({edge}) => {
 
             // console.log(edge) 
@@ -271,6 +272,7 @@ export default {
             tar = tar.slice(4, tar.length)
             this.$store.commit("DELETETASKSON", {fa : out , son : tar})
         }),
+        // 节点移动的触发事件
         this.graph.on('node:moved', ({node}) => {
 
           console.log(node) 

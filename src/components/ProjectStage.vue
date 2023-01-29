@@ -56,7 +56,7 @@
 
 <!-- 点击后 填写任务详细信息 -->
             <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
-                <!-- 二级对话框 -->
+                <!-- 二级对话框 添加项目组人员-->
                 <el-dialog
                     width="40%"
                     title="添加项目组人员"
@@ -255,9 +255,10 @@ export default {
                         Signusers : [],}
             this.dialogFormVisible = false;
         },
+        // type 0 是请求编写人员列表 1 是审批 2 是会签 
         getUserList(type){
             this.innerVisible = true;
-            this.$axios.get('http://127.0.0.1:4523/m1/1954906-0-default/checkuser', {
+            this.$axios.get('https://mock.apifox.cn/m2/1954906-0-default/51521746', {
             params: {
                 ID: 12345
             }
@@ -266,8 +267,8 @@ export default {
                 // this.users = JSON.parse(JSON.stringify(response.data.data.user))
                 for (var i of response.data.data.user)
                 {
-                    this.users.push(i)
                     i.choice = "NULL"
+                    this.users.push(i)
                     // console.log(i)
                 }
 

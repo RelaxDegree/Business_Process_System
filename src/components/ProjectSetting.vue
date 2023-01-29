@@ -154,10 +154,13 @@ export default {
             const oneStage = {  stageName:this.form.name,
                                 stageDetail:this.form.detail,
                                 stageIsdone:false,
-                                stageTime:this.form.time,}
+                                stageTime:this.form.time, // 时间是数组 包含起止时间 格式
+                                // Sun Jan 01 2023 00:00:00 GMT+0800 (中国标准时间)
+                              }
             // this.stage.push(oneStage)
             this.$store.commit('ADDSTAGE',oneStage);
             /*this.$emit('addStage',oneStage)*/
+            // console.log(this.form.time)
             this.closeForm()
         },
         /*关闭dialog*/
