@@ -23,15 +23,15 @@ export default new Vuex.Store({
     {
         state.stage.push(value);
     },
-    ADDTASK(state, value)
-    {
-        state.task.push(value)
-    },
-    SETNOWSTAGE(state, value)
-    {
-        state.nowStage = value
-        // console.log(value)
-    },
+  ADDTASK(state, value)
+  {
+      state.task.push(value)
+  },
+  SETNOWSTAGE(state, value)
+  {
+      state.nowStage = value
+      // console.log(value)
+  },
     // GETSTAGE(state, value)
     // {
     //   console.log(value);

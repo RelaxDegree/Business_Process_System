@@ -52,6 +52,29 @@
           ></project-stage>
         </el-menu>
       </el-main>
+<!-- 点击左下角头像 查看项目组人员 -->
+      <el-dialog
+        width="40%"
+        title="查看项目组人员"
+        :visible.sync="formvisible"
+        append-to-body>
+        <el-table
+            :data="this.$store.state.user"
+            style="width: 100%">
+
+            <el-table-column
+            label="头像"
+            width="50">
+              <template slot-scope="scope">
+                      <el-col>
+                          <div>
+                              <el-avatar :size="40" shape="square" :fit="fill" :src="scope.row.headPic"></el-avatar>
+                              <p>{{ scope.row.name }}</p>
+                          </div>
+                      </el-col>
+                          <!-- <div slot="reference" class="name-wrapper">
+                              <el-tag size="medium">{{ scope.row.name }}</el-tag>
+                          </div> -->
 
 
 

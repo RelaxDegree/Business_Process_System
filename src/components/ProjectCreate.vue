@@ -38,6 +38,29 @@ import store from '../store/index';
       /*handleClick(tab, event) {
         console.log(tab, event);
       }*/
+      setUser()
+      {
+        let users = []
+        console.log("初始化用户列表")
+        this.$axios.get('https://mock.apifox.cn/m2/1954906-0-default/51521746', {
+            params: {
+                ID: 12345
+            }
+            }).then((response)=> {
+
+                // this.users = JSON.parse(JSON.stringify(response.data.data.user))
+                for (var i of response.data.data.user)
+                {
+                    i.choice = "NULL"
+                    users.push(i)
+                    // console.log(i)
+                }
+
+            }).catch(function (error) {
+            console.log(error);
+            });
+        this.$stage.commit('SETUSER',users)
+      } 
     }
   }
 </script>
