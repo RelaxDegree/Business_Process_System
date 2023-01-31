@@ -2,27 +2,46 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
-export default new Vuex.Store({
-  //数据，相当于data
-  state: {
-    projectMessage: {},
-    stage : [],
-    task : [],
-    nowStage : [],
+const state =  {
+  // 项目信息
+  projectMessage: {},
+  // 阶段信息
+  stage : [],
+  // 任务信息
+  task : [],
+  nowStage : [],
+  // 全体人员
+  user : [],
+}
+const getters = {
+  getStage : (state) => (stagenum) => {
+    // console.log(stagenum)
+    return state.stage[parseInt(stagenum - 1)]; //stageNum是页面ID   减一是
   },
-  getters: {
-    getStage : (state) => (stagenum) => {
-      // console.log(stagenum)
-      return state.stage[parseInt(stagenum - 1)]; //stageNum是页面ID   减一是
+  getUser : (state) => {
+    return state.user;
+  },
+  getData : state => {
+    return {
+      "project" : state.projectMessage,
+      "stage" : state.stage,
+      "task" : state.task,
     }
+  }
+}
+//里面定义方法，操作state方发
+const mutations = {
+  // 设置项目信息
+  SETPROJECT(state, pro)
+  {
+    state.projectMessage = pro;
   },
-  //里面定义方法，操作state方发
-  mutations: {
-    ADDSTAGE(state, value)
-    {
-        state.stage.push(value);
-    },
+  // 添加阶段
+  ADDSTAGE(state, value)
+  {
+      state.stage.push(value);
+  },
+  // 添加任务
   ADDTASK(state, value)
   {
       state.task.push(value)
@@ -32,64 +51,84 @@ export default new Vuex.Store({
       state.nowStage = value
       // console.log(value)
   },
-    // GETSTAGE(state, value)
-    // {
-    //   console.log(value);
-    //   return 
-    // }
-    // 更新阶段信息 当修改了阶段信息后进行更新
-    UPDATESTAGE(state, sta, stagenum)
-    {
-        state.stage[parseInt(stagenum)] = sta;
-    },
-    // 添加儿子  当在右侧示意图中添加了一条边时
-    ADDTASKSON(state, para)
-    {
-      // console.log(para.fa)  
-      for (var i = 0 ; i < state.task.length ; i ++)
+  // 更新阶段信息 当修改了阶段信息后进行更新
+  UPDATESTAGE(state, sta, stagenum)
+  {
+      state.stage[parseInt(stagenum)] = sta;
+  },
+  // 添加儿子  当在右侧示意图中添加了一条边时
+  ADDTASKSON(state, para)
+  {
+    // console.log(para.fa)  
+    for (var i = 0 ; i < state.task.length ; i ++)
+      {
+        if (i === parseInt(para.fa))
         {
-          if (i === parseInt(para.fa))
-          {
-            state.task[i].son.push(para.son);
-            // console.log(state.task[i].son)
-            break
-          }
+          state.task[i].son.push(para.son);
+          // console.log(state.task[i].son)
+          break
         }
-    },
-    // 删除儿子 当在右侧示意图中删除了一条边
-    DELETETASKSON(state, para)
-    {
-      // console.log(para.son)  
-      for (var i = 0 ; i < state.task.length ; i ++)
+      }
+  },
+  // 删除儿子 当在右侧示意图中删除了一条边
+  DELETETASKSON(state, para)
+  {
+    // console.log(para.son)  
+    for (var i = 0 ; i < state.task.length ; i ++)
+      {
+        if (i === parseInt(para.fa))
         {
-          if (i === parseInt(para.fa))
-          {
-            state.task[i].son = state.task[i].son.filter((x) => x !== para.son);
-            // console.log(state.task[i].son)
-            break
-          }
+          state.task[i].son = state.task[i].son.filter((x) => x !== para.son);
+          // console.log(state.task[i].son)
+          break
         }
-    },
-    // 任务节点移动 更新位置坐标
-    MOVETASK(state, para)
-    {
-      for (var i = 0 ; i < state.task.length ; i ++)
+      }
+  },
+  // 任务节点移动 更新位置坐标
+  MOVETASK(state, para)
+  {
+    for (var i = 0 ; i < state.task.length ; i ++)
+      {
+        if (i === parseInt(para.idx))
         {
-          if (i === parseInt(para.idx))
-          {
-            state.task[i].x = para.x
-            state.task[i].y = para.y
-            // console.log(state.task[i])
-            break
-          }
+          state.task[i].x = para.x
+          state.task[i].y = para.y
+          // console.log(state.task[i])
+          break
         }
+      }
+  },
+  // procreate组件的mounted方法调用，将从后端获取的数据传到总线
+  SETUSER(state, users)
+  {
+    state.user = users
+  },
+  // 更新任务
+  UPDATETASK(state, onetask)
+  {
+    for (var i = 0 ; i < state.task.length ; i ++)
+    {
+      if (state.task[i].stageNum == onetask.stageNum && state.task[i].taskNum == onetask.taskNum)
+      {
+        state.task[i] = onetask;
+        break;
+      }
     }
-  },
-  // 操作异步操作mutation
-  actions: {
-    
-  },
-  modules: {
-    
-  },
+    // console.log("更新后的任务", state.task);
+  }
+
+}
+// 操作异步操作mutation
+const actions = {
+  
+}
+const modules = {
+  
+}
+export default new Vuex.Store({
+  //数据，相当于data
+  state,
+  getters,
+  mutations,
+  actions
 })

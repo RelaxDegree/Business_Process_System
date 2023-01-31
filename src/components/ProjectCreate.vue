@@ -16,8 +16,9 @@
 <script>
   import ProjectGraph from './ProjectGraph.vue'
   import ProjectSetting from './ProjectSetting.vue'
-  
-import store from '../store/index';
+
+import {store} from '../store/index';
+
   export default {
     store : store,
     name : 'proj-create',
@@ -30,8 +31,11 @@ import store from '../store/index';
         stage:[],
       }
     },
+    mounted(){
+      this.setUser();
+    },
     methods: {
-      /*接受阶段表的数据*/
+      /*接受阶段表的数据*/ // 此函数貌似没有用到
       addStage(value){
         this.$stage.commit('ADDSTAGE',value)
       },
@@ -41,7 +45,7 @@ import store from '../store/index';
       setUser()
       {
         let users = []
-        console.log("初始化用户列表")
+        // console.log("初始化用户列表")
         this.$axios.get('https://mock.apifox.cn/m2/1954906-0-default/51521746', {
             params: {
                 ID: 12345
@@ -55,11 +59,13 @@ import store from '../store/index';
                     users.push(i)
                     // console.log(i)
                 }
+                this.$store.commit('SETUSER',users);
+                // console.log(this.$store.state.user)
+                
 
             }).catch(function (error) {
             console.log(error);
             });
-        this.$stage.commit('SETUSER',users)
       } 
     }
   }

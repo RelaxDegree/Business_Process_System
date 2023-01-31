@@ -275,7 +275,7 @@ export default {
         // 节点移动的触发事件
         this.graph.on('node:moved', ({node}) => {
 
-          console.log(node) 
+          // console.log(node) 
           let id = node.id
           id = id.slice(4, id.length)
           this.$store.commit("MOVETASK", {idx : id , 

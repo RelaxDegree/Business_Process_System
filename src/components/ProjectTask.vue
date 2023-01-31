@@ -8,17 +8,17 @@
         </el-menu-item>
 <!-- 点击打开任务信息表单 -->
         <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
-            <el-form :model="thisTask">
+            <el-form :model="taskdata">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-col :span="11">
-                        <el-input v-model="thisTask.taskName" style="width : 400px"></el-input>
+                        <el-input v-model="taskdata.taskName" style="width : 400px"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="任务起止时间" :label-width="formLabelWidth">
                     <el-col :span="11">
                     <div class="block" style="width : 100%">
                         <el-date-picker
-                          v-model="thisTask.taskTime"
+                          v-model="taskdata.taskTime"
                           type="datetimerange"
                           range-separator="至"
                           start-placeholder="发布日期"
@@ -28,42 +28,14 @@
                     </div>
                 </el-col>
                 </el-form-item>
-                <el-form-item label="参与编写人员" :label-width="formLabelWidth">
+                <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                     <el-col :offset="0">
                         <el-tag
                         :key="tag"
-                        v-for="tag in thisTask.Compileusers"
+                        v-for="tag in taskdata.Compileusers"
                         closable
                         :disable-transitions="false"
                         @close="closeCompileusers(tag)">
-                        {{tag}}
-                        </el-tag>
-                        <el-button type="primary" style="margin-left : 10px" size="mini" >+</el-button>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="参与审阅人员" :label-width="formLabelWidth">
-                    <el-col >
-                        <el-tag
-                        :key="tag"
-                        v-for="tag in thisTask.Reviewusers"
-                        type="warning"
-                        closable
-                        :disable-transitions="false"
-                        @close="closeReviewusers(tag)">
-                        {{tag}}
-                        </el-tag>
-                        <el-button type="primary" style="margin-left: 10px" size="mini" >+</el-button>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="参与会签人员" :label-width="formLabelWidth">
-                    <el-col >
-                        <el-tag
-                        :key="tag"
-                        v-for="tag in thisTask.Signusers"
-                        type="success"
-                        closable
-                        :disable-transitions="false"
-                        @close="closeSignusers(tag)">
                         {{tag}}
                         </el-tag>
                         <el-button type="primary" style="margin-left : 10px" size="mini" >+</el-button>
@@ -74,13 +46,13 @@
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
                   placeholder="请输入内容"
-                  v-model="thisTask.taskDetail">
+                  v-model="taskdata.taskDetail">
                 </el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.stop="closeForm">取 消</el-button>
-                <!--<el-button type="primary" @click.stop="closeForm">确 定</el-button>-->
+                <el-button type="primary" @click.stop="updateTask">确 定</el-button>
             </div>
         </el-dialog>
     </el-menu-item>
@@ -122,6 +94,11 @@ export default {
         /*触发Stage中的deleteTask事件*/
         delTask(){
             this.$emit('deleteTask',this.thisTask)
+        },
+        // 更新这个任务的信息
+        updateTask(){
+            this.$store.commit("UPDATETASK", this.taskdata);
+            this.closeForm();
         },
     },
 }

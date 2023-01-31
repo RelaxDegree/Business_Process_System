@@ -61,29 +61,55 @@
         <el-table
             :data="this.$store.state.user"
             style="width: 100%">
-
+            <!-- 头像列 -->
             <el-table-column
             label="头像"
-            width="50">
+            width="90">
               <template slot-scope="scope">
-                      <el-col>
-                          <div>
-                              <el-avatar :size="40" shape="square" :fit="fill" :src="scope.row.headPic"></el-avatar>
-                              <p>{{ scope.row.name }}</p>
-                          </div>
-                      </el-col>
+                    <div>
+                        <el-avatar :size="40" shape="circle" :src="scope.row.headPic"></el-avatar>
+                        <!-- <p>{{ scope.row.name }}</p> -->
+                    </div>
                           <!-- <div slot="reference" class="name-wrapper">
                               <el-tag size="medium">{{ scope.row.name }}</el-tag>
                           </div> -->
+                      
+                  
+                  <!-- <p>姓名: {{ scope.row.name }}</p> -->
+              </template>
+            </el-table-column>
+            <!-- 姓名列 -->
+            <el-table-column
+            label="姓名"
+            width="180">
+              <template slot-scope="scope">
+                    <div>
+                      <el-tag>{{ scope.row.name }}</el-tag>
+                    </div>
 
+              </template>
+            </el-table-column>
+            <!-- 个人简介列 -->
+            <el-table-column
+            label="个人简介"
+            width="280">
+              <template slot-scope="scope">
+                    <div>
+                        <p>{{ scope.row.otherInfo }}</p>
+                    </div>
 
+              </template>
+            </el-table-column>
+        </el-table>
+      </el-dialog>
 
       <el-footer>
         <p height="10px"></p>
         <el-row>
           <el-col :span="2" :offset="0">
             <div>
-              <el-avatar icon="el-icon-user-solid" ></el-avatar>
+              <!-- <el-avatar icon="el-icon-user-solid" ></el-avatar> -->
+              <el-button type="info" icon="el-icon-user-solid" circle @click="openUserForm"></el-button>
             </div>
           </el-col>
           <el-col :span="16" :offset="6">
@@ -149,7 +175,7 @@ export default {
       return {
         dialogFormVisible: false,
         formLabelWidth: '120px',
-
+        formvisible : false,
         stage:[],
         task:[],
         projectMessage: {
@@ -172,6 +198,10 @@ export default {
     },
     components : {ProjectStage},
     methods : {
+      // 点击头像 查看项目组用户
+        openUserForm(){
+          this.formvisible = true;
+        },
         /*阶段表收集并传入Create*/
         getFormInfo(){
             const oneStage = {  stageName:this.form.name,
@@ -182,7 +212,6 @@ export default {
                               }
             // this.stage.push(oneStage)
             this.$store.commit('ADDSTAGE',oneStage);
-            /*this.$emit('addStage',oneStage)*/
             // console.log(this.form.time)
             this.closeForm()
         },
@@ -206,12 +235,40 @@ export default {
             this.$store.commit('SETNOWSTAGE', key)
         },
 
-
+        // 保存项目信息 （和发送差不多）
         save(){
-            this.$message({
-            type: 'success',
-            message: '项目保存成功!'
-          });
+          // 提交项目信息
+          this.$store.commit("SETPROJECT", this.projectMessage);
+          var axios = require('axios');
+          let that = this;
+          var data = this.$store.getters.getData;
+          console.log(data);
+          var config = {
+              method: 'post',
+              url: 'https://mock.apifox.cn/m2/1954906-0-default/51518205',
+              headers: { 
+                  'token': '<token>'
+              },
+              data : data
+            };
+
+            axios(config)
+            .then(function (response) {
+              console.log(JSON.stringify(response.data));
+              that.$message({
+              type: 'success',
+              message: '项目保存成功!'
+            });
+            })
+            .catch(function (error) {
+              console.log(error);
+              that.$message({
+              type: 'success',
+              message: '项目保存失败!'
+            });
+            });
+            
+
         },
         push(){
             this.$message({

@@ -47,8 +47,9 @@
                     <el-button type="primary" @click.stop="updateStage">确 定</el-button>
                 </div>
                 </el-dialog>
+            <!-- 点击进行新建任务 -->
             <el-menu-item
-                    @click="openForm"
+                    @click="openNewTaskForm"
                     index="-1"
                     style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
                 新建任务
@@ -121,47 +122,20 @@
                         </div>
                     </el-col>
                     </el-form-item>
-                    <el-form-item label="参与编写人员" :label-width="formLabelWidth">
+                    <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                         <el-col >
-                            <el-tag
+                            <!-- <el-tag
                             :key="tag"
                             v-for="tag in form.Compileusers"
                             closable
                             :disable-transitions="false"
                             @close="closeCompileusers(tag)">
                             {{tag}}
-                            </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="getUserList(0)">+</el-button>
+                            </el-tag> -->
+                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="openUserForm">+</el-button>
                         </el-col>
                     </el-form-item>
-                    <el-form-item label="参与审阅人员" :label-width="formLabelWidth">
-                        <el-col >
-                            <el-tag
-                            :key="tag"
-                            v-for="tag in form.Reviewusers"
-                            type="warning"
-                            closable
-                            :disable-transitions="false"
-                            @close="closeReviewusers(tag)">
-                            {{tag}}
-                            </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" @click='getUserList(1)'>+</el-button>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item label="参与会签人员" :label-width="formLabelWidth">
-                        <el-col  >
-                            <el-tag
-                            :key="tag"
-                            v-for="tag in form.Signusers"
-                            type="success"
-                            closable
-                            :disable-transitions="false"
-                            @close="closeSignusers(tag)">
-                            {{tag}}
-                            </el-tag>
-                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="getUserLis(2)">+</el-button>
-                        </el-col>
-                    </el-form-item>
+
                     <el-form-item label="任务描述" :label-width="formLabelWidth">
                         <el-input
                       type="textarea"
@@ -173,7 +147,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click.stop="closeForm">取 消</el-button>
-                    <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
+                    <el-button type="primary" @click.stop="addTask">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -206,7 +180,7 @@ export default {
         dialogFormVisible: false,
         // 阶段信息表单
         stageDialogFormVisible: false,
-
+        taskNum : 0,
         innerVisible : false,
         formLabelWidth: '120px',
         taskMessage:{
@@ -223,25 +197,50 @@ export default {
           Signusers : [],
         },
         users : [],
-        user : [],
       };
     },
+    mounted(){
+    },
     methods : {
-        /*获取task表单数据*/
-        getFormInfo(){
+        /*获取task表单数据 同时传递所有的人员*/ 
+        addTask(){
+            this.form.Compileusers = []
+            this.form.Reviewusers = []
+            this.form.Signusers = []
+            for (var i  = 0 ; i < this.users.length ; i ++)
+            {
+                var str = this.users[i];
+                if (str.choice == "编辑")
+                {
+                    // console.log(str.userId)
+                    this.form.Compileusers.push(str.userId)
+                }
+                else if (str.choice == "审批")
+                {
+                    this.form.Reviewusers.push(str.userId)
+                    
+                }
+                else if (str.choice == "会签")
+                {
+                    this.form.Signusers.push(str.userId)
+                    
+                }
+            }
             const oneTask = {   taskDetail:this.form.detail,
                                 taskTime:this.form.time,
-                                taskFather:this.stageNum,
                                 taskName:this.form.name,
                                 taskCompileusers:this.form.Compileusers,
                                 taskReviewusers:this.form.Reviewusers,
                                 taskSignusers:this.form.Signusers,
                                 stageNum:this.stageNum,
+                                taskNum : this.taskNum,
                                 son : [],
                                 x : 40,
                                 y : 40,
             }
+            this.taskNum += 1;
             this.task.push(oneTask);
+            // console.log(oneTask)
             // 往全局总线上添加一个任务信息
             this.$store.commit('ADDTASK',oneTask);
             // console.log(this.$store.getters.getStage(this.stageNum));
@@ -255,34 +254,23 @@ export default {
                         Signusers : [],}
             this.dialogFormVisible = false;
         },
-        // type 0 是请求编写人员列表 1 是审批 2 是会签 
-        getUserList(type){
+        // 新建任务表单中进行人员添加  点击+触发
+        openUserForm(){
             this.innerVisible = true;
-            this.$axios.get('https://mock.apifox.cn/m2/1954906-0-default/51521746', {
-            params: {
-                ID: 12345
-            }
-            }).then((response)=> {
-
-                // this.users = JSON.parse(JSON.stringify(response.data.data.user))
-                for (var i of response.data.data.user)
-                {
-                    i.choice = "NULL"
-                    this.users.push(i)
-                    // console.log(i)
-                }
-
-            }).catch(function (error) {
-            console.log(error);
-            });
-            
-
 
         },
-
-        openForm(){
+        // 打开新建任务
+        openNewTaskForm(){
+            this.users = this.$store.state.user;
+            for (var i of this.users)
+                {
+                    i.choice = "NULL"
+                    // console.log(i)
+                }
+            // console.log(this.users)
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;
+            
         },
         /*删除一个任务*/
         deleteTask(value){
