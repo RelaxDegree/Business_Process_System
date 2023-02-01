@@ -4,7 +4,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 导入路由要用到的组件
 import ProjectCreate from '../components/ProjectCreate/ProjectCreate.vue'
-import ProjectPreview from '../components/ProjectPreview.vue'
+import ProjectPreview from '../components/ProjectPreview/ProjectPreview.vue'
 
  
 // 2 调用vue.use()函数，把VueRouter安装为vue插件
@@ -16,6 +16,7 @@ const router = new VueRouter({
   routes: [
   //路由规则
     { path: '/create', component: ProjectCreate },
+    { path: '/preview', component: ProjectPreview },
     // { path: '/preview', component: ProjectPreview },
 //     { path: '/movie', component: Movie },
 //    {

@@ -12,6 +12,9 @@ const state =  {
   nowStage : [],
   // 全体人员
   user : [],
+  // 用于项目查看的全部信息
+  propreview : {
+  }
 }
 const getters = {
   getStage : (state) => (stagenum) => {
@@ -115,8 +118,12 @@ const mutations = {
       }
     }
     // console.log("更新后的任务", state.task);
-  }
-
+  },
+  // 项目查阅设置初始信息
+  SETPROPREVIEW(state, params)
+  {
+    state.propreview = params;
+  } 
 }
 // 操作异步操作mutation
 const actions = {

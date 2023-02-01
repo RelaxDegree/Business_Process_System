@@ -4,7 +4,7 @@
       <el-container style="height: 550px; border: 1px solid #eee">
         <el-aside width="450px" style="background-color: rgb(238, 241, 246)">
             <!-- 左侧任务部署 -->
-          <project-setting></project-setting>
+          <project-setting :projectMessage="this.project"></project-setting>
         </el-aside>
         <!-- 右侧可视化任务图 -->
         <project-graph></project-graph>
@@ -14,10 +14,11 @@
 </template>
   
   <script>
-    import ProjectGraph from './ProjectCreate/ProjectGraph.vue'
-    import ProjectSetting from './ProjectCreate/ProjectSetting.vue'
-    import {store} from '../store/index';
-  
+    import ProjectGraph from './ProjectGraph.vue'
+    import ProjectSetting from './ProjectSetting.vue'
+    import { store } from '../../store/index';
+    import { procreateSetUser } from '@/api/api';
+    import { propreviewGet } from '@/api/api';
     export default {
       store : store,
       name : 'proj-preview',
@@ -27,11 +28,15 @@
       },
       data(){
         return{
-          stage:[],
+          project : {},
+          stage : [],
+          task : [],
+
         }
       },
       mounted(){
         this.setUser();
+        this.propreviewGet();
       },
       methods: {
         // 从后端获取项目人员 mounted函数中启动
@@ -50,12 +55,32 @@
                 // console.log(i)
             }
             this.$store.commit('SETUSER',users);
-            console.log(this.$store.state.user)
+            // console.log(this.$store.state.user)
   
           }).catch(function (error) {
               console.log(error);
           });
-        } 
+        }, 
+        // 从后端获取全部项目 用于阅览
+        propreviewGet(){
+            let params = {
+                  ID: 12345
+            }
+            propreviewGet(params).then(res=>{
+              this.stage = res.data.data.stage;
+              this.task = res.data.data.task;
+              this.project = res.data.data.project;
+              this.$store.commit("SETPROPREVIEW",{
+                'stage' : this.stage,
+                'task' : this.task,
+                'project' : this.project,
+              })
+            console.log(this.$store.state.propreview);
+              
+          }).catch(function (error) {
+              console.log(error);
+          });
+        }
       }
     }
   </script>
