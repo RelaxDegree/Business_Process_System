@@ -125,7 +125,7 @@ const actions = {
 const modules = {
   
 }
-export default new Vuex.Store({
+export const store = new Vuex.Store({
   //数据，相当于data
   state,
   getters,

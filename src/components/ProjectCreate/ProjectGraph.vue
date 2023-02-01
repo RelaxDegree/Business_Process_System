@@ -48,7 +48,7 @@
 </template>
 <script >
 import SubGraph from './ProjectSubgraph.vue';
-import store from '../store/index';
+import {store} from '../../store/index';
 
 export default {
     name : "proj-graph",

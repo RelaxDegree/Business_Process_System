@@ -1,18 +1,19 @@
 <template>
   <div id="app">
 
-    <ProjectCreate/>
+    <router-view ></router-view>
   </div>
 </template>
 
 <script>
 
-import ProjectCreate from './components/ProjectCreate.vue'
 export default {
   name: 'App',
-  components: {
-    ProjectCreate
-  },
+  // components: {
+  //   ProjectCreate,
+  //   ProjectPreview,
+  // },
+  // routes
 }
 </script>
 

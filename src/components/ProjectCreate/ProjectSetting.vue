@@ -48,7 +48,6 @@
                   :key="(index+1).toString()"
                   :stageNum="(index+1).toString()"
                   :thisStage="s"
-                  @deleteStage="deleteStage"
           ></project-stage>
         </el-menu>
       </el-main>
@@ -102,7 +101,7 @@
             </el-table-column>
         </el-table>
       </el-dialog>
-
+<!-- 设置组件的页脚 有圆形头像 点击查看人员、+按钮 创建项目 保存项目、发布项目按钮 -->
       <el-footer>
         <p height="10px"></p>
         <el-row>
@@ -167,7 +166,8 @@
 
 <script>
 import ProjectStage from './ProjectStage.vue';
-import store from '../store/index';
+import { procreateRelease } from '@/api/api';
+import {store} from '../../store/index';
 export default {
     store,
     name : "proj-set",
@@ -178,6 +178,7 @@ export default {
         formvisible : false,
         stage:[],
         task:[],
+        // 项目信息
         projectMessage: {
           projectID: "56",
           projectDesignerName: '朱晓东',
@@ -189,6 +190,7 @@ export default {
           projectSaveTime: "2022-11-21 21:00:45",
           projectIsdone: false,
         },
+        // 新建项目的项目信息表单
         form :{
           time: '',
           name: '',
@@ -225,51 +227,37 @@ export default {
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;
         },
-        /*删除某一个阶段*/
-        deleteStage(value){
-            this.stage = this.stage.filter((p)=>{
-                return p !== value
-            })
+        /*接受阶段表的数据*/ 
+        addStage(value){
+          this.$stage.commit('ADDSTAGE',value)
         },
+        // 当打开一个项目submenu时 右边的拓扑图做相应的切换
         handleOpen(key, keyPath) {
             this.$store.commit('SETNOWSTAGE', key)
         },
-
         // 保存项目信息 （和发送差不多）
         save(){
           // 提交项目信息
           this.$store.commit("SETPROJECT", this.projectMessage);
-          var axios = require('axios');
           let that = this;
           var data = this.$store.getters.getData;
           console.log(data);
-          var config = {
-              method: 'post',
-              url: 'https://mock.apifox.cn/m2/1954906-0-default/51518205',
-              headers: { 
-                  'token': '<token>'
-              },
-              data : data
-            };
-
-            axios(config)
-            .then(function (response) {
-              console.log(JSON.stringify(response.data));
+          procreateRelease(data).then(res => {
+              console.log(JSON.stringify(res.data));
               that.$message({
               type: 'success',
               message: '项目保存成功!'
             });
-            })
-            .catch(function (error) {
-              console.log(error);
-              that.$message({
-              type: 'success',
-              message: '项目保存失败!'
-            });
-            });
-            
-
+          })
+          .catch(function (error) {
+            console.log(error);
+            that.$message({
+            type: 'success',
+            message: '项目保存失败!'
+          });
+          });
         },
+        // 发布项目信息 还未完成
         push(){
             this.$message({
             type: 'success',

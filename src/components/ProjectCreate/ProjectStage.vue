@@ -1,7 +1,6 @@
 <template>
     <el-submenu :index=stageNum style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
         <template slot="title">
-            <!--<el-button @click="delStage" type="danger" class="el-icon-delete" style="height: 28px; width:28px" circle></el-button>-->
             <i class="el-icon-message"></i>阶段{{stageNum}}
         </template>
         <el-menu-item-group>
@@ -55,7 +54,7 @@
                 新建任务
             </el-menu-item>
 
-<!-- 点击后 填写任务详细信息 -->
+<!-- 点击后 填写任务详细信息 内含二级表单 进行人员选择  -->
             <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
                 <!-- 二级对话框 添加项目组人员-->
                 <el-dialog
@@ -72,20 +71,9 @@
                         width="180">
                         
                         <template slot-scope="scope">
-                                <!-- <el-col>
-                                    <div>
-                                        <el-avatar :size="40" :src="scope.row.headPic"></el-avatar>
-                                        <p>{{ scope.row.name }}</p>
-                                    </div>
-                                </el-col> -->
-                                    <div slot="reference" class="name-wrapper">
-                                        <el-tag size="medium">{{ scope.row.name }}</el-tag>
-                                    </div>
-                                
-                            
-                            <!-- <p>姓名: {{ scope.row.name }}</p> -->
-                            
-  
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag size="medium">{{ scope.row.name }}</el-tag>
+                            </div>
                         </template>
                         </el-table-column>
                         <el-table-column label="操作">
@@ -124,14 +112,6 @@
                     </el-form-item>
                     <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                         <el-col >
-                            <!-- <el-tag
-                            :key="tag"
-                            v-for="tag in form.Compileusers"
-                            closable
-                            :disable-transitions="false"
-                            @close="closeCompileusers(tag)">
-                            {{tag}}
-                            </el-tag> -->
                             <el-button type="primary" style="margin-left : 10px" size="mini" @click="openUserForm">+</el-button>
                         </el-col>
                     </el-form-item>
@@ -158,16 +138,14 @@
                   :taskNum="index"
                   :stageNum="stageNum"
                   :thisTask=t
-                  @deleteTask="deleteTask"
           ></project-task>
-
         </el-menu-item-group>
     </el-submenu>
       
 </template>
 
 <script>
-import store from '../store/index';
+import {store} from '../../store/index';
 import ProjectTask from './ProjectTask.vue';
 export default {
     name : 'proj-stage',
@@ -183,10 +161,6 @@ export default {
         taskNum : 0,
         innerVisible : false,
         formLabelWidth: '120px',
-        taskMessage:{
-              taskID:'',
-              taskProgress:'',
-        },
         task:[],
         form: {
           name: '',
@@ -247,6 +221,7 @@ export default {
             // this.$store.commit('GETSTAGE',"222");
             this.closeForm()
         },
+        // 关闭表单
         closeForm(){
             this.form = {name: '', time: '', detail: '',
                         Compileusers : [],
@@ -277,22 +252,6 @@ export default {
             this.task = this.task.filter((p)=>{
                 return p !== value
             })
-        },
-        /*触发deleteStage事件*/
-        delStage(){
-            this.$emit('deleteStage',this.thisStage)
-        },
-
-
-        closeCompileusers(tag) {
-            this.form.Compileusers.splice(this.form.Compileusers.indexOf(tag), 1);
-
-        },
-        closeReviewusers(tag) {
-        this.form.Reviewusers.splice(this.form.Reviewusers.indexOf(tag), 1);
-        },
-        closeSignusers(tag) {
-        this.form.Signusers.splice(this.form.Signusers.indexOf(tag), 1);
         },
         // 在全局总线上修改阶段信息
         updateStage(){

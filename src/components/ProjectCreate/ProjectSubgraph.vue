@@ -10,7 +10,7 @@
 
 <script>
 import {Cell, Graph, Shape} from '@antv/x6'
-import store from '../store/index';
+import {store} from '../../store/index';
 import  '@antv/x6-vue-shape';
 export default {
     name : "proj-graph",
