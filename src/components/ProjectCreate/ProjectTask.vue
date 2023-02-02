@@ -85,7 +85,7 @@
 <script>
 export default {
     name : 'proj-task',
-    props:['taskNum','thisTask','stageNum'],
+    props:['taskNum','thisTask','stageId'],
     data() {
         return {
             formLabelWidth: '120px',
@@ -102,7 +102,7 @@ export default {
         // 计算属性  生成menuID
         indexName : {
             get(){
-                return this.stageNum + '-' + this.taskNum
+                return this.stageId + '-' + this.taskNum
             }
         }
     },  

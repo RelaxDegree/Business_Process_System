@@ -16,7 +16,7 @@ export default {
     name : "proj-graph",
     store,
     graph: null,
-    props:['stageNum','thisStage'],
+    props:['stageId','thisStage'],
     data (){
         return {
             
@@ -44,7 +44,7 @@ export default {
       {
 			//对数据执行操作
           var node = newVal[newVal.length - 1]
-          if (node.stageNum == this.stageNum)
+          if (node.stageId == this.stageId)
           {
             this.makeNode(newVal.length - 1, node.taskName, node.taskDetail)
           }            

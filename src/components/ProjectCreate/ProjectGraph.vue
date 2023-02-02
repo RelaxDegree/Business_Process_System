@@ -15,7 +15,7 @@
                         :key="(index+1).toString()"
                         :label="constName+(index+1).toString()" :name="(index+1).toString()">
 
-                        <SubGraph :stageNum="(index+1).toString()"></SubGraph>
+                        <SubGraph :stageId="(index+1).toString()"></SubGraph>
 
                         </el-tab-pane>
                         <!-- </div> -->

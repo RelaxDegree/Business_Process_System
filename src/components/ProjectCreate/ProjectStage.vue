@@ -1,7 +1,7 @@
 <template>
-    <el-submenu :index=stageNum style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+    <el-submenu :index=stageId style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
         <template slot="title">
-            <i class="el-icon-message"></i>阶段{{stageNum}}
+            <i class="el-icon-message"></i>阶段{{stageId}}
         </template>
         <el-menu-item-group>
             <!-- 查看阶段信息 -->
@@ -136,7 +136,7 @@
                   v-for="(t,index) of task"
                   :key="index"
                   :taskNum="index"
-                  :stageNum="stageNum"
+                  :stageId="stageId"
                   :thisTask=t
           ></project-task>
         </el-menu-item-group>
@@ -151,7 +151,7 @@ export default {
     name : 'proj-stage',
     store ,
     components : {ProjectTask},
-    props:['stageNum','thisStage'],
+    props:['stageId','thisStage'],
     data() {
       return {
         // 新建任务表单
@@ -206,7 +206,7 @@ export default {
                                 taskCompileusers:this.form.Compileusers,
                                 taskReviewusers:this.form.Reviewusers,
                                 taskSignusers:this.form.Signusers,
-                                stageNum:this.stageNum,
+                                stageId:this.stageId,
                                 taskNum : this.taskNum,
                                 son : [],
                                 x : 40,
@@ -217,7 +217,7 @@ export default {
             // console.log(oneTask)
             // 往全局总线上添加一个任务信息
             this.$store.commit('ADDTASK',oneTask);
-            // console.log(this.$store.getters.getStage(this.stageNum));
+            // console.log(this.$store.getters.getStage(this.stageId));
             // this.$store.commit('GETSTAGE',"222");
             this.closeForm()
         },
@@ -255,7 +255,7 @@ export default {
         },
         // 在全局总线上修改阶段信息
         updateStage(){
-            this.$store.commit("UPDATESTAGE",this.thisStage, this.stageNum);
+            this.$store.commit("UPDATESTAGE",this.thisStage, this.stageId);
             this.stageDialogFormVisible = false;
         }
     },

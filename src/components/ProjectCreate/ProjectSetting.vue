@@ -46,7 +46,7 @@
           <project-stage
                   v-for="(s,index) of this.$store.state.stage"
                   :key="(index+1).toString()"
-                  :stageNum="(index+1).toString()"
+                  :stageId="(index+1).toString()"
                   :thisStage="s"
           ></project-stage>
         </el-menu>
@@ -243,7 +243,7 @@ export default {
           var data = this.$store.getters.getData;
           console.log(data);
           procreateRelease(data).then(res => {
-              console.log(JSON.stringify(res.data));
+              // console.log(JSON.stringify(res.data));
               that.$message({
               type: 'success',
               message: '项目保存成功!'
@@ -252,7 +252,7 @@ export default {
           .catch(function (error) {
             console.log(error);
             that.$message({
-            type: 'success',
+            type: 'error',
             message: '项目保存失败!'
           });
           });
