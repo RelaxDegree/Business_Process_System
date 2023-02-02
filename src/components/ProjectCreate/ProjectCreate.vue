@@ -41,14 +41,15 @@
         let users = []
         // console.log("初始化用户列表")
         let params = {
-                ID: 12345
+                userId: 100
             }
         procreateSetUser(params).then(res=>{
+          console.log("api 打印用户",res.data)
+
           for (var i of res.data.data.user)
           {
               i.choice = "NULL"
               users.push(i)
-              // console.log(i)
           }
           this.$store.commit('SETUSER',users);
           console.log(this.$store.state.user)

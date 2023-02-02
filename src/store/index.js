@@ -17,9 +17,9 @@ const state =  {
   }
 }
 const getters = {
-  getStage : (state) => (stagenum) => {
-    // console.log(stagenum)
-    return state.stage[parseInt(stagenum - 1)]; //stageNum是页面ID   减一是
+  getStage : (state) => (stageId) => {
+    // console.log(stageId)
+    return state.stage[parseInt(stageId - 1)]; //stageId是页面ID   减一是
   },
   getUser : (state) => {
     return state.user;
@@ -55,9 +55,9 @@ const mutations = {
       // console.log(value)
   },
   // 更新阶段信息 当修改了阶段信息后进行更新
-  UPDATESTAGE(state, sta, stagenum)
+  UPDATESTAGE(state, sta, stageId)
   {
-      state.stage[parseInt(stagenum)] = sta;
+      state.stage[parseInt(stageId)] = sta;
   },
   // 添加儿子  当在右侧示意图中添加了一条边时
   ADDTASKSON(state, para)
@@ -111,7 +111,7 @@ const mutations = {
   {
     for (var i = 0 ; i < state.task.length ; i ++)
     {
-      if (state.task[i].stageNum == onetask.stageNum && state.task[i].taskNum == onetask.taskNum)
+      if (state.task[i].stageId == onetask.stageId && state.task[i].taskNum == onetask.taskNum)
       {
         state.task[i] = onetask;
         break;
