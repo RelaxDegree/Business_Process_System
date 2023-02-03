@@ -44,7 +44,7 @@
                 userId: 100
             }
         procreateSetUser(params).then(res=>{
-          console.log("api 打印用户",res.data)
+          // console.log("api 打印用户",res.data)
 
           for (var i of res.data.data.user)
           {
@@ -52,7 +52,7 @@
               users.push(i)
           }
           this.$store.commit('SETUSER',users);
-          console.log(this.$store.state.user)
+          // console.log(this.$store.state.user)
 
         }).catch(function (error) {
             console.log(error);

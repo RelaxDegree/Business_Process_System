@@ -10,7 +10,7 @@
                     index="-2">
                 阶段信息
             </el-menu-item>
-            <!-- 点击查看阶段后显示阶段信息 -->
+            <!-- 点击查看阶段后显示阶段信息 并可以编辑-->
                 <el-dialog title="阶段信息" :visible.sync="stageDialogFormVisible">
                 <el-form :model="thisStage">
                     <el-form-item label="阶段名称" :label-width="formLabelWidth">
@@ -44,7 +44,7 @@
                 <div slot="footer" class="dialog-footer">
                     <el-button @click.stop="stageDialogFormVisible = false">取 消</el-button>
                     <el-button type="primary" @click.stop="updateStage">确 定</el-button>
-                </div>
+                </div> 
                 </el-dialog>
             <!-- 点击进行新建任务 -->
             <el-menu-item
@@ -112,7 +112,8 @@
                     </el-form-item>
                     <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                         <el-col >
-                            <el-button type="primary" style="margin-left : 10px" size="mini" @click="openUserForm">+</el-button>
+                            <el-tag v-for="(params,index) in tagUser" :key="index" :type="params.type" >{{params.name}}</el-tag>
+                            <el-button type="primary"  size="mini" @click="openUserForm">+</el-button>
                         </el-col>
                     </el-form-item>
 
@@ -133,11 +134,11 @@
 
 <!-- 子任务 -->
           <project-task
-                  v-for="(t,index) of task"
+                  v-for="(onetask,index) of task"
                   :key="index"
                   :taskNum="index"
                   :stageId="stageId"
-                  :thisTask=t
+                  :thisTask=onetask
           ></project-task>
         </el-menu-item-group>
     </el-submenu>
@@ -147,6 +148,7 @@
 <script>
 import {store} from '../../store/index';
 import ProjectTask from './ProjectTask.vue';
+import { timestampToTime } from '../../utils/time.js'
 export default {
     name : 'proj-stage',
     store ,
@@ -166,54 +168,112 @@ export default {
           name: '',
           time: '',
           detail: '',
-          Compileusers : [],
-          Reviewusers : [],
-          Signusers : [],
+          follower : []
         },
         users : [],
       };
     },
     mounted(){
     },
+    computed:{
+        tagUser(){
+            var tempList = []
+            for (var i = 0; i <  this.users.length ; i ++)
+            {
+                var user = this.users[i];
+                if (user.choice == "编辑")
+                {
+                    tempList.push({
+                        name : user.name,
+                        type : "success"
+                    })
+                }
+                else if (user.choice == "审批")
+                {
+                    tempList.push({
+                        name : user.name,
+                    })
+                }
+                else if (user.choice == "会签")
+                {
+                    tempList.push({
+                        name : user.name,
+                        type : "warning"
+                    })
+                }
+            }
+            // console.log("计算属性", tempList);
+            return tempList;
+        }
+    },  
     methods : {
         /*获取task表单数据 同时传递所有的人员*/ 
         addTask(){
-            this.form.Compileusers = []
-            this.form.Reviewusers = []
-            this.form.Signusers = []
+            if (!this.form.time)
+            {
+                this.$message({
+                type : 'warning',
+                message : "请填写日期"
+                })
+                return;
+            }
+            this.form.follower = []
+            var cnta = 0, cntb = 0, cntc = 0;   // 统计三个人员的数量
             for (var i  = 0 ; i < this.users.length ; i ++)
             {
                 var str = this.users[i];
+
                 if (str.choice == "编辑")
                 {
                     // console.log(str.userId)
-                    this.form.Compileusers.push(str.userId)
+                    this.form.follower.push({
+                        userId : str.userId,
+                        state : '1',
+                    })
+                    cnta ++;
                 }
                 else if (str.choice == "审批")
                 {
-                    this.form.Reviewusers.push(str.userId)
+                    this.form.follower.push({
+                        userId : str.userId,
+                        state : '2',
+                    })
+                    cntb++;
                     
                 }
                 else if (str.choice == "会签")
                 {
-                    this.form.Signusers.push(str.userId)
-                    
+                    this.form.follower.push({
+                        userId : str.userId,
+                        state : '3',
+                    })
+                    cntc++;
                 }
             }
+            if (!(cnta == 1 && cntb == 1 && (cntc >= 1 && cntc <= 2)))
+            {
+                this.$message({
+                type : 'warning',
+                message : "请重新配置人员，核查人员数量"
+                })
+                return;
+            }
             const oneTask = {   taskDetail:this.form.detail,
-                                taskTime:this.form.time,
+                                taskTime : this.form.time,
+                                taskOpenTime:timestampToTime(this.form.time[0].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
+                                taskCloseTime:timestampToTime(this.form.time[1].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
+                                // Sun Jan 01 2023 00:00:00 GMT+0800 (中国标准时间)
                                 taskName:this.form.name,
-                                taskCompileusers:this.form.Compileusers,
-                                taskReviewusers:this.form.Reviewusers,
-                                taskSignusers:this.form.Signusers,
+                                follower:this.form.follower,
                                 stageId:this.stageId,
                                 taskNum : this.taskNum,
                                 son : [],
-                                x : 40,
-                                y : 40,
+                                px : 40,
+                                py : 40,
             }
             this.taskNum += 1;
             this.task.push(oneTask);
+            // console.log(oneTask)
             // console.log(oneTask)
             // 往全局总线上添加一个任务信息
             this.$store.commit('ADDTASK',oneTask);
@@ -224,9 +284,7 @@ export default {
         // 关闭表单
         closeForm(){
             this.form = {name: '', time: '', detail: '',
-                        Compileusers : [],
-                        Reviewusers :[],
-                        Signusers : [],}
+                        follower : [],}
             this.dialogFormVisible = false;
         },
         // 新建任务表单中进行人员添加  点击+触发
@@ -255,6 +313,16 @@ export default {
         },
         // 在全局总线上修改阶段信息
         updateStage(){
+            if (!this.thisStage.stageTime)
+            {
+                this.$message({
+                type : 'warning',
+                message : "请填写日期"
+                })
+                return;
+            }
+            this.thisStage.stageOpenTime = timestampToTime(this.thisStage.stageTime[0].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
+            this.thisStage.stageCloseTime= timestampToTime(this.thisStage.stageTime[1].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
             this.$store.commit("UPDATESTAGE",this.thisStage, this.stageId);
             this.stageDialogFormVisible = false;
         }

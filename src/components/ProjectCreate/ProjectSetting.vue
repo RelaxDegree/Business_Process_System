@@ -18,17 +18,7 @@
                 <el-form-item label="负责人">
                   <el-input v-model="projectMessage.projectDesigner"></el-input>
                 </el-form-item>
-                
-                <div class="block">
-                  <el-date-picker
-                    v-model="projectMessage.projectTime"
-                    type="datetimerange"
-                    range-separator="至"
-                    start-placeholder="发布日期"
-                    end-placeholder="结束日期"
-                    align="right">
-                  </el-date-picker>
-                </div>
+
                 <div><p></p></div>
                 <el-form-item label="项目描述">
                   <el-input
@@ -167,6 +157,7 @@
 <script>
 import ProjectStage from './ProjectStage.vue';
 import { procreateRelease } from '@/api/api';
+import { timestampToTime } from '../../utils/time.js'
 import {store} from '../../store/index';
 export default {
     store,
@@ -180,8 +171,6 @@ export default {
         task:[],
         // 项目信息
         projectMessage: {
-          projectID: "56",
-          projectDesignerName: '朱晓东',
           projectName: "吉林大学业务流程系统软件项目",
           projectDesignerID: 450000197704085570,
           projectCreateTime: "1977-01-14 13:19:52",
@@ -189,6 +178,7 @@ export default {
           projectDetail:'2020级软件工程课程大作业',
           projectSaveTime: "2022-11-21 21:00:45",
           projectIsdone: false,
+          isEmit : 0,
         },
         // 新建项目的项目信息表单
         form :{
@@ -206,10 +196,21 @@ export default {
         },
         /*阶段表收集并传入Create*/
         getFormInfo(){
+          if (!this.form.time)
+          {
+            this.$message({
+              type : 'warning',
+              message : "请填写日期"
+            })
+            return;
+          }
             const oneStage = {  stageName:this.form.name,
+                                stageId : this.$store.state.stage.length + 1,
                                 stageDetail:this.form.detail,
                                 stageIsdone:false,
-                                stageTime:this.form.time, // 时间是数组 包含起止时间 格式
+                                stageOpenTime:timestampToTime(this.form.time[0].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
+                                stageCloseTime:timestampToTime(this.form.time[1].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
+                                stageTime : this.form.time,
                                 // Sun Jan 01 2023 00:00:00 GMT+0800 (中国标准时间)
                               }
             // this.stage.push(oneStage)
@@ -235,9 +236,17 @@ export default {
         handleOpen(key, keyPath) {
             this.$store.commit('SETNOWSTAGE', key)
         },
+        
         // 保存项目信息 （和发送差不多）
         save(){
           // 提交项目信息
+          // 首先更新projectMessage的时间信息
+          var time = new Date();
+          var timestr = timestampToTime(time.toLocaleString('en-US',{hour12 : false}).split(" "));
+          this.projectMessage.projectCreateTime = timestr;
+          this.projectMessage.projectSaveTime = timestr;
+          this.projectMessage.projectEmitTime = timestr;
+          console.log(timestr);
           this.$store.commit("SETPROJECT", this.projectMessage);
           let that = this;
           var data = this.$store.getters.getData;
@@ -251,10 +260,9 @@ export default {
           })
           .catch(function (error) {
             console.log(error);
-            that.$message({
-            type: 'error',
-            message: '项目保存失败!'
-          });
+            that.$message.error(
+               '项目保存失败!'
+          );
           });
         },
         // 发布项目信息 还未完成

@@ -279,7 +279,7 @@ export default {
           let id = node.id
           id = id.slice(4, id.length)
           this.$store.commit("MOVETASK", {idx : id , 
-            x : node.store.data.position.x , y : node.store.data.position.y})
+            px : node.store.data.position.x , py : node.store.data.position.y})
           })
     }
   }

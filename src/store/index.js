@@ -81,7 +81,7 @@ const mutations = {
       {
         if (i === parseInt(para.fa))
         {
-          state.task[i].son = state.task[i].son.filter((x) => x !== para.son);
+          state.task[i].son = state.task[i].son.filter((px) => px !== para.son);
           // console.log(state.task[i].son)
           break
         }
@@ -94,9 +94,9 @@ const mutations = {
       {
         if (i === parseInt(para.idx))
         {
-          state.task[i].x = para.x
-          state.task[i].y = para.y
-          // console.log(state.task[i])
+          state.task[i].px = para.px
+          state.task[i].py = para.py
+          // console.log("节点移动", state.task[i], para)
           break
         }
       }
