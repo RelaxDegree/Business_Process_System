@@ -156,7 +156,7 @@ export default {
                     }
                 }
             }
-            console.log(this.users)
+            // console.log(this.users)
         },
         openForm(){
             if (!this.dialogFormVisible)
@@ -167,7 +167,7 @@ export default {
         },
         // 更新这个任务的信息
         updateTask(){
-            if (!this.form.time)
+            if (!this.taskdata.taskTime)
             {
                 this.$message({
                 type : 'warning',
@@ -189,7 +189,7 @@ export default {
                 }
                 else if (str.choice == "审批")
                 {
-                    this.taskdata.Reviewusers.push({
+                    this.taskdata.follower.push({
                         userId : str.userId,
                         state : '2',
                     })
@@ -197,7 +197,7 @@ export default {
                 }
                 else if (str.choice == "会签")
                 {
-                    this.taskdata.Signusers.push({
+                    this.taskdata.follower.push({
                         userId : str.userId,
                         state : '3',
                     })

@@ -103,7 +103,7 @@
           </el-col>
           <el-col :span="16" :offset="6">
             <div>
-              <el-button plain @click="openForm" style="margin-right: 10px">+</el-button>
+              <el-button plain @click="openForm" style="margin-right: 10px">创建阶段</el-button>
                 <!-- 点击加号键  弹出新增阶段的表单 -->
               <el-dialog title="阶段创建" :visible.sync="dialogFormVisible">
                 <el-form :model="form">
@@ -140,9 +140,7 @@
                     <el-button type="primary" @click.stop="getFormInfo">确 定</el-button>
                 </div>
               </el-dialog>
-
-              <el-button type="primary" @click="save">保存项目</el-button>
-              <el-button type="success" @click="push">发布项目</el-button>
+              <el-button type="primary" @click="save">发布项目</el-button>
             </div>
           </el-col>
         </el-row>
@@ -237,7 +235,7 @@ export default {
             this.$store.commit('SETNOWSTAGE', key)
         },
         
-        // 保存项目信息 （和发送差不多）
+        // 发布项目信息 
         save(){
           // 提交项目信息
           // 首先更新projectMessage的时间信息
@@ -246,7 +244,7 @@ export default {
           this.projectMessage.projectCreateTime = timestr;
           this.projectMessage.projectSaveTime = timestr;
           this.projectMessage.projectEmitTime = timestr;
-          console.log(timestr);
+          // console.log(timestr);
           this.$store.commit("SETPROJECT", this.projectMessage);
           let that = this;
           var data = this.$store.getters.getData;

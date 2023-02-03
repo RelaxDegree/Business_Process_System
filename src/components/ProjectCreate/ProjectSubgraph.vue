@@ -84,7 +84,7 @@ export default {
                     fill: 'rgb(95,149,255)',
                 },
                 title: {
-                text: taskName+'                正在审批',
+                text: taskName,
                 refX: 30,
                 refY: 9,
                 fill: '#ffffff',
