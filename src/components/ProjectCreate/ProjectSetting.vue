@@ -8,7 +8,7 @@
 
       <el-main>
         <el-menu @open="handleOpen"> 
-          <el-submenu index="abcd" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+          <el-submenu index="default" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
             <template slot="title"><i class="el-icon-menu"></i>项目基本信息</template>
             <div style="margin: 20px 0;">
               <el-form label-width="70px"  :model="projectMessage">
@@ -233,6 +233,7 @@ export default {
         // 当打开一个项目submenu时 右边的拓扑图做相应的切换
         handleOpen(key, keyPath) {
             this.$store.commit('SETNOWSTAGE', key)
+            // console.log(key)
         },
         
         // 发布项目信息 

@@ -52,7 +52,7 @@
               users.push(i)
           }
           this.$store.commit('SETUSER',users);
-          // console.log(this.$store.state.user)
+          // console.log(users)
 
         }).catch(function (error) {
             console.log(error);
