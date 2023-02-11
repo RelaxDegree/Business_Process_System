@@ -10,11 +10,7 @@ export function procreateSetUser(params) {
         url : "api/v1/users/pr",
         method : 'get',
         params : {userId : 100},
-        // headers : {
-        //     token : "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkMTA5YWY0MjQ1NzA0M2MyOTczMTQ5NDIxN2VjMDI2NSIsInN1YiI6IjIiLCJpc3MiOiJkYXp6bGUiLCJpYXQiOjE2NzUzMzg2MDAsImV4cCI6MTY3NTQyNTAwMH0.9Fzd2xrNVqtsxbUjPpkDydUQ5VUAXUeLfltsfjsdBL8",
-        // }
     })
-
 }
 // 保存项目
 export function procreateRelease(body) {
