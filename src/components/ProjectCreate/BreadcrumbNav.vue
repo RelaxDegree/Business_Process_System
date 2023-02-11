@@ -2,8 +2,17 @@
     <div class="sticky">
         <el-card class="box-card" shadow="always" >
           <el-row :gutter="20">
-            <el-col :span="22" style="height : 15px"><div >
-              <el-descriptions title="Project Progress" style="height : 15px;margin-top : -15px;" :colon=false>
+            <!-- 第一列 图片Logo -->
+            <el-col :span="1" style="height : 15px; margin-top : -14px"><div>
+                <el-image
+                style="width: 50px; height: 50px"
+                :src="require('@/assets/logo.png')"
+                ></el-image>
+            </div>
+            </el-col>
+            <!-- 第二列 系统名称 + 面包屑 -->
+            <el-col :span="21" style="height : 15px"><div >
+              <el-descriptions title="通用业务管理系统" style="height : 15px;margin-top : -15px;" :colon=false>
                 <el-descriptions-item>
                     <el-breadcrumb style="margin-top : -10px;">
                         <el-breadcrumb-item

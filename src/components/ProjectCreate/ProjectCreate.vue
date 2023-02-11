@@ -2,6 +2,7 @@
   <div>
     <!-- 面包屑导航栏 -->
     <breadcrumb-nav></breadcrumb-nav>
+
     <el-container style="height: 600px; border: 1px solid #eee">
       <el-aside width="450px" style="background-color: rgb(238, 241, 246)">
           <!-- 左侧任务部署 -->
@@ -9,8 +10,11 @@
       </el-aside>
       <!-- 右侧可视化任务图 -->
       <project-graph></project-graph>
-  </el-container>
+    </el-container>
+    <footer>
+    <c-footer></c-footer>
 
+    </footer>
   </div>
 </template>
 
@@ -20,13 +24,15 @@
   import { procreateSetUser } from '@/api/api';
   import {store} from '../../store/index';
   import BreadcrumbNav from './BreadcrumbNav.vue'
+  import CFooter from './footer.vue';
   export default {
     store : store,
     name : 'proj-create',
     components : {
       ProjectSetting,
       ProjectGraph,
-        BreadcrumbNav
+      BreadcrumbNav,
+      CFooter
     },
     data(){
       return{
