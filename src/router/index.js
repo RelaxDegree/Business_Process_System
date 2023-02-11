@@ -9,14 +9,18 @@ import ProjectPreview from '../components/ProjectPreview/ProjectPreview.vue'
  
 // 2 调用vue.use()函数，把VueRouter安装为vue插件
 Vue.use(VueRouter)
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 // 3 创建路由的实例对象
 const router = new VueRouter({
   // 定义数组routes[],对应哈希地址与组件之间的关系
   routes: [
   //路由规则
-    { path: '/create', component: ProjectCreate },
-    { path: '/preview', component: ProjectPreview },
+    { path: '/create', component: ProjectCreate,meta: { title: '项目创建' },},
+    { path: '/preview', component: ProjectPreview ,meta: { title: '项目预览' },},
     // { path: '/preview', component: ProjectPreview },
 //     { path: '/movie', component: Movie },
 //    {

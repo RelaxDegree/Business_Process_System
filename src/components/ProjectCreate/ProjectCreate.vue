@@ -1,7 +1,8 @@
 <template>
   <div>
-    
-    <el-container style="height: 550px; border: 1px solid #eee">
+    <!-- 面包屑导航栏 -->
+    <breadcrumb-nav></breadcrumb-nav>
+    <el-container style="height: 600px; border: 1px solid #eee">
       <el-aside width="450px" style="background-color: rgb(238, 241, 246)">
           <!-- 左侧任务部署 -->
         <project-setting></project-setting>
@@ -18,13 +19,14 @@
   import ProjectSetting from './ProjectSetting.vue'
   import { procreateSetUser } from '@/api/api';
   import {store} from '../../store/index';
-
+  import BreadcrumbNav from './BreadcrumbNav.vue'
   export default {
     store : store,
     name : 'proj-create',
     components : {
       ProjectSetting,
-      ProjectGraph
+      ProjectGraph,
+        BreadcrumbNav
     },
     data(){
       return{
@@ -57,7 +59,13 @@
         }).catch(function (error) {
             console.log(error);
         });
-      } 
+      },
+      usermsg(){
+        this.$message({
+          type : "success",
+          message : "查看个人信息"
+        })
+      },
     }
   }
 </script>
@@ -71,5 +79,15 @@
   .el-aside {
     color: #333;
   }
+  .sticky {
+  position: fixed;
+  width: 100%;
+  
+  top: 0;
+  z-index: 10;
+
+
+}
+
 </style>
 

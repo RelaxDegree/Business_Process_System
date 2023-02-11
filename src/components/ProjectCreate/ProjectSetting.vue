@@ -1,7 +1,7 @@
 <template>
 
         <!-- 默认打开的阶段栏 -->
-    <el-container style="height: 535px;">
+    <el-container style="height: 580px;">
       <el-header>
         <p>项目配置</p>
       </el-header>
