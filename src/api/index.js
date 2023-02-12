@@ -30,4 +30,9 @@ export function login(data) {
       method: 'post'
     })
   }
-  
+
+// 请求user数据
+export const getUser = (params) => {
+    // 返回promise对象
+    return http.get('/user/getUser')
+}

@@ -17,8 +17,13 @@ export default {
             state.isCollapse = !state.isCollapse
         },
         // 更新面包屑数据
-        selectMenu() {
-            
+        selectMenu(state, val) {
+            if (val.name !== 'home') {
+                const index = state.tablist.findIndex(item => item.name === val.name)
+                if (index === -1) {
+                    state.tablist.push(val)
+                }
+            }
         }
     }
 }

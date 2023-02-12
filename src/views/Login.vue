@@ -57,6 +57,7 @@
 
 <script>
 import loginUtil from "../utils/loginUtil";
+import Cookie from 'js-cookie';
 export default {
     data() {
         //const isDev = process.env.NODE_ENV === "development";
@@ -99,26 +100,36 @@ export default {
     },
     methods: {
         login() {
-            this.$refs.loginForm.validate(valid => {
-                if (valid) {
-                    let params = {
-                        phone: this.user.phone,
-                        password: this.user.password,
-                        platform: "web",
-                    };
-                    this.loading = true;
-                    this.$http
-                        .get("account/login", params)
-                        .then(res => {
-                            this.loading = false;
-                            loginUtil.login(res.data);
-                            this.$router.push({ path: "/" });
-                        })
-                        .catch(() => {
-                            this.loading = false;
-                        });
-                }
-            });
+            // 后端获取token
+            const token = "iamatoken";
+
+            // 存入cookie / 存入localstorage
+            Cookie.set('token', token)
+
+            this.$router.push('\home')
+
+
+
+            // this.$refs.loginForm.validate(valid => {
+            //     if (valid) {
+            //         let params = {
+            //             phone: this.user.phone,
+            //             password: this.user.password,
+            //             platform: "web",
+            //         };
+            //         this.loading = true;
+            //         this.$http
+            //             .get("account/login", params)
+            //             .then(res => {
+            //                 this.loading = false;
+            //                 loginUtil.login(res.data);
+            //                 this.$router.push({ path: "/" });
+            //             })
+            //             .catch(() => {
+            //                 this.loading = false;
+            //             });
+            //     }
+            // });
         },
         countdown() {
             if (this.countdownSeconds === 0) {
@@ -191,20 +202,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .login {
-    // width: 100%;
-    // height: 100%;
-    //background: url('D:\_z_Learn\manong\webDesign\Vuepro\Business_Process_System\src\assets\logo.png') center;
+
+    background: transparent;
+    .login-con {
+        width: 400px;
+    border: 1px solid #eaeaea;
+    margin: 180px auto;
+    padding: 35px 35px 15px 35px;
+    border-radius: 15px;
+
+    box-shadow: 0 0 25px #cac6c6;
+
     background-size: cover;
     position: relative;
-
-    &-con {
-        position: absolute;
-        right: 160px;
-        top: 250px;
-        transform: translateY(-60%);
-        width: 360px;
     }
 
 }

@@ -16,6 +16,7 @@ const routes = [
     // 主路由
     {
         path: '/',
+        name: 'home',
         component: Main,
         redirect: '/home', // 重定向 路径：‘/’
         children: [ // 子路由
@@ -27,6 +28,7 @@ const routes = [
     },
     {
         path: '/login',
+        name: 'login',
         component: Login
     },
     {

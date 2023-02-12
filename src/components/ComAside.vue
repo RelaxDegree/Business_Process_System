@@ -4,13 +4,17 @@
             :collapse="isCollapse">
 
             <h3>{{isCollapse ? '后台' : '办公流程系统'}}</h3>
-            <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
+            <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" v-if="item.role === '1'" :key="item.name" :index="item.name">
+                <i :class="`el-icon-${item.icon}`"></i>
+                <span slot="title">{{ item.label }}</span>
+            </el-menu-item>
+            <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" v-if="item.role === '0' && nowtoken==='iamatoken'" :key="item.name" :index="item.name">
                 <i :class="`el-icon-${item.icon}`"></i>
                 <span slot="title">{{ item.label }}</span>
             </el-menu-item>
             <el-submenu index="1">
                 <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <i class="el-icon-location"> </i>
                     <span slot="title">其它</span>
                 </template>
                 <el-menu-item-group>
@@ -28,9 +32,9 @@
     min-height: 400px;
 }
 .el-menu {
-    width: 200px;
+    //width: 200px;
     height: 100vh;
-    background-color: darkgray;
+    background-color: rgb(27, 165, 170);
     h3 {
         color: #671f1f;
         align-items: center;
@@ -39,6 +43,7 @@
 </style>
 
 <script>
+import Cookie from 'js-cookie'
 export default {
     data() {
         return {
@@ -48,6 +53,7 @@ export default {
                     name: 'home',
                     label: '概览',
                     icon: 's-home',
+                    role: '1',
                     url: 'Home/Home'
                 },
                 {
@@ -55,6 +61,7 @@ export default {
                     name: 'task',
                     label: '任务管理',
                     icon: 'video-play',
+                    role: '1',
                     url: 'MallManage/MallManage'
                 },
                 {
@@ -62,6 +69,7 @@ export default {
                     name: 'user',
                     label: '人员管理',
                     icon: 'user',
+                    role: '0',
                     url: 'UserManage/UserManage'
                 },
                 {
@@ -69,7 +77,16 @@ export default {
                     name: 'document',
                     label: '文档管理',
                     icon: 'document',
+                    role: '1',
                     url: 'Document/Document'
+                },
+                {
+                    path: '/Creater',
+                    name: 'creater',
+                    label: '项目创建',
+                    icon: 'document',
+                    role: '0',
+                    url: 'Creater/Creater'
                 },
                 {
                     label: '其他',
@@ -80,6 +97,7 @@ export default {
                             name: 'page1',
                             label: '首页',
                             icon: 'setting',
+                            role: '1',
                             url: 'Other/PageOne'
                         },
                         {
@@ -87,6 +105,7 @@ export default {
                             name: 'page2',
                             label: '首页',
                             icon: 'setting',
+                            role: '1',
                             url: 'Other/PageTwo'
                         }
                     ]
@@ -107,6 +126,7 @@ export default {
             {
                 this.$router.push(item.path)
             }
+            this.$store.commit('selectMenu', item)
         }
     },
     computed: {
@@ -120,6 +140,9 @@ export default {
         },
         isCollapse() {
             return this.$store.state.tab.isCollapse
+        },
+        nowtoken() {
+            return Cookie.get('token')
         }
 
     }
