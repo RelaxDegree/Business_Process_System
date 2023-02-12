@@ -3,7 +3,7 @@
         <!-- 默认打开的阶段栏 -->
     <el-container style="height: 580px;">
       <el-header>
-        <h1>项目配置</h1>
+        <div style="margin-top : 10px"><i class="el-icon-setting"></i>项目配置</div>
       </el-header>
 
       <el-main>
