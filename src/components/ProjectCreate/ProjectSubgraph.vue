@@ -203,7 +203,7 @@ export default {
             showNodeSelectionBox: true,
         },
         width: 1000,
-        height: 440,
+        height: 520,
         panning: {
             enabled: false,
             modifiers: 'ctrl',
@@ -243,20 +243,18 @@ export default {
             pannable: true
         },
       })
-        this.graph.on('cell:click', ({cell}) => {
-            // node.store.data.position.x += 200
-            // console.log(node.store.data.position.x)
 
-            cell.attr('body/stroke', 'red')
-        }),
         // 创建的边连接节点后触发的事件
         this.graph.on('edge:connected', ({edge}) => {
             // node.store.data.position.x += 200
             // console.log(node.store.data.position.x)
             // console.log(edge) 
             let out = edge.source.port
+
             out = out.slice(4, out.length)
+
             let tar = edge.target.cell
+
             tar = tar.slice(4, tar.length)
 
             this.$store.commit("ADDTASKSON", {fa : out , son : tar})
@@ -269,6 +267,7 @@ export default {
             let out = edge.source.port
             out = out.slice(4, out.length)
             let tar = edge.target.cell
+            if (!tar) return;
             tar = tar.slice(4, tar.length)
             this.$store.commit("DELETETASKSON", {fa : out , son : tar})
         }),

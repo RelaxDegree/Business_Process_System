@@ -11,7 +11,7 @@
                 阶段信息
             </el-menu-item>
             <!-- 点击查看阶段后显示阶段信息 并可以编辑-->
-                <el-dialog title="阶段信息" :visible.sync="stageDialogFormVisible">
+                <el-dialog title="阶段信息" :visible.sync="stageDialogFormVisible" width="40%">
                 <el-form :model="thisStage">
                     <el-form-item label="阶段名称" :label-width="formLabelWidth">
                         <el-col :span="11">
@@ -264,6 +264,7 @@ export default {
                                 taskCloseTime:timestampToTime(this.form.time[1].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
                                 // Sun Jan 01 2023 00:00:00 GMT+0800 (中国标准时间)
                                 taskName:this.form.name,
+                                taskProgress : 0,
                                 follower:this.form.follower,
                                 stageId:this.stageId,
                                 taskNum : this.taskNum,

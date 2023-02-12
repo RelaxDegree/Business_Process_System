@@ -1,7 +1,6 @@
 import request from "./request";
 import qs from "qs";
  
-const baseUrl = 'https://1.117.144.92:8088/'
  
 
 // 创建项目时首先获取用户
@@ -13,12 +12,16 @@ export function procreateSetUser(params) {
     })
 }
 // 保存项目
-export function procreateRelease(body) {
-    return request({
-        url : "api/v1/project",
-        method : 'post',
-        body : body,
-    })
+export function procreateRelease(params) {
+    console.log(params)
+    const config = {
+        method: 'post',
+        url:"api/v1/project"
+      }
+      if(params) config.data = params
+
+    return request(config)
+
 }
 // 项目审阅 获取项目数据
 export function propreviewGet(params){

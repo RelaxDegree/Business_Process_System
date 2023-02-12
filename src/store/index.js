@@ -26,8 +26,8 @@ const getters = {
   },
   getData : state => {
     return {
-      "project" : state.projectMessage,
-      "stage" : state.stage,
+      project : state.projectMessage,
+      stage : state.stage,
       "task" : state.task,
     }
   }

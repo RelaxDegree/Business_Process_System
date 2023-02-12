@@ -3,7 +3,7 @@
         <!-- 默认打开的阶段栏 -->
     <el-container style="height: 580px;">
       <el-header>
-        <p>项目配置</p>
+        <h1>项目配置</h1>
       </el-header>
 
       <el-main>
@@ -25,6 +25,7 @@
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4}"
                   placeholder="请输入内容"
+                  :width="70"
                   v-model="projectMessage.projectDetail">
                 </el-input>
                 </el-form-item>
@@ -105,12 +106,10 @@
             <div>
               <el-button plain @click="openForm" style="margin-right: 10px">创建阶段</el-button>
                 <!-- 点击加号键  弹出新增阶段的表单 -->
-              <el-dialog title="阶段创建" :visible.sync="dialogFormVisible">
+              <el-dialog title="阶段创建" :visible.sync="dialogFormVisible"  width="40%">
                 <el-form :model="form">
                     <el-form-item label="阶段名称" :label-width="formLabelWidth">
-                        <el-col :span="11">
-                            <el-input v-model="form.name" style="width : 400px"></el-input>
-                        </el-col>
+                            <el-input v-model="form.name" style="width : 100%" ></el-input>
                     </el-form-item>
                     <el-form-item label="阶段起止时间" :label-width="formLabelWidth">
                         <el-col :span="11">
@@ -121,18 +120,23 @@
                               range-separator="至"
                               start-placeholder="发布日期"
                               end-placeholder="结束日期"
-                              align="right">
+                              >
                             </el-date-picker>
                         </div>
                     </el-col>
                     </el-form-item>
                     <el-form-item label="阶段描述" :label-width="formLabelWidth">
+                      <el-col :span="11">
                         <el-input
-                          type="textarea"
-                          :autosize="{ minRows: 2, maxRows: 4}"
-                          placeholder="请输入内容"
-                          v-model="form.detail">
-                        </el-input>
+                        type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 4}"
+                        style="width : 170%"
+                        placeholder="请输入内容"
+                        v-model="form.detail">
+                      </el-input>
+
+                      </el-col>
+                        
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -170,7 +174,7 @@ export default {
         // 项目信息
         projectMessage: {
           projectName: "吉林大学业务流程系统软件项目",
-          projectDesignerID: 450000197704085570,
+          projectDesignerId: 2,
           projectCreateTime: "1977-01-14 13:19:52",
           projectEmitTime: "2022-11-21 21:00:45",
           projectDetail:'2020级软件工程课程大作业',
@@ -226,10 +230,6 @@ export default {
             if (!this.dialogFormVisible)
                 this.dialogFormVisible = true;
         },
-        /*接受阶段表的数据*/ 
-        addStage(value){
-          this.$stage.commit('ADDSTAGE',value)
-        },
         // 当打开一个项目submenu时 右边的拓扑图做相应的切换
         handleOpen(key, keyPath) {
             this.$store.commit('SETNOWSTAGE', key)
@@ -245,17 +245,25 @@ export default {
           this.projectMessage.projectCreateTime = timestr;
           this.projectMessage.projectSaveTime = timestr;
           this.projectMessage.projectEmitTime = timestr;
-          // console.log(timestr);
           this.$store.commit("SETPROJECT", this.projectMessage);
           let that = this;
           var data = this.$store.getters.getData;
-          console.log(data);
+          // console.log(JSON.stringify(data));
           procreateRelease(data).then(res => {
-              // console.log(JSON.stringify(res.data));
-              that.$message({
-              type: 'success',
-              message: '项目保存成功!'
-            });
+              console.log(JSON.stringify(res.data.code));
+              if (res.data.code == 200)
+              {
+                that.$message({
+                type: 'success',
+                message: '项目保存成功!'
+              });
+              }
+              else if (res.data.code == 501){
+                that.$message({
+                type: 'warning',
+                message: '项目不能为空!'
+              });
+              }
           })
           .catch(function (error) {
             console.log(error);

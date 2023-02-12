@@ -24,7 +24,7 @@
             >
               <div class="bottom-link-item">
                 <div class="demo-basic--circle">
-                  <div :class="PersonName" @mouseenter="imgMouseEnter(0)">
+                  <div>
                     <el-avatar :size="50" :src="person.userlink"></el-avatar>
                   </div>
                   <a class="contributor-link" :href="person.userGithublink">{{
@@ -36,8 +36,6 @@
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div id="school-box">
                 <img
-                  @mouseenter="imgMouseEnter(1)"
-                  :class="className"
                   id="school-logo"
                   src="https://upload.wikimedia.org/wikipedia/zh/thumb/4/40/%E5%90%89%E6%9E%97%E5%A4%A7%E5%AD%A6%E6%A0%A1%E5%BE%BD.jpg/200px-%E5%90%89%E6%9E%97%E5%A4%A7%E5%AD%A6%E6%A0%A1%E5%BE%BD.jpg"
                 />

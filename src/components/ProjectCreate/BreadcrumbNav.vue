@@ -80,6 +80,13 @@ export default {
         },
     },
     methods: {
+        usermsg()
+        {
+            this.$message({
+                type : 'success',
+                message : "成功"
+            })
+        },
         getBreadList(val) {
             if (val.matched) {
                 let matched = val.matched.filter(
