@@ -53,7 +53,7 @@
                         
                         :thisStage="s"> -->
                         <el-tab-pane 
-                        v-for="(s,index) of this.$store.state.stage"
+                        v-for="(s,index) of this.$store.state.proCreate.stage"
                         :key="(index+1).toString()"
                         :label="constName+(index+1).toString()" :name="(index+1).toString()">
 
@@ -96,7 +96,7 @@ export default {
     name : "proj-graph",
     store,
     watch:{
-		'$store.state.nowStage'(newVal,oldVal)
+		'$store.state.proCreate.nowStage'(newVal,oldVal)
         {
 			//对数据执行操作
           this.activeName = newVal

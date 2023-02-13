@@ -40,7 +40,7 @@ export default {
     },
     created() {},
     watch:{
-		'$store.state.task'(newVal,oldVal)
+		'$store.state.proCreate.task'(newVal,oldVal)
       {
 			//对数据执行操作
           var node = newVal[newVal.length - 1]
@@ -257,7 +257,7 @@ export default {
 
             tar = tar.slice(4, tar.length)
 
-            this.$store.commit("ADDTASKSON", {fa : out , son : tar})
+            this.$store.commit("proCreate/ADDTASKSON", {fa : out , son : tar})
 
         }),
         // 边删除的触发事件
@@ -269,7 +269,7 @@ export default {
             let tar = edge.target.cell
             if (!tar) return;
             tar = tar.slice(4, tar.length)
-            this.$store.commit("DELETETASKSON", {fa : out , son : tar})
+            this.$store.commit("proCreate/DELETETASKSON", {fa : out , son : tar})
         }),
         // 节点移动的触发事件
         this.graph.on('node:moved', ({node}) => {
@@ -277,7 +277,7 @@ export default {
           // console.log(node) 
           let id = node.id
           id = id.slice(4, id.length)
-          this.$store.commit("MOVETASK", {idx : id , 
+          this.$store.commit("proCreate/MOVETASK", {idx : id , 
             px : node.store.data.position.x , py : node.store.data.position.y})
           })
     }

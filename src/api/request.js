@@ -21,7 +21,7 @@ service.interceptors.request.use(config => {
   //const token = getCookie('名称');//这里取token之前，你肯定需要先拿到token,存一下
   //if(token){
   //config.params = {'token':token} //如果要求携带在参数中
-  config.headers.token= "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMjg1NmZjMWE3NDA0ZmJjYjUzYmY2Y2Y4ZTIzYTQ3OCIsInN1YiI6IjIiLCJpc3MiOiJkYXp6bGUiLCJpYXQiOjE2NzYxMjg4NzQsImV4cCI6MTY3NjIxNTI3NH0.L29wbvK0AAye7ToTVYWbGwzQRJeocO9kBa12GDZrnx0"; //如果要求携带在请求头中
+  config.headers.token= "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjOTc3MjIwMzdhYzE0ZTdiYTgzZDE4MGM4MDhjNTIyZiIsInN1YiI6IjIiLCJpc3MiOiJkYXp6bGUiLCJpYXQiOjE2NzYyOTU2NTEsImV4cCI6MTY3NjM4MjA1MX0.T5bCmoMTv81mblLjtlkFi3Izadzhn4e9W9AzT3WRgkk"; //如果要求携带在请求头中
   //}
   return config
 }, error => {

@@ -21,10 +21,11 @@
 <script>
   import ProjectGraph from './ProjectGraph.vue'
   import ProjectSetting from './ProjectSetting.vue'
-  import { procreateSetUser } from '@/api/api';
+  import { procreateSetUser } from '@/api/proCreateApi';
   import {store} from '../../store/index';
   import BreadcrumbNav from './BreadcrumbNav.vue'
   import CFooter from './footer.vue';
+  import { mapState, mapMutations } from "vuex";
   export default {
     store : store,
     name : 'proj-create',
@@ -53,14 +54,12 @@
             }
         procreateSetUser(params).then(res=>{
           // console.log("api 打印用户",res.data)
-
           for (var i of res.data.data.user)
           {
               i.choice = "NULL"
               users.push(i)
           }
-          this.$store.commit('SETUSER',users);
-          // console.log(users)
+          this.$store.commit('proCreate/SETUSER',users);
 
         }).catch(function (error) {
             console.log(error);

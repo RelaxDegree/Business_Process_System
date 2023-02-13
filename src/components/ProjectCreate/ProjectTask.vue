@@ -142,7 +142,7 @@ export default {
         init(){
             this.taskdata = this.thisTask;
             // console.log(this.taskdata);
-            this.users = this.$store.state.user;
+            this.users = this.$store.state.proCreate.user;
             for (var i = 0 ; i < this.taskdata.follower ; i ++)
             {
                 var usid = this.taskdata.follower[i].userId
@@ -204,7 +204,7 @@ export default {
                     
                 }
             }
-            this.$store.commit("UPDATETASK", this.taskdata);
+            this.$store.commit("proCreate/UPDATETASK", this.taskdata);
             this.closeForm();
         },
         // 修改任务表单中进行人员添加  点击+触发

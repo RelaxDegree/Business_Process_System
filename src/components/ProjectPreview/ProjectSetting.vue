@@ -128,7 +128,7 @@
 
 <script>
 import ProjectStage from '../ProjectCreate/ProjectStage.vue';
-import { procreateRelease } from '@/api/api';
+import { procreateRelease } from '@/api/proCreateApi';
 import {store} from '../../store/index';
 export default {
     store,

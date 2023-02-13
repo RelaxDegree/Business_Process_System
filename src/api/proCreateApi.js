@@ -1,6 +1,4 @@
-import request from "./request";
-import qs from "qs";
- 
+import request from "./request"; 
  
 
 // 创建项目时首先获取用户
@@ -8,7 +6,7 @@ export function procreateSetUser(params) {
     return request({
         url : "api/v1/users/pr",
         method : 'get',
-        params : {userId : 100},
+        params : params,
     })
 }
 // 保存项目

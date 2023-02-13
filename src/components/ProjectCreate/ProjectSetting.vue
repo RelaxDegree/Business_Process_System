@@ -35,7 +35,7 @@
           </el-submenu>
             <!-- s 是阶段对象  index是顺序索引值 -->
           <project-stage
-                  v-for="(s,index) of this.$store.state.stage"
+                  v-for="(s,index) of this.$store.state.proCreate.stage"
                   :key="(index+1).toString()"
                   :stageId="(index+1).toString()"
                   :thisStage="s"
@@ -49,7 +49,7 @@
         :visible.sync="formvisible"
         append-to-body>
         <el-table
-            :data="this.$store.state.user"
+            :data="this.$store.state.proCreate.user"
             style="width: 100%">
             <!-- 头像列 -->
             <el-table-column
@@ -158,7 +158,7 @@
 
 <script>
 import ProjectStage from './ProjectStage.vue';
-import { procreateRelease } from '@/api/api';
+import { procreateRelease } from '@/api/proCreateApi';
 import { timestampToTime } from '../../utils/time.js'
 import {store} from '../../store/index';
 export default {
@@ -207,7 +207,7 @@ export default {
             return;
           }
             const oneStage = {  stageName:this.form.name,
-                                stageId : this.$store.state.stage.length + 1,
+                                stageId : this.$store.state.proCreate.stage.length + 1,
                                 stageDetail:this.form.detail,
                                 stageIsdone:false,
                                 stageOpenTime:timestampToTime(this.form.time[0].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
@@ -216,7 +216,7 @@ export default {
                                 // Sun Jan 01 2023 00:00:00 GMT+0800 (中国标准时间)
                               }
             // this.stage.push(oneStage)
-            this.$store.commit('ADDSTAGE',oneStage);
+            this.$store.commit('proCreate/ADDSTAGE',oneStage);
             // console.log(this.form.time)
             this.closeForm()
         },
@@ -232,10 +232,9 @@ export default {
         },
         // 当打开一个项目submenu时 右边的拓扑图做相应的切换
         handleOpen(key, keyPath) {
-            this.$store.commit('SETNOWSTAGE', key)
+            this.$store.commit('proCreate/SETNOWSTAGE', key)
             // console.log(key)
         },
-        
         // 发布项目信息 
         save(){
           // 提交项目信息
@@ -245,10 +244,15 @@ export default {
           this.projectMessage.projectCreateTime = timestr;
           this.projectMessage.projectSaveTime = timestr;
           this.projectMessage.projectEmitTime = timestr;
-          this.$store.commit("SETPROJECT", this.projectMessage);
+          this.$store.commit("proCreate/SETPROJECT", this.projectMessage);
           let that = this;
-          var data = this.$store.getters.getData;
-          // console.log(JSON.stringify(data));
+          var data = {
+            project : this.$store.state.proCreate.projectMessage,
+            stage : this.$store.state.proCreate.stage,
+            task : this.$store.state.proCreate.task
+          };
+
+          console.log(JSON.stringify(data));
           procreateRelease(data).then(res => {
               console.log(JSON.stringify(res.data.code));
               if (res.data.code == 200)
@@ -258,10 +262,10 @@ export default {
                 message: '项目保存成功!'
               });
               }
-              else if (res.data.code == 501){
+              else if (res.data.code == 401){
                 that.$message({
                 type: 'warning',
-                message: '项目不能为空!'
+                message: '项目基本信息未填写!'
               });
               }
           })

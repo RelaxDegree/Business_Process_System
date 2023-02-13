@@ -17,8 +17,8 @@
     import ProjectGraph from './ProjectGraph.vue'
     import ProjectSetting from './ProjectSetting.vue'
     import { store } from '../../store/index';
-    import { procreateSetUser } from '@/api/api';
-    import { propreviewGet } from '@/api/api';
+    import { procreateSetUser } from '@/api/proCreateApi';
+    import { propreviewGet } from '@/api/proCreateApi';
     export default {
       store : store,
       name : 'proj-preview',

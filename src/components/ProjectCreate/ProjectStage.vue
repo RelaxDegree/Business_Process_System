@@ -277,9 +277,7 @@ export default {
             // console.log(oneTask)
             // console.log(oneTask)
             // 往全局总线上添加一个任务信息
-            this.$store.commit('ADDTASK',oneTask);
-            // console.log(this.$store.getters.getStage(this.stageId));
-            // this.$store.commit('GETSTAGE',"222");
+            this.$store.commit('proCreate/ADDTASK',oneTask);
             this.closeForm()
         },
         // 关闭表单
@@ -295,7 +293,7 @@ export default {
         },
         // 打开新建任务
         openNewTaskForm(){
-            this.users = this.$store.state.user;
+            this.users = this.$store.state.proCreate.user;
             for (var i of this.users)
                 {
                     i.choice = "NULL"
@@ -324,7 +322,7 @@ export default {
             }
             this.thisStage.stageOpenTime = timestampToTime(this.thisStage.stageTime[0].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
             this.thisStage.stageCloseTime= timestampToTime(this.thisStage.stageTime[1].toLocaleString('en-US',{hour12 : false}).split(" ")), // 时间是数组 包含起止时间 格式
-            this.$store.commit("UPDATESTAGE",this.thisStage, this.stageId);
+            this.$store.commit("proCreate/UPDATESTAGE",this.thisStage, this.stageId);
             this.stageDialogFormVisible = false;
         }
     },
