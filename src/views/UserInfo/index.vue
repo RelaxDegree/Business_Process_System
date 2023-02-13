@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             user: {},
-            activeTab: 'activity'
+            activeTab: 'account'
         }
     },
     computed: {

@@ -3,8 +3,11 @@
         <el-form-item label="Name">
             <el-input v-model.trim="user.name" />
         </el-form-item>
-        <el-form-item label="Email">
-            <el-input v-model.trim="user.email" />
+        <el-form-item label="OtherInfo">
+            <el-input v-model.trim="user.otherInfo" />
+        </el-form-item>
+        <el-form-item label="Password">
+            <el-input placeholder="请输入密码" v-model.trim="user.password" show-password></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submit">Update</el-button>
@@ -20,7 +23,9 @@ export default {
             default: () => {
                 return {
                     name: '',
-                    email: ''
+                    email: '',
+                    otherInfo: '',
+                    password
                 }
             }
         }
