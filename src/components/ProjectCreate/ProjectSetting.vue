@@ -15,9 +15,6 @@
                 <el-form-item label="项目名称">
                   <el-input v-model="projectMessage.projectName"></el-input>
                 </el-form-item>
-                <el-form-item label="负责人">
-                  <el-input v-model="projectMessage.projectDesigner"></el-input>
-                </el-form-item>
 
                 <div><p></p></div>
                 <el-form-item label="项目描述">

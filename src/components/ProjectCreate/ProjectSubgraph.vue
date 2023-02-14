@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import {Cell, Graph, Shape} from '@antv/x6'
+import {Cell, Graph, Shape, Vector,View,} from '@antv/x6'
 import {store} from '../../store/index';
-import  '@antv/x6-vue-shape';
+
 export default {
     name : "proj-graph",
     store,
@@ -19,7 +19,7 @@ export default {
     props:['stageId','thisStage'],
     data (){
         return {
-            
+            manual : false, 
             activeName : 'first',
             // colors : [
             //     rgb(95,149,255),    // 正在编写（任务开始） 
@@ -58,6 +58,7 @@ export default {
     
     makeNode(taskID, taskName, taskDetail){
         this.data.nodes[this.data.nodes.length] = new Shape.Rect({
+            resize: false, // 禁止节点大小调整
             x: 40,
             y: 40,
             id : 'node' + taskID,
@@ -70,12 +71,11 @@ export default {
                     fill: '#ffffff',
                 },
                 image: {
-                    'xlink:href':
-                        'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
-                    width: 16,
-                    height: 16,
-                    x: 12,
-                    y: 12,
+                    'xlink:href': require('@/assets/logo.png'),
+                    width: 28,
+                    height: 28,
+                    x: 0,
+                    y: 0,
                 },
                 head: {
                     refWidth: '100%',
@@ -148,6 +148,7 @@ export default {
         })
         this.graph.addNode(this.data.nodes[this.data.nodes.length - 1])
     },
+
     zoom(){
         console.log(this.graph.node)
 
@@ -160,7 +161,7 @@ export default {
             snap: {
             radius: 50,
             },
-
+            allowBlank : false,
             allowMulti : false,
             allowLoop : false,
             highlight: true,
@@ -168,11 +169,11 @@ export default {
           return new Shape.Edge({
             attrs: {
               line: {
-                strokeWidth: 4,
+                strokeWidth: 3,
                 stroke: '#cfe7f2',
                 strokeDasharray: 0,
                 style: {
-                  animation: 'ant-line 0s infinite linear',
+                  animation: 'ant-line 30s infinite linear',
                 },
               },
               outline: {
@@ -200,17 +201,18 @@ export default {
             multiple: true,
             rubberband: true,
             movable: true,
-            showNodeSelectionBox: true,
+            modifiers : 'ctrl',
+            className: 'x6-widget-selection-selected',
         },
         width: 1000,
         height: 520,
         panning: {
-            enabled: false,
+            enabled: true,
             modifiers: 'ctrl',
         },
-        resizing: {
-            enabled: true,
-        },
+        // resizing: {
+        //     enabled: true,
+        // },
         background: {
             color: '#fffbe6', // 设置画布背景颜色
         },
@@ -240,7 +242,7 @@ export default {
             enabled: true,
             pageVisible: false,
             pageBreak: false,
-            pannable: true
+            pannable: false
         },
       })
 
@@ -248,7 +250,7 @@ export default {
         this.graph.on('edge:connected', ({edge}) => {
             // node.store.data.position.x += 200
             // console.log(node.store.data.position.x)
-            // console.log(edge) 
+            console.log(edge) 
             let out = edge.source.port
 
             out = out.slice(4, out.length)
@@ -263,7 +265,7 @@ export default {
         // 边删除的触发事件
         this.graph.on('edge:removed', ({edge}) => {
 
-            // console.log(edge) 
+            console.log(edge) 
             let out = edge.source.port
             out = out.slice(4, out.length)
             let tar = edge.target.cell
@@ -279,8 +281,73 @@ export default {
           id = id.slice(4, id.length)
           this.$store.commit("proCreate/MOVETASK", {idx : id , 
             px : node.store.data.position.x , py : node.store.data.position.y})
+          });
+
+          var that = this;
+          // 节点cell 高亮
+          const highlightColor = {
+            name: 'stroke',
+            args: {
+              attrs: {
+                stroke: '#1A7AD6',
+              },
+            },
+          };
+          function flash(cell) {
+
+            const cellView = that.graph.findViewByCell(cell)
+            if (cellView) {
+              cellView.highlight({
+                "stroke" : "#1A7AD6"})
+
+              setTimeout(() => cellView.unhighlight(), 300)
+            }
+
+          };
+          
+          this.graph.on('signal', (cell) => {
+            if (cell.isEdge()) {
+              const view = that.graph.findViewByCell(cell)
+              if (view) {
+                const token = Vector.create('circle', { r: 6, fill: '#1A7AD6' })
+                const target = cell.getTargetCell()
+                setTimeout(() => {
+                  view.sendToken(token.node, 1000, () => {
+                    if (target) {
+                      that.graph.trigger('signal', target)
+                    }
+                  })
+                }, 300)
+              }
+            } 
+            else 
+            {
+              flash(cell)
+
+              const edges = this.graph.model.getConnectedEdges(cell, {
+                outgoing: true,
+              })
+
+              edges.forEach((edge) => this.graph.trigger('signal', edge))
+            }
+
           })
+
+    let manual = false
+
+    this.graph.on('node:mousedown', ({ cell }) => {
+      manual = true
+      that.graph.trigger('signal', cell)
+    })
+
+    const trigger = () => {
+      that.graph.trigger('signal', a)
+      if (!manual) {
+        setTimeout(trigger, 5000)
+      }
     }
+
+    } 
   }
 }
 
@@ -288,9 +355,9 @@ export default {
 
 <style>
 @keyframes ant-line {
-    to {
-        stroke-dashoffset: -1000
-    }
+  to {
+    stroke-dashoffset: -1000
+  }
 }
 
 
