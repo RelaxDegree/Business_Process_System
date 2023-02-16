@@ -6,7 +6,6 @@ import App from './App.vue'
 import router from './router/index';
 import store from './store';
 import Cookie from 'js-cookie'
-import {store} from './store/index'
 import Vuex from 'vuex'
 Vue.use(ElementUI);
 Vue.use(VueRouter)
