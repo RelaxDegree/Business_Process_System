@@ -46,7 +46,7 @@ export default {
           var node = newVal[newVal.length - 1]
           if (node.stageId == this.stageId)
           {
-            this.makeNode(newVal.length - 1, node.taskName, node.taskDetail)
+            this.makeNode(newVal.length - 1, node.taskOpenTime,node.taskCloseTime, node.taskDetail)
           }            
 		  }
 	},
@@ -56,13 +56,13 @@ export default {
     },
     methods: {
     
-    makeNode(taskID, taskName, taskDetail){
+    makeNode(taskID, taskOpenTime,taskCloseTime, taskDetail){
         this.data.nodes[this.data.nodes.length] = new Shape.Rect({
             resize: false, // 禁止节点大小调整
             x: 40,
             y: 40,
             id : 'node' + taskID,
-            width: 200,
+            width: 270,
             height: 68,
             attrs: { 
                 body: {
@@ -84,7 +84,7 @@ export default {
                     fill: 'rgb(95,149,255)',
                 },
                 title: {
-                text: taskName,
+                text: "[" + taskOpenTime + "] - " + "[" + taskCloseTime + "]" ,
                 refX: 30,
                 refY: 9,
                 fill: '#ffffff',
@@ -243,6 +243,18 @@ export default {
             pageVisible: false,
             pageBreak: false,
             pannable: false
+        },
+        highlighting: {
+          magnetAdsorbed: {
+            name: 'stroke',
+            args: {
+              attrs: {
+                fill: '#fff',
+                stroke: '#31d0c6',
+                strokeWidth: 4,
+              },
+            },
+          },
         },
       })
 

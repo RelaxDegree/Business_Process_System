@@ -7,11 +7,11 @@
 <!-- 点击打开任务信息表单 -->
         <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
             <el-form :model="taskdata">
-                <el-form-item label="任务名称" :label-width="formLabelWidth">
+                <!-- <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-col :span="11">
                         <el-input v-model="taskdata.taskName" style="width : 400px"></el-input>
                     </el-col>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="任务起止时间" :label-width="formLabelWidth">
                     <el-col :span="11">
                     <div class="block" style="width : 100%">

@@ -91,11 +91,11 @@
                     </el-table>
                 </el-dialog>
                 <el-form :model="form">
-                    <el-form-item label="任务名称" :label-width="formLabelWidth">
+                    <!-- <el-form-item label="任务名称" :label-width="formLabelWidth">
                         <el-col >
                             <el-input v-model="form.name" style="width : 400px"></el-input>
                         </el-col>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="任务起止时间" :label-width="formLabelWidth">
                         <el-col >
                         <div class="block" style="width : 100%">
