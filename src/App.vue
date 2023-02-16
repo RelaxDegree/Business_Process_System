@@ -1,7 +1,8 @@
 <template>
   <div id="app">
 
-    <router-view ></router-view>
+    <!-- 路由出口 -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,21 +10,21 @@
 
 export default {
   name: 'App',
-  // components: {
-  //   ProjectCreate,
-  //   ProjectPreview,
-  // },
-  // routes
+  
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+  html,body,h3 {
+    margin: 0;
+    padding: 0;
+  }
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>

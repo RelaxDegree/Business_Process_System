@@ -1,37 +1,59 @@
-// src/router/index.js就是当前项目的路由模块
-// 1 导入Vue 和VueRouter的包
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// 导入路由要用到的组件
+import Home from '../views/Home'
+import User from '../views/User.vue'
+import Main from '../views/Main.vue'
+import Document from '../views/Document.vue'
+import Task from '../views/Task.vue'
+import Login from '../views/LoginP.vue'
+import UserInfo from '../views/UserInfo/index.vue'
+import Creater from '../views/Creater.vue'
 import ProjectCreate from '../components/ProjectCreate/ProjectCreate.vue'
 import ProjectPreview from '../components/ProjectPreview/ProjectPreview.vue'
 
- 
-// 2 调用vue.use()函数，把VueRouter安装为vue插件
-Vue.use(VueRouter)
 
-// 3 创建路由的实例对象
+Vue.use(VueRouter)
+// 1. 创建路由组件
+// 2. 将路由与组件进行映射
+
+const routes = [
+    // 主路由
+    {
+        path: '/',
+        name: 'home',
+        component: Main,
+        redirect: '/home', // 重定向 路径：‘/’
+        children: [ // 子路由
+            { path: '/home', component: Home }, // 首页
+            { path: '/user', component: User }, // 人员管理
+            { path: '/document', component: Document }, // 文档管理
+            { path: '/task', component: Task }, // 任务管理
+            { path: '/cerater', component: Creater },
+            {
+                path: '/userinfo',
+                name: 'userInfor',
+                component: UserInfo
+            },
+            { path: '/create', component: ProjectCreate },
+            { path: '/preview', component: ProjectPreview }
+]
+    },
+{
+    path: '/login',
+        name: 'login',
+            component: Login
+},
+{
+    path: '/userinfo',
+        name: 'userInfor',
+            component: UserInfo
+}
+    
+]
+
+// 3. 创建 router 实例，然后传 `routes` 配置
 const router = new VueRouter({
-  // 定义数组routes[],对应哈希地址与组件之间的关系
-  routes: [
-  //路由规则
-    { path: '/create', component: ProjectCreate },
-    { path: '/preview', component: ProjectPreview },
-    // { path: '/preview', component: ProjectPreview },
-//     { path: '/movie', component: Movie },
-//    {
-//       path: '/about',
-//       component: About,
-//       // about组件里的嵌套路由
-//       children: [
-//         { path: 'tab1', component: Tab1 },
-//         { path: 'tab2', component: Tab2 }
-//       ]
-//     },
-    // 路由重定向：强制跳转
-    // { path: '/', redirect: '/create' }
-  ]
+    routes // (缩写) 相当于 routes: routes
 })
 
-// 4 向外共享路由的实例对象
 export default router
