@@ -57,6 +57,8 @@
 
 <script>
 import loginUtil from "../utils/loginUtil";
+import { login } from "@/api/login"
+import { register } from "@/api/login";
 import Cookie from 'js-cookie';
 export default {
     data() {
@@ -68,10 +70,13 @@ export default {
             sendMsgBtnText: "发送短信",
             sendMsgBtnLoading: false,
             user: {
-                //phone: isDev ? "10000000000" : "",
-                //password: isDev ? "a123456" : "",
-                phone: "10101010101",
+                name: "10101010101",
                 password: "a123456",
+                group: ""
+            },
+            loger: {
+                userId : "",
+                password: ""
             },
             findPassword: {
                 phone: "",
@@ -100,8 +105,14 @@ export default {
     },
     methods: {
         login() {
+            var user = this.user
+            var loger = this.loger
             // 后端获取token
-            const token = "iamatoken";
+            // const token = "iamatoken";
+            loger.userId = register(user)
+            loger.password = user.password
+            const token = login(loger)
+            console.log(token)
 
             // 存入cookie / 存入localstorage
             Cookie.set('token', token)

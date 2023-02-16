@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 const http = axios.create({
     // 通用地址前缀
-    baseURL: 'http://1.117.144.92:8088',
+    baseURL: process.env.BASE_API,
     timeout: 1000
 });
 

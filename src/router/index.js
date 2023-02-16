@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/Home'
 import User from '../views/User.vue'
 import Main from '../views/Main.vue'
 import Document from '../views/Document.vue'
 import Task from '../views/Task.vue'
-import Login from '../views/Login.vue'
+import Login from '../views/LoginP.vue'
 import UserInfo from '../views/UserInfo/index.vue'
 import Creater from '../views/Creater.vue'
 
