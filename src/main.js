@@ -7,6 +7,8 @@ import router from './router/index';
 import store from './store';
 import Cookie from 'js-cookie'
 import Vuex from 'vuex'
+import axios from 'axios';
+
 Vue.use(ElementUI);
 Vue.use(VueRouter)
 Vue.use(Vuex);
@@ -16,10 +18,12 @@ Vue.prototype.$axios = axios
 router.beforeEach((to, from, next) => {
   // 判断token
   const token = Cookie.get('token')
-  if(!token && to.name !== 'login') {
-    next({ name: 'login'})
-  } else if (token && to.name === 'login'){
-    next({name: 'home'})
+  if (!token && to.name === 'home') {
+    next({ name: 'login' })
+  } else if (!token && to.name !== 'login') {
+    next({ name: 'login' })
+  } else if (token && to.name === 'login') {
+    next({ name: 'home' })
   } else {
     next()
   }

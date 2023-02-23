@@ -5,7 +5,7 @@ import User from '../views/User.vue'
 import Main from '../views/Main.vue'
 import Document from '../views/Document.vue'
 import Task from '../views/Task.vue'
-import Login from '../views/LoginP.vue'
+import Login from '../views/login/index.vue'
 import UserInfo from '../views/UserInfo/index.vue'
 import Creater from '../views/Creater.vue'
 import ProjectCreate from '../components/ProjectCreate/ProjectCreate.vue'
@@ -36,19 +36,13 @@ const routes = [
             },
             { path: '/create', component: ProjectCreate },
             { path: '/preview', component: ProjectPreview }
-]
+        ]
     },
-{
-    path: '/login',
+    {
+        path: '/login',
         name: 'login',
-            component: Login
-},
-{
-    path: '/userinfo',
-        name: 'userInfor',
-            component: UserInfo
-}
-    
+        component: Login
+    },
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置

@@ -17,6 +17,28 @@ service.interceptors.request.use(config => {
   config.headers = {
     'Content-Type':'application/json' //配置请求头
   }
+  if (config.url !== '/api/v1/users/login' && config.url !== '/api/v1/users/register' && config.url !== 'api/v1/group/all') {
+    // 在 GET 请求的请求参数中添加 Token
+    if (config.method === 'get') {
+      //const token = Cookies.get('token')
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.params = {
+          ...config.params,
+          token
+        }
+      }
+    }
+
+    // 在 POST 请求的请求头中添加 Token
+    if (config.method === 'post') {
+      //const token = Cookies.get('token')
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`
+      }
+    }
+  }
   //如有需要：注意使用token的时候需要引入cookie方法或者用本地localStorage等方法，推荐js-cookie
   //const token = getCookie('名称');//这里取token之前，你肯定需要先拿到token,存一下
   //if(token){
@@ -25,7 +47,7 @@ service.interceptors.request.use(config => {
   //}
   return config
 }, error => {
-  Promise.reject(error)
+  //Promise.reject(error)
 })
  
 // 3.响应拦截器
