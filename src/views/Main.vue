@@ -1,11 +1,11 @@
 <template>
     <el-container>
         <el-aside width="auto">
-            <com-aside />
+            <!-- <com-aside /> -->
         </el-aside>
         <el-container>
             <el-header>
-                <com-header />
+                <!-- <com-header /> -->
             </el-header>
             <el-main>
                 <!-- 路由出口 -->

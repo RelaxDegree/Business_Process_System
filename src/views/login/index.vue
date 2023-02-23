@@ -138,6 +138,7 @@ export default {
             })
         },
         getGroups() {
+            console.log("groupSearching...")
             // 向后端请求 group 信息
             getgroups().then(res => {
                 // 将后端传回的 group 信息存储到 GroupOptions 中

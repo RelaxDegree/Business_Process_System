@@ -44,6 +44,7 @@
 
 <script>
 import Cookie from 'js-cookie'
+import { Store } from 'vuex';
 export default {
     data() {
         return {
