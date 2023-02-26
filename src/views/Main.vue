@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <!-- <el-container>
         <el-aside width="auto">
             <com-aside />
         </el-aside>
@@ -8,10 +8,18 @@
                 <com-header />
             </el-header>
             <el-main>
-                <!-- 路由出口 -->
+                
                 <router-view></router-view>
             </el-main>
         </el-container>
+    </el-container> -->
+    <el-container>
+        <el-header><big-header></big-header></el-header>
+        <el-main>
+            <!-- 路由出口 -->
+            <router-view></router-view>
+            </el-main>
+        <el-footer>Footer</el-footer>
     </el-container>
 </template>
 <script>
@@ -35,5 +43,4 @@ export default {
 .el-header {
     padding: 0;
 }
-
 </style>
