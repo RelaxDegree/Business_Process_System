@@ -3,10 +3,11 @@ import request from '@/utils/request';
 
 // 用户登录
 export function login(data) {
+    console.log(data)
     return request({
         url: 'api/v1/users/login',
         method: 'post',
-        data
+        data: data
     })
 }
 

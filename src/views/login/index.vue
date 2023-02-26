@@ -22,9 +22,9 @@
             <div class="form-container sign-in-container">
                 <el-form action="">
                     <h1>Sign in</h1>
-                    <el-input v-model="loginData.username" placeholder="Username" />
+                    <el-input v-model="loginData.name" placeholder="Username" />
                     <el-input v-model="loginData.password" placeholder="Password" />
-                    <el-button @click="loginHandle">Sign In</el-button>
+                    <el-button @click="loginHandle()">Sign In</el-button>
                 </el-form>
             </div>
             <div class="overlay-container">
@@ -61,7 +61,7 @@ export default {
     data() {
         return {
             loginData: {
-                username: '',
+                name: '',
                 password: ''
             },
             registerData: {
@@ -100,7 +100,7 @@ export default {
             localStorage.setItem('token','xxxx')
             console.log(this.loginData)
             // 登录事件
-            if (!this.loginData.username || !this.loginData.password) {
+            if (!this.loginData.name || !this.loginData.password) {
                 this.$message.error('用户名或密码不能为空')
                 return
             }
