@@ -26,7 +26,7 @@
     </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 300px;
     min-height: 400px;

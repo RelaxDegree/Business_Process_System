@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home'
+import Home from '../views/Home/index.vue'
 import User from '../views/User.vue'
 import Main from '../views/Main.vue'
 import Document from '../views/Document.vue'
@@ -25,7 +25,7 @@ const routes = [
             { path: '/user', component: User }, // 人员管理
             { path: '/document', component: Document }, // 文档管理
             { path: '/task', component: Task }, // 任务管理
-            { path: '/cerater', component: Creater },
+            { path: '/creater', component: Creater },
             {
                 path: '/userinfo',
                 name: 'userInfor',

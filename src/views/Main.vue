@@ -18,7 +18,7 @@
         <el-main>
             <!-- 路由出口 -->
             <router-view></router-view>
-            </el-main>
+        </el-main>
         <el-footer>Footer</el-footer>
     </el-container>
 </template>
@@ -39,7 +39,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .el-header {
     padding: 0;
 }

@@ -102,7 +102,7 @@ export default {
     }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .el-tabs__nav-wrap {
     display: flex;
     justify-content: space-between;
