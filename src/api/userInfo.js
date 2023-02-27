@@ -11,18 +11,18 @@ export function updateUserInfo(data) {
 }
 
 // 获取用户活跃项目
-export function getActPro(userId, token) {
+export function getActPro(userId) {
     return request({
-        url: `api/v1/users/projects?userId=${userId}&token=${token}`,
+        url: `api/v1/users/projects?userId=${userId}`,
         method: 'get',
         
     })
 }
 
 // 获取用户活跃任务
-export function getActTask(userId, token) {
+export function getActTask(userId) {
     return request({
-        url: `api/v1/tasks/userId?userId=${userId}&token=${token}`,
+        url: `api/v1/tasks/userId?userId=${userId}`,
         method: 'get',
         
     })

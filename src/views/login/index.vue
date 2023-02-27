@@ -97,7 +97,7 @@ export default {
             container.classList.remove("right-panel-active")
         },
         loginHandle() {
-            localStorage.setItem('token','xxxx')
+            // localStorage.setItem('token','xxxx')
             console.log(this.loginData)
             // 登录事件
             if (!this.loginData.name || !this.loginData.password) {

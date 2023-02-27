@@ -1,15 +1,16 @@
 <template>
     <div>
         <el-tabs v-model="activeTab" type="border-card" style="height: 60px;">
-            <el-tab-pane v-for="item in menuData" :key="item.name" :label="item.label" :name="item.path">
-                <i :class="'el-icon-' + item.icon" style="margin-right: 5px;"></i>
-                {{ item.label }}
+            <el-tab-pane @click="clickMenu()" v-for="item in menuData" :key="item.name" :label="item.label" :name="item.path">
+                <i :class="`el-icon-${item.icon}`" style="margin-right: 5px;"></i>
+                <span slot="title">{{ item.label }}</span>
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script>
 import Cookie from 'js-cookie'
+import { it } from 'node:test';
 
 export default {
     data() {
@@ -83,6 +84,7 @@ export default {
     },
     methods: {
         clickMenu(item) {
+            //console.log(item)
             if (this.$route.path !== item.path && !(this.$route.path === '\home' && (item.path === '/'))) {
                 this.$router.push(item.path)
             }
@@ -110,7 +112,7 @@ export default {
 }
 
 .el-tab-pane {
-    padding-top: 20px;
+    padding-top: 0px;
     height: calc(100vh - 80px);
 }
 </style>

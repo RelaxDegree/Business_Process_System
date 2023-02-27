@@ -48,6 +48,7 @@
 </template>
 <script>
 import { getUser } from '../api'
+import {delProUser, getProUser} from '../api/user'
 export default {
     data() {
         return {
@@ -106,16 +107,22 @@ export default {
             this.handleclose()
         },
         handleEdit() {
-
+            // 跳转到sja的页面
         },
         handleDel() {
-
+            console.log("peodel")
+            delProUser(userId, taskId).then(res => {
+                console.log("del succed")
+            }).catch(res => {
+                // wrong Handle
+            })
         }
     },
     mounted() {
-        getUser().then(({ data }) => {
-            console.log('获取')
-        })
+        // getUser().then(({ data }) => {
+        //     console.log('获取')
+        // })
+        getProUser(proId)
     }
 }
 </script>

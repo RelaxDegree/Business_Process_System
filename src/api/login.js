@@ -12,18 +12,18 @@ export function login(data) {
 }
 
 // 获取个人信息
-export function getInfo(token) {
+export function getInfo() {
     return request({
         url: 'api/v1/users/info',
         method: 'get',
-        params: { token }
+        params: params
     })
 }
 
 // 用户登出
 export function logout() {
     return request({
-        url: '',
+        url: 'api/v1/users/logout',
         method: 'post'
     })
 }
@@ -40,6 +40,6 @@ export function register(data) {
     return request({
         url: 'api/v1/users/register',
         method: 'post',
-        data
+        data: data
     })
 }
