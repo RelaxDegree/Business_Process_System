@@ -1,11 +1,13 @@
 <template>
   <el-container class="homeWrap">
-    <el-header><big-header></big-header></el-header>
+    <el-header height="20%">
+    <big-header></big-header>
+    </el-header>
     <el-main>
       <router-view></router-view>
     </el-main>
-    <el-footer>
-      <footer></footer>
+    <el-footer height="10%">
+      <Footer></Footer>
     </el-footer>
   </el-container>
 </template>
@@ -14,7 +16,7 @@ import BigHeader from "../components/BigHeader.vue";
 import PersonAvatar from "../components/PersonAvatar.vue";
 import ComAside from "../components/ComAside.vue";
 import ComHeader from "../components/ComHeader.vue";
-import footer from "@/components/footer.vue";
+import Footer from "../components/footer.vue";
 
 export default {
   data() {
@@ -25,7 +27,7 @@ export default {
     PersonAvatar,
     ComAside,
     ComHeader,
-    footer
+    Footer
   },
 };
 </script>

@@ -1,132 +1,158 @@
 <template>
-    <div class="manager">
-        <el-dialog title="提示" :visible.sync="dialogVisible" :before-close="handleclose" width="30%">
+    <div class="app-container">
+        <!-- Note that row-key is necessary to get a correct row order. -->
+        <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" border fit highlight-current-row
+            style="width: 100%">
+            <el-table-column align="center" label="ID" width="65">
+                <template slot-scope="{row}">
+                    <span>{{ row.id }}</span>
+                </template>
+            </el-table-column>
 
-            <!-- 用户表单 -->
-            <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px">
-                <el-form-item label="info1" prop="info1">
-                    <el-input placeholder="default1" v-model="form.info1"></el-input>
-                </el-form-item>
-                <el-form-item label="info2" prop="info2">
-                    <el-input placeholder="default2" v-model="form.info2"></el-input>
-                </el-form-item>
-                <el-form-item label="info3" prop="info3">
-                    <el-select v-model="form.info3" placeholder="选择">
-                        <el-option label="111" value="1"></el-option>
-                        <el-option label="222" value="2"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="submit">确 定</el-button>
-            </span>
-        </el-dialog>
+            <el-table-column width="180px" align="center" label="Date">
+                <template slot-scope="{row}">
+                    <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+                </template>
+            </el-table-column>
 
-        <div class="manager-header">
-            <el-button @click="dialogVisible = true" type="primary">
-                +新增
-            </el-button>
-            <template>
-                <el-table :data="tableData" stripe style="width: 100%">
-                    <el-table-column prop="info1" label="日期" width="180">
-                    </el-table-column>
-                    <el-table-column prop="info2" label="姓名" width="180">
-                    </el-table-column>
-                    <el-table-column prop="info3" label="地址">
-                    </el-table-column>
-                    <el-table-column prop="act" label="操作">
-                        <template slot-scope="scope">
-                            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                            <el-button type="danger" size="mini" @click="handleDel(scope.row)">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </template>
+            <el-table-column min-width="300px" label="Title">
+                <template slot-scope="{row}">
+                    <span>{{ row.title }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column width="110px" align="center" label="Author">
+                <template slot-scope="{row}">
+                    <span>{{ row.author }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column width="100px" label="Importance">
+                <template slot-scope="{row}">
+                    <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="icon-star" />
+                </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="Readings" width="95">
+                <template slot-scope="{row}">
+                    <span>{{ row.pageviews }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column class-name="status-col" label="Status" width="110">
+                <template slot-scope="{row}">
+                    <el-tag :type="row.status | statusFilter">
+                        {{ row.status }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="Drag" width="80">
+                <template slot-scope="{}">
+                    <svg-icon class="drag-handler" icon-class="drag" />
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="show-d">
+            <el-tag>The default order :</el-tag> {{ oldList }}
+        </div>
+        <div class="show-d">
+            <el-tag>The after dragging order :</el-tag> {{ newList }}
         </div>
     </div>
 </template>
+  
 <script>
-import { getActTask } from '@/api/userInfo'
-import { getUser } from '../api'
-import {delProUser, getProUser} from '../api/user'
+// import { fetchList } from '@/api/article'
+// import Sortable from 'sortablejs'
+
+
+
 export default {
+    name: 'DragTable',
+    filters: {
+        statusFilter(status) {
+            const statusMap = {
+                published: 'success',
+                draft: 'info',
+                deleted: 'danger'
+            }
+            return statusMap[status]
+        }
+    },
     data() {
         return {
-            dialogVisible: false,
-            form: {
-                info1: '',
-                info2: '',
-                info3: ''
+            list: null,
+            total: null,
+            listLoading: true,
+            listQuery: {
+                page: 1,
+                limit: 10
             },
-            rules: { // 表单校验规则
-                info1: [
-                    { required: true, message: '请输入info1' }
-                ],
-                info2: [
-                    { required: true, message: '请输入info2' }
-                ],
-                info3: [
-                    { required: true, message: '请输入info3' }
-                ]
-            },
-            tableData:
-                [
-                    {
-                        info1: 111,
-                        info2: 222,
-                        info3: 44
-                    },
-                    {
-                        info1: 234,
-                        info2: 23422,
-                        info3: 464
-                    },
-                ]
-
+            sortable: null,
+            oldList: [],
+            newList: []
         }
+    },
+    created() {
+        this.getList()
     },
     methods: {
-        // 提交用户表单
-        submit() {
-            this.$refs.form.validate((valid) => {
-                if (valid) {
-                    // 数据处理
+        async getList() {
+            this.listLoading = true
+            const { data } = await fetchList(this.listQuery)
+            this.list = data.items
+            this.total = data.total
+            this.listLoading = false
+            this.oldList = this.list.map(v => v.id)
+            this.newList = this.oldList.slice()
+            this.$nextTick(() => {
+                this.setSort()
+            })
+        },
+        setSort() {
+            const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+            this.sortable = Sortable.create(el, {
+                ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
+                setData: function (dataTransfer) {
+                    // to avoid Firefox bug
+                    dataTransfer.setData('Text', '')
+                },
+                onEnd: evt => {
+                    const targetRow = this.list.splice(evt.oldIndex, 1)[0]
+                    this.list.splice(evt.newIndex, 0, targetRow)
 
-                    // 关闭弹窗
-
-                    this.$refs.form.resetFields()
-                    this.dialogVisible = false
+                    // for show the changes, you can delete in you code
+                    const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+                    this.newList.splice(evt.newIndex, 0, tempIndex)
                 }
             })
-        },
-        handleclose() {
-            this.$refs.form.resetFields()
-            this.dialogVisible = false
-        },
-        cancel() {
-            this.handleclose()
-        },
-        handleEdit() {
-            // 
-        },
-        handleDel() {
-            console.log("peodel")
-            delProUser(userId, taskId).then(res => {
-                console.log("del succed")
-            }).catch(res => {
-                // wrong Handle
-            })
         }
-    },
-    mounted() {
-        // getUser().then(({ data }) => {
-        //     console.log('获取')
-        // })
-        getActTask(userId)
     }
 }
 </script>
-<style lang="less" scope>
-
+  
+<style>
+.sortable-ghost {
+    opacity: .8;
+    color: #fff !important;
+    background: #42b983 !important;
+}
 </style>
+  
+<style scoped>
+.icon-star {
+    margin-right: 2px;
+}
+
+.drag-handler {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.show-d {
+    margin-top: 15px;
+}
+</style>
+  
