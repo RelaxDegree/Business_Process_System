@@ -36,7 +36,10 @@ const routes = [
             },
             { path: '/create', component: ProjectCreate },
             { path: '/preview', component: ProjectPreview }
-        ]
+        ],
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/login',
