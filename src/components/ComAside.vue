@@ -26,7 +26,8 @@
     </div>
 </template>
 
-<style lang="less">
+
+<style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 300px;
     min-height: 400px;
@@ -45,6 +46,7 @@
 <script>
 import Cookie from 'js-cookie'
 import { Store } from 'vuex';
+
 export default {
     data() {
         return {

@@ -1,51 +1,116 @@
 <template>
-        <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-            <el-menu-item @click="clickMenu()" index="1">概览</el-menu-item>
-            <el-submenu index="2">
-                <template slot="title">任务管理</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="2-4-1">选项1</el-menu-item>
-                    <el-menu-item index="2-4-2">选项2</el-menu-item>
-                    <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3">人员管理</el-menu-item>
-            <el-menu-item index="4">文档管理</el-menu-item>
-        </el-menu>
+    <div>
+        <el-tabs v-model="activeTab" type="border-card" style="height: 60px;">
+            <el-tab-pane v-for="item in menuData" :key="item.name" :label="item.label" :name="item.path">
+                <i :class="'el-icon-' + item.icon" style="margin-right: 5px;"></i>
+                {{ item.label }}
+            </el-tab-pane>
+        </el-tabs>
+    </div>
 </template>
 <script>
+import Cookie from 'js-cookie'
+
 export default {
     data() {
         return {
-            activeIndex: '1',
-            activeIndex2: '1',
+            activeTab: '',
             menuData: [
-
+                {
+                    path: '/',
+                    name: 'home',
+                    label: '概览',
+                    icon: 's-home',
+                    role: '1',
+                    url: 'Home/Home'
+                },
+                {
+                    path: '/task',
+                    name: 'task',
+                    label: '任务管理',
+                    icon: 'video-play',
+                    role: '1',
+                    url: 'MallManage/MallManage'
+                },
+                {
+                    path: '/user',
+                    name: 'user',
+                    label: '人员管理',
+                    icon: 'user',
+                    role: '0',
+                    url: 'UserManage/UserManage'
+                },
+                {
+                    path: '/document',
+                    name: 'document',
+                    label: '文档管理',
+                    icon: 'document',
+                    role: '1',
+                    url: 'Document/Document'
+                },
+                {
+                    path: '/Creater',
+                    name: 'creater',
+                    label: '项目创建',
+                    icon: 'document',
+                    role: '0',
+                    url: 'Creater/Creater'
+                },
+                {
+                    label: '其他',
+                    icon: 'location',
+                    children: [
+                        {
+                            path: '/page1',
+                            name: 'page1',
+                            label: '首页',
+                            icon: 'setting',
+                            role: '1',
+                            url: 'Other/PageOne'
+                        },
+                        {
+                            path: '/page2',
+                            name: 'page2',
+                            label: '首页',
+                            icon: 'setting',
+                            role: '1',
+                            url: 'Other/PageTwo'
+                        }
+                    ]
+                }
             ]
         };
     },
     methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        clickMenu() {
-            this.$router.push("/Login")
+        clickMenu(item) {
+            if (this.$route.path !== item.path && !(this.$route.path === '\home' && (item.path === '/'))) {
+                this.$router.push(item.path)
+            }
+            this.$store.commit('selectMenu', item)
         }
     },
     computed: {
-        //没有子菜单
         noChildren() {
             return this.menuData.filter(item => !item.children)
         },
-        //有子菜单
         hasChildren() {
             return this.menuData.filter(item => item.children)
+        },
+        nowtoken() {
+            return Cookie.get('token')
         }
     }
-}
+};
 </script>
+<style lang="less" scoped>
+.el-tabs__nav-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.el-tab-pane {
+    padding-top: 20px;
+    height: calc(100vh - 80px);
+}
+</style>

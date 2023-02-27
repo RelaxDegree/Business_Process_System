@@ -3,18 +3,20 @@ import request from '@/utils/request';
 
 // 用户登录
 export function login(data) {
+    console.log(data)
     return request({
         url: 'api/v1/users/login',
         method: 'post',
-        data
+        data: data
     })
 }
 
 // 获取个人信息
-export function getInfo() {
+export function getInfo(token) {
     return request({
         url: 'api/v1/users/info',
         method: 'get',
+        params: { token }
     })
 }
 
@@ -26,19 +28,18 @@ export function logout() {
     })
 }
 
+// 获取所有组
+export function getgroups() {
+    return request({
+        url: 'api/v1/group/all',
+        method: 'get'
+    })
+}
 // 用户注册
 export function register(data) {
     return request({
         url: 'api/v1/users/register',
         method: 'post',
         data
-    })
-}
-
-// 获取所有组
-export function getgroups() {
-    return request({
-        url: 'api/v1/group/all',
-        method: 'get'
     })
 }
