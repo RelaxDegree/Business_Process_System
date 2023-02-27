@@ -86,7 +86,7 @@
   </script>
   
   
-  <style>
+  <style scoped>
     .el-header {
       line-height: 60px;
     }

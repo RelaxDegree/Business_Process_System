@@ -74,6 +74,10 @@ export default {
     handleClick(row) {
       console.log(row.taskId);
       this.$store.commit('getTaskId',row.taskId)
+
+      // 路由跳转
+      this.$router.push('/documentShow')
+
     },
     // 获取项目所有文档
     getAllDoc()
@@ -92,7 +96,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .title {
   text-align: center;
 }

@@ -29,7 +29,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .my-label {
     background: #E1F3D8;
 }

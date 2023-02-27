@@ -108,6 +108,7 @@ export default {
         },
         handleEdit() {
             // 跳转到sja的页面
+            this.$router.push('/useredit')
         },
         handleDel() {
             console.log("peodel")

@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home'
 import User from '../views/User.vue'
 import Main from '../views/Main.vue'
-import Document from '../views/Document.vue'
+import Document from '../views/DocumentTable.vue'
+import DocumentShow from '../views/DocumentShow.vue'
 import Task from '../views/Task.vue'
 import Login from '../views/login/index.vue'
 import UserInfo from '../views/UserInfo/index.vue'
 import Creater from '../views/Creater.vue'
 import ProjectCreate from '../components/ProjectCreate/ProjectCreate.vue'
 import ProjectPreview from '../components/ProjectPreview/ProjectPreview.vue'
+import UserEdit from '../views/UserEdit.vue'
 
 
 Vue.use(VueRouter)
@@ -35,7 +37,9 @@ const routes = [
                 component: UserInfo
             },
             { path: '/create', component: ProjectCreate },
-            { path: '/preview', component: ProjectPreview }
+            { path: '/preview', component: ProjectPreview },
+            { path: '/documentShow', component: DocumentShow }, // 文档展示
+            { path: '/useredit', component: UserEdit }, // 人员编辑
         ],
         meta: {
             index: 1

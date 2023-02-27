@@ -287,7 +287,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 @keyframes ant-line {
     to {
         stroke-dashoffset: -1000

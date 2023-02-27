@@ -132,15 +132,12 @@ export default {
 }
 </script>
   
-<style>
+<style scoped>
 .sortable-ghost {
     opacity: .8;
     color: #fff !important;
     background: #42b983 !important;
 }
-</style>
-  
-<style scoped>
 .icon-star {
     margin-right: 2px;
 }

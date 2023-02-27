@@ -269,7 +269,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .small {
   width: 800px;
 }

@@ -262,7 +262,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .el-tag + .el-tag {
     margin-left: 10px;
   }
