@@ -35,7 +35,7 @@
 .el-menu {
     //width: 200px;
     height: 100vh;
-    background-color: rgb(27, 165, 170);
+    background-color: rgb(6, 28, 28);
     h3 {
         color: #671f1f;
         align-items: center;

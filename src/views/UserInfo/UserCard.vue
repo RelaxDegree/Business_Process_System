@@ -8,7 +8,7 @@
             <div class="box-center">
                 <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
                     <div>Hello</div>
-                    {{ user.role }}
+                    {{ user.name }}
                 </pan-thumb>
             </div>
             <div class="box-center">
@@ -54,6 +54,7 @@
 
 <script>
 import PanThumb from '../../components/PanThumb'
+import store from '../../store';
 
 export default {
     components: { PanThumb },
@@ -69,6 +70,9 @@ export default {
                 }
             }
         }
+    },
+    mounted() {
+        // 从vuex获取头像: this.avatar = store...
     }
 }
 </script>

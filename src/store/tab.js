@@ -39,7 +39,14 @@ export default {
             state.userInfo.password = userinfo.password
             state.userInfo.otherInfo = userinfo.otherInfo
             state.userInfo.groupId = userinfo.groupId
-            state.userInfo.headPic = userinfo.headPic
+            //state.userInfo.headPic = userinfo.headPic
+        },
+        // 头像
+        updateAvatar(avatar) {
+            state.userInfo.avatar = avatar
+        },
+        updateUserId(userId) {
+            state.userInfo.userId = userId
         }
     }
 }

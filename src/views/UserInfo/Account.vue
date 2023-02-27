@@ -16,7 +16,22 @@
 </template>
 
 <script>
+import { updateUserInfo } from '@/api/userInfo';
+import { Store } from 'vuex';
+
 export default {
+    data() {
+        return {
+            userdata: {
+                userId: '',
+                name: '',
+                password: '',
+                groupId: '',
+                otherInfo: '',
+                headPic: ''
+            },
+        };
+    },
     props: {
         user: {
             type: Object,
@@ -37,7 +52,22 @@ export default {
                 type: 'success',
                 duration: 5 * 1000
             })
+            updateUserInfo(this.userdata).then(res => {
+                // 
+            }).catch(res => {
+                // 错误处理
+            })
         }
+    },
+    mounted() {
+        this.userdata.userId = this.$store.state.userdata.userId
+        // 获取个人信息
+        getInfo(this.userdata.userId).then(res => {
+            this.userdata = res.data
+        })
+
+        // 更新
+        this.$store.commit('updateUserInfo', this.userdata)
     }
 }
 </script>

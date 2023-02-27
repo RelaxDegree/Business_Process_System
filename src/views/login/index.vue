@@ -6,16 +6,18 @@
                 <el-form action="">
                     <h1>Create Account</h1>
                     <el-input v-model="registerData.username" placeholder="Username"></el-input>
-                    <el-select class="myinput" v-model="RoleValue" placeholder="Role">
-                        <el-option v-for="item in RoleOptions" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select class="myinput" v-model="isPRValue" placeholder="Role">
+                        <el-option v-for="item in isPROptions" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                     <!-- Group输入框 -->
-                    <el-select class="myinput" v-model="GroupValue" placeholder="Group" @focus="getGroups">
-                        <el-option v-for="item in GroupOptions" :key="item.groupId" :label="item.name" :value="item.groupId">
+                    <el-select class="myinput" v-model="GroupValue" placeholder="Group" @click="getGroups"
+                        @focus="getGroups">
+                        <el-option v-for="item in GroupOptions" :key="item.groupId" :label="item.name"
+                            :value="item.groupId">
                         </el-option>
                     </el-select>
-                    <el-input v-model="registerData.password" placeholder="Password"></el-input>
+                    <el-input v-model="registerData.password" placeholder="Password" show-password></el-input>
                     <el-button @click="registerHandle">Sign Up</el-button>
                 </el-form>
             </div>
@@ -23,7 +25,7 @@
                 <el-form action="">
                     <h1>Sign in</h1>
                     <el-input v-model="loginData.name" placeholder="Username" />
-                    <el-input v-model="loginData.password" placeholder="Password" />
+                    <el-input v-model="loginData.password" placeholder="Password" show-password />
                     <el-button @click="loginHandle()">Sign In</el-button>
                 </el-form>
             </div>
@@ -55,11 +57,14 @@ import { register } from "@/api/login";
 import Cookie from 'js-cookie';
 import { getgroups } from "@/api/login";
 import { mapGetters } from 'vuex'
+import {Store} from 'vuex';
+import { updateUserInfo } from "@/api/userInfo";
 
 export default {
     name: "LoginPage",
     data() {
         return {
+            userId: '',
             loginData: {
                 name: '',
                 password: ''
@@ -67,12 +72,12 @@ export default {
             registerData: {
                 username: '',
                 password: '',
-                role: '',
+                isPR: '',
                 group: ''
             },
-            RoleValue: '',
+            isPRValue: '',
             GroupValue: '',
-            RoleOptions: [{
+            isPROptions: [{
                 value: 1,
                 label: '项目经理'
             },
@@ -111,9 +116,23 @@ export default {
                 console.log(res)
                 localStorage.setItem("token", res.data.token)
                 this.$router.push('/')
+
+                // 存储userId
+                //
+                //
             }).catch(res => {
                 //this.$message.error(res.response.data.message)
             })
+
+
+            this.$store.commit('updateUserId', userId)
+            // 获取个人信息
+            getInfo(userId).then(res => {
+                this.$store.commit('updateUserInfo', res.data)
+            })
+
+            // 更新
+            this.$store.commit('updateUserInfo', this.userdata)
 
         },
         registerHandle() {
@@ -123,7 +142,7 @@ export default {
                 return
             }
             // this.registerData.username = this.$refs.username.$el.value
-            this.registerData.role = this.RoleValue
+            this.registerData.isPR = this.isPRValue
             this.registerData.group = this.GroupValue
             // this.registerData.password = this.$refs.password.$el.value
             console.log(this.registerData)
@@ -152,9 +171,9 @@ export default {
                     })
                 }
                 console.log("group")
-                }).catch(err => {
-                    // 处理错误信息
-                })
+            }).catch(err => {
+                // 处理错误信息
+            })
         }
     },
     mounted() {

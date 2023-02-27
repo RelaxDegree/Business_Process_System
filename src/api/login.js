@@ -12,11 +12,11 @@ export function login(data) {
 }
 
 // 获取个人信息
-export function getInfo() {
+export function getInfo(userId) {
     return request({
         url: 'api/v1/users/info',
         method: 'get',
-        params: params
+        params: {userId}
     })
 }
 
