@@ -17,7 +17,8 @@ export default {
             otherInfo: '',
             groupId: '',
             headPic: ''
-        }
+        },
+        menu: []
     },
     mutations: {
         // 修改菜单展开状态

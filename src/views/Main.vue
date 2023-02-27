@@ -1,24 +1,12 @@
 <template>
-  <!-- <el-container>
-        <el-aside width="auto">
-            <com-aside />
-        </el-aside>
-        <el-container>
-            <el-header>
-                <com-header />
-            </el-header>
-            <el-main>
-                
-                <router-view></router-view>
-            </el-main>
-        </el-container>
-    </el-container> -->
-  <el-container>
+  <el-container class="homeWrap">
     <el-header><big-header></big-header></el-header>
     <el-main>
       <router-view></router-view>
     </el-main>
-    <el-footer> </el-footer>
+    <el-footer>
+      <footer></footer>
+    </el-footer>
   </el-container>
 </template>
 <script>
@@ -26,6 +14,8 @@ import BigHeader from "../components/BigHeader.vue";
 import PersonAvatar from "../components/PersonAvatar.vue";
 import ComAside from "../components/ComAside.vue";
 import ComHeader from "../components/ComHeader.vue";
+import footer from "@/components/footer.vue";
+
 export default {
   data() {
     return {};
@@ -35,13 +25,16 @@ export default {
     PersonAvatar,
     ComAside,
     ComHeader,
+    footer
   },
 };
 </script>
 <style scoped>
-.el-header {
-  padding: 0;
+.homeWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
-</style>
-
 </style>

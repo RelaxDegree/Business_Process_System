@@ -1,18 +1,32 @@
 <template>
     <div>
-        <el-tabs v-model="activeTab" type="border-card" style="height: 60px;">
-            <el-tab-pane @click="clickMenu()" v-for="item in menuData" :key="item.name" :label="item.label" :name="item.path">
-                <i :class="`el-icon-${item.icon}`" style="margin-right: 5px;"></i>
+        <BreadcrumbZ></BreadcrumbZ>
+        <el-menu :default-active="activeIndex2" class="el-menu" mode="horizontal" @select="handleSelect"
+            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+            <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" v-if="item.role === '1'" :key="item.name"
+                :index="item.name">
+                <i :class="`el-icon-${item.icon}`"></i>
                 <span slot="title">{{ item.label }}</span>
-            </el-tab-pane>
-        </el-tabs>
+            </el-menu-item>
+            <el-menu-item @click="clickMenu(item)" v-for="item in noChildren"
+                v-if="item.role === '0'" :key="item.name" :index="item.name">
+                <i :class="`el-icon-${item.icon}`"></i>
+                <span slot="title">{{ item.label }}</span>
+            </el-menu-item>
+        </el-menu>
+        
     </div>
 </template>
 <script>
 import Cookie from 'js-cookie'
-import { it } from 'node:test';
+import {Store} from 'vuex'
+// import { it } from 'node:test';
+import BreadcrumbZ from './BreadcrumbZ.vue';
 
 export default {
+    components: {
+        BreadcrumbZ
+    },
     data() {
         return {
             activeTab: '',
@@ -50,7 +64,7 @@ export default {
                     url: 'Document/Document'
                 },
                 {
-                    path: '/Creater',
+                    path: '/create',
                     name: 'creater',
                     label: '项目创建',
                     icon: 'document',
@@ -83,6 +97,9 @@ export default {
         };
     },
     methods: {
+        handleSelect() {
+            console.log("handSelect")
+        },
         clickMenu(item) {
             //console.log(item)
             if (this.$route.path !== item.path && !(this.$route.path === '\home' && (item.path === '/'))) {

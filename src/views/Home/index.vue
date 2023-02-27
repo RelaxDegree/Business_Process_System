@@ -6,7 +6,7 @@
 
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
             <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
+            <hbox></hbox>
         </el-row>
 
         <el-row :gutter="32">
@@ -14,21 +14,21 @@
                 <div class="chart-wrapper">
                     <!-- <raddar-chart /> -->
                     <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
+                    <hbox></hbox>
                 </div>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="8">
                 <div class="chart-wrapper">
                     <!-- <pie-chart /> -->
                     <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
+                    <hbox></hbox>
                 </div>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="8">
                 <div class="chart-wrapper">
                     <!-- <bar-chart /> -->
                     <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
+                    <hbox></hbox>
                 </div>
             </el-col>
         </el-row>
@@ -55,7 +55,7 @@
 
 <script>
 //import { getData } from '../../api';
-
+import Hbox from './hbox.vue'
 import GithubCorner from '@/components/GithubCorner.vue';
 import LineChart from './LineChart.vue';
 
@@ -82,6 +82,7 @@ export default {
     components: {
         GithubCorner,
         LineChart,
+        Hbox
     },
     data() {
         return {}
@@ -90,6 +91,9 @@ export default {
         // getData().then((data) => {
         //     console.log(data)
         // })
+        // routerGenerate() {
+
+        // };
     },
     methods: {
         handleSetLineChartData(type) {
