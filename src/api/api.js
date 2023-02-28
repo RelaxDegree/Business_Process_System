@@ -1,4 +1,4 @@
-import request from "./request";
+import request from '@/utils/request';
 import qs from "qs";
 
 const baseUrl = '/api/jwt/auth'
@@ -20,14 +20,14 @@ export function procreateRelease(params) {
         params: params,
     })
 }
-// 项目审阅 获取项目数据
-export function propreviewGet(params) {
-    return request({
-        url: "https://mock.apifox.cn/m2/1954906-0-default/51521370",
-        method: 'get',
-        params: params,
-    })
-}
+// // 项目审阅 获取项目数据
+// export function propreviewGet(params) {
+//     return request({
+//         url: "https://mock.apifox.cn/m2/1954906-0-default/51521370",
+//         method: 'get',
+//         params: params,
+//     })
+// }
 
 // 获取当前项目所有文档
 export function getProjectAllDoc(params) {
@@ -91,6 +91,24 @@ export function deleteUserProAndTask(params) {
         url: 'api/v1/project/userdel',
         method: "delete",
         params: params,
+    })
+}
+
+// 项目审阅 获取项目数据
+export function propreviewGet(params){
+    return request({
+        url : "api/v1/project",
+        method : 'get',
+        params : params,
+    })
+}
+
+//查询日志
+export function findDiary(params){
+    return request({
+        url : "api/v1/project/log",
+        method : 'get',
+        params : params,
     })
 }
 

@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         handleDetail() {
-            
+            this.$router.push("/preview")
         }
     }
 }

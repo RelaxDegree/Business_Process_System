@@ -17,16 +17,15 @@ service.interceptors.request.use(config => {
   config.headers = {
     'Content-Type':'application/json' //配置请求头
   }
+  console.log("tokenOut:")
+  console.log(localStorage.getItem('token'))
   if (config.url !== '/api/v1/users/login' && config.url !== '/api/v1/users/register' && config.url !== 'api/v1/group/all') {
     // 在 GET 请求的请求参数中添加 Token
     if (config.method === 'get') {
       //const token = Cookies.get('token')
       const token = localStorage.getItem('token')
       if (token) {
-        config.params = {
-          ...config.params,
-          token
-        }
+        config.headers['Authorization'] = `Bearer ${token}`
       }
     }
 
@@ -53,7 +52,8 @@ service.interceptors.request.use(config => {
 // 3.响应拦截器
 service.interceptors.response.use(response => {
   //接收到响应数据并成功后的一些共有的处理，关闭loading等
- 
+  // res = response.data
+  // return res
   return response
 }, error => {
   /***** 接收到异常响应的处理开始 *****/

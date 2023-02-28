@@ -57,7 +57,7 @@ import { register } from "@/api/login";
 import Cookie from 'js-cookie';
 import { getgroups } from "@/api/login";
 import { mapGetters } from 'vuex'
-import {Store} from 'vuex';
+import { Store } from 'vuex';
 import { updateUserInfo } from "@/api/userInfo";
 
 export default {
@@ -103,7 +103,7 @@ export default {
         },
         loginHandle() {
             // localStorage.setItem('token','xxxx')
-            console.log(this.loginData)
+            // console.log(this.loginData)
             // 登录事件
             if (!this.loginData.name || !this.loginData.password) {
                 this.$message.error('用户名或密码不能为空')
@@ -113,8 +113,10 @@ export default {
             // this.loginData.password = this.$refs.password.$el.value
             login(this.loginData).then(res => {
                 //Cookie.set('token', res.data.data.token)
-                console.log(res)
-                localStorage.setItem("token", res.data.token)
+                console.log("login.res:")
+                console.log(res.data)
+                localStorage.setItem("token", res.data.data.token)
+                console.log(localStorage.getItem("token"))
                 this.$router.push('/')
 
                 // 存储userId
@@ -128,7 +130,7 @@ export default {
             this.$store.commit('updateUserId', userId)
             // 获取个人信息
             getInfo(userId).then(res => {
-                this.$store.commit('updateUserInfo', res.data)
+                this.$store.commit('updateUserInfo', res.data.data)
             })
 
             // 更新
@@ -163,11 +165,11 @@ export default {
             getgroups().then(res => {
                 // 将后端传回的 group 信息存储到 GroupOptions 中
                 this.GroupOptions = []
-                for (let i = 0; i < res.data.groups.length; i++) {
+                for (let i = 0; i < res.data.data.groups.length; i++) {
                     this.GroupOptions.push({
-                        groupId: res.data[i].groupsId,
-                        name: res.data[i].name,
-                        memberCount: res.data[i].memberCount
+                        groupId: res.data.data[i].groupsId,
+                        name: res.data.data[i].name,
+                        memberCount: res.data.data[i].memberCount
                     })
                 }
                 console.log("group")
@@ -184,7 +186,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;1,100&display=swap');
@@ -226,7 +228,7 @@ span {
 }
 
 a {
-    color: #333333;
+    color: #333;
     font-size: 14px;
     text-decoration: none;
     margin: 15px 0;
@@ -234,8 +236,8 @@ a {
 
 button {
     border-radius: 20px;
-    border: 1px solid #402bff;
-    background-color: #2b36ff;
+    border: 1px solid #ff4b2b;
+    background-color: #ff4b2b;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -267,13 +269,6 @@ form {
     padding: 0 50px;
     height: 100%;
     text-align: center;
-}
-
-.myinput {
-    background-color: #ffffff;
-    border: none;
-    margin: 8px 0;
-    width: 100%;
 }
 
 input {
@@ -357,9 +352,9 @@ input {
 }
 
 .overlay {
-    background: #2b32ff;
-    background: -webkit-linear-gradient(to right, #2b32ff, #4741ff);
-    background: linear-gradient(to right, #442bff, #4b41ff);
+    background: #ff4b2b;
+    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -440,11 +435,10 @@ footer p {
 }
 
 footer i {
-    color: rgb(0, 72, 255);
+    color: red;
 }
 
 footer a {
     color: #3c97bf;
     text-decoration: none;
-}
-</style>
+}</style>

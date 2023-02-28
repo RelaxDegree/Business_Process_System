@@ -11,11 +11,11 @@ export default {
             }
         ], // 面包屑数据
         userInfo: {
-            userId: '',
-            name:'',
-            password: '',
-            otherInfo: '',
-            groupId: '',
+            userId: '111112',
+            name:'zzxx',
+            password: 'wqqwweq',
+            otherInfo: 'qwqwwwwwwwwwwwwww',
+            groupId: '1',
             headPic: ''
         },
         menu: []
