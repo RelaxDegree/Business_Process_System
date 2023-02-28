@@ -2,11 +2,11 @@ import http from '../utils/request'
 import request from '@/utils/request';
 
 // 获取项目组成员
-export function getUser(name) {
+export function getUser(groupName) {
     return request({
         url: 'api/v1/group/users',
         method: 'get',
-        params : { name }
+        params : { groupName }
     })
 }
 

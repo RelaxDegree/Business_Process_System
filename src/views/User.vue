@@ -4,13 +4,13 @@
 
             <!-- 用户表单 -->
             <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px">
-                <el-form-item label="info1" prop="info1">
+                <el-form-item label="name" prop="name">
                     <el-input placeholder="default1" v-model="form.info1"></el-input>
                 </el-form-item>
-                <el-form-item label="info2" prop="info2">
+                <el-form-item label="otherInfo" prop="otherInfo">
                     <el-input placeholder="default2" v-model="form.info2"></el-input>
                 </el-form-item>
-                <el-form-item label="info3" prop="info3">
+                <el-form-item label="userId" prop="userId">
                     <el-select v-model="form.info3" placeholder="选择">
                         <el-option label="111" value="1"></el-option>
                         <el-option label="222" value="2"></el-option>
@@ -29,11 +29,11 @@
             </el-button>
             <template>
                 <el-table :data="tableData" stripe style="width: 100%">
-                    <el-table-column prop="info1" label="日期" width="180">
+                    <el-table-column prop="userId" label="用户ID" width="180">
                     </el-table-column>
-                    <el-table-column prop="info2" label="姓名" width="180">
+                    <el-table-column prop="name" label="姓名" width="180">
                     </el-table-column>
-                    <el-table-column prop="info3" label="地址">
+                    <el-table-column prop="otherInfo" label="备注">
                     </el-table-column>
                     <el-table-column prop="act" label="操作">
                         <template slot-scope="scope">
@@ -47,41 +47,21 @@
     </div>
 </template>
 <script>
-import { getUser } from '../api'
-import {delProUser, getProUser} from '../api/user'
+import { getUser } from '@/api/user'
+import {delProUser, getProUser} from '@/api/user'
 export default {
     data() {
         return {
             dialogVisible: false,
             form: {
-                info1: '',
-                info2: '',
-                info3: ''
+                name: '',
+                otherInfo: '',
+                userId: ''
             },
             rules: { // 表单校验规则
-                info1: [
-                    { required: true, message: '请输入info1' }
-                ],
-                info2: [
-                    { required: true, message: '请输入info2' }
-                ],
-                info3: [
-                    { required: true, message: '请输入info3' }
-                ]
             },
             tableData:
-                [
-                    {
-                        info1: 111,
-                        info2: 222,
-                        info3: 44
-                    },
-                    {
-                        info1: 234,
-                        info2: 23422,
-                        info3: 464
-                    },
-                ]
+                []
 
         }
     },
@@ -123,7 +103,10 @@ export default {
         // getUser().then(({ data }) => {
         //     console.log('获取')
         // })
-        getProUser(proId)
+        getUser("只因组").then(res => {
+            console.log("只因",res.data)
+            this.tableData = res.data.data
+        })
     }
 }
 </script>

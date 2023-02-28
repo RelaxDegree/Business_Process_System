@@ -31,11 +31,7 @@ const routes = [
             { path: '/document', component: Document }, // 文档管理
             { path: '/task', component: Task }, // 任务管理
             { path: '/cerater', component: Creater },
-            {
-                path: '/userinfo',
-                name: 'userInfor',
-                component: UserInfo
-            },
+            { path: '/userinfo', name: 'userInfor', component: UserInfo },// 个人信息
             { path: '/create', component: ProjectCreate },
             { path: '/preview', component: ProjectPreview },
             { path: '/documentShow', component: DocumentShow }, // 文档展示
@@ -50,6 +46,11 @@ const routes = [
         name: 'login',
         component: Login
     },
+    {
+        path: '*',
+        name: 'Error404',
+        component: () => import('@/views/Error404.vue')
+    }
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置

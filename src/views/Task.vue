@@ -9,9 +9,15 @@
                 </template>
             </el-table-column>
 
-            <el-table-column width="180px" align="center" label="Date">
+            <el-table-column width="180px" align="center" label="OpenDate">
                 <template slot-scope="{row}">
                     <span>{{ row.taskOpenTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column width="180px" align="center" label="CloseDate">
+                <template slot-scope="{row}">
+                    <span>{{ row.taskCloseTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
                 </template>
             </el-table-column>
 

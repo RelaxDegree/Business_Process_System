@@ -101,15 +101,11 @@ export default {
             container.classList.remove("right-panel-active")
         },
         loginHandle() {
-            // localStorage.setItem('token','xxxx')
-            // console.log(this.loginData)
             // 登录事件
             if (!this.loginData.name || !this.loginData.password) {
                 this.$message.error('用户名或密码不能为空')
                 return
             }
-            // this.loginData.username = this.$refs.username.$el.value
-            // this.loginData.password = this.$refs.password.$el.value
             // let that = this
             login(this.loginData).then(res => {
                 //Cookie.set('token', res.data.data.token)
@@ -127,12 +123,8 @@ export default {
                 })
 
                 // 更新
-                //this.$store.commit('xzwxzw/updateUserInfo', this.$store.state.xzwxzw.userInfo.userId)
                 console.log("userInfo", this.$store.state.xzwxzw.userInfo)
                 this.$router.push('/')
-                // 存储userId
-                //
-                //
             }).catch(res => {
                 //this.$message.error(res.response.data.message)
             })
