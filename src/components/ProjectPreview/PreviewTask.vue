@@ -17,11 +17,11 @@
                   <el-input v-model="thisTask.taskCloseTime" style="width : 400px"></el-input>
                 </el-col>
               </el-form-item>
-                <!-- <el-form-item label="参与任务人员" :label-width="formLabelWidth">
+                <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                     <el-col :offset="0">
                         <el-tag v-for="(params,index) in tagUser" :key="index" :type="params.type" >{{params.name}}</el-tag>
                     </el-col>
-                </el-form-item> -->
+                </el-form-item>
                 <el-form-item label="任务描述" :label-width="formLabelWidth">
                     <el-input
                   type="textarea"
@@ -96,6 +96,8 @@ export default {
         tagUser(){
           //从总线上接收users
             this.users = this.$store.state.tab.userInfo;
+            var tempList = []
+            
             for( var j=0;j<this.thisTask.follower.length;j++)
             {
               var user = this.thisTask.follower[j]
@@ -104,7 +106,6 @@ export default {
                 if(this.users[i].userId == user.userId)
                   var name = this.users[i].name;
               }
-              var tempList = []
               if (user.state == 1)
               {
                 tempList.push({
@@ -126,7 +127,7 @@ export default {
                 })
               }
             }
-          // console.log("计算属性", tempList);
+          console.log("templist:", tempList);
           return tempList;
             }
     },  

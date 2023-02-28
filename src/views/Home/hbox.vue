@@ -2,15 +2,15 @@
     <el-card class="box-card" shadow="always" body-style="padding: '0px 0px 0px'">
     <el-descriptions :column="3" border class="box-table">
         <el-descriptions-item label="项目名" label-class-name="my-label"
-            content-class-name="my-content">kooriookami</el-descriptions-item>
-        <el-descriptions-item label="项目负责人ID">18100000000</el-descriptions-item>
+            content-class-name="my-content">吉林大学业务流程系统软件项目1</el-descriptions-item>
+        <el-descriptions-item label="项目负责人ID">2</el-descriptions-item>
         <el-descriptions-item label="是否完成">
-            <el-tag size="small">是</el-tag>
+            <el-tag size="small">否</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="操作">
                 <el-button size="mini" type="success" round @click="handleDetail()">审阅</el-button>
         </el-descriptions-item>
-        <el-descriptions-item label="项目细节" :contentStyle="{ 'text-align': 'right' }">江苏省苏州市吴中区吴中大道 1188
+        <el-descriptions-item label="项目细节" :contentStyle="{ 'text-align': 'right' }">2020级软件工程课程大作业 1188
             号</el-descriptions-item>
     </el-descriptions>
     </el-card>
