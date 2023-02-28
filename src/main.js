@@ -5,7 +5,6 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import router from './router/index';
 import store from './store';
-import Cookie from 'js-cookie'
 import Vuex from 'vuex'
 import axios from 'axios';
 

@@ -83,8 +83,9 @@
 
 <script>
 import {getProjectDoc} from '@/api/api'
-
+import {store} from '@/store/index'
 export default {
+  store,
   data() {
     return {
       docData : [],
@@ -120,7 +121,7 @@ export default {
     },
     handleBianXie(){
       if(this.processId === 1){
-        this.process = '编写编写阶段内容'
+        this.process = '编写阶段内容'
         this.dialogFormVisible = true
       }
       else {

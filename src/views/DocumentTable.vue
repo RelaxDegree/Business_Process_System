@@ -58,11 +58,11 @@
 
 <script>
 import { getProjectAllDoc} from '@/api/api';
-import {store} from '../store/sja';
+import {store} from '@/store/index';
 
 export default {
-  name: 'DocumentTable',
   store,
+  name: 'DocumentTable',
   data () {
     return {
       tableData:[]
@@ -90,7 +90,7 @@ export default {
       }
       getProjectAllDoc(params).then(res => {
         console.log(JSON.stringify(res.data))
-        this.$store.commit("sja/getDocuments",res.data.data)
+        this.$store.commit('sja/getDocuments',res.data.data)
         this.tableData = res.data.data
       })
     },

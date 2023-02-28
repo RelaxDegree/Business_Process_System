@@ -22,9 +22,7 @@ export default {
       }
     },
     getAllProAndTask(state, tasks) {
-
       for (var i = 0; i < tasks.length; i++) {
-
         state.allTasks.push(tasks[i])
         // console.log(v)
       }
