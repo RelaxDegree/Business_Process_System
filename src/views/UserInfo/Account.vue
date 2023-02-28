@@ -1,13 +1,13 @@
 <template>
     <el-form>
         <el-form-item label="Name">
-            <el-input v-model.trim="user.name" />
+            <el-input v-model.trim="userdata.name" />
         </el-form-item>
         <el-form-item label="OtherInfo">
-            <el-input v-model.trim="user.otherInfo" />
+            <el-input v-model.trim="userdata.otherInfo" />
         </el-form-item>
         <el-form-item label="Password">
-            <el-input placeholder="请输入密码" v-model.trim="user.password" show-password></el-input>
+            <el-input placeholder="请输入密码" v-model.trim="userdata.password" show-password></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submit">Update</el-button>
@@ -23,11 +23,11 @@ export default {
     data() {
         return {
             userdata: {
-                userId: '',
-                name: '',
-                password: '',
-                groupId: '',
-                otherInfo: '',
+                userId: '1',
+                name: '韩安琪',
+                password: '123456789',
+                groupId: '1',
+                otherInfo: 'hananqi',
                 headPic: ''
             },
         };

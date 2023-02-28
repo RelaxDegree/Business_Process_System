@@ -13,12 +13,16 @@
                     <div>
                         <el-descriptions title="通用业务管理系统" style="height : 15px;margin-top : -15px;" :colon=false>
                             <el-descriptions-item>
-                                <el-breadcrumb style="margin-top : -10px;">
-                                    <el-breadcrumb-item v-for="(item, index) in breadList" :key="index"
-                                        :to="{ path: getPath(item.path) }">
-                                        {{ digestParams(item.meta.title, $route.params) }}
+                                <!-- <el-breadcrumb style="margin-top : -10px;">
+                                    <el-breadcrumb-item v-for="item in tablist" :key="item.path"
+                                        :to="{ path: item.path }">
+                                        {{ item.label }}
                                     </el-breadcrumb-item>
-                                </el-breadcrumb>
+                                </el-breadcrumb> -->
+                                <el-tag  v-for="tag in tablist" @click="changeMenu(tag)" :key="tag.name" :closable="tag.name !== 'home'" effect="dark" >
+                                    {{ tag.label }}
+                                </el-tag>
+
                             </el-descriptions-item>
                         </el-descriptions>
                     </div>
@@ -42,7 +46,7 @@
                                 style="margin-top:-10px"></el-button>
                             <el-dropdown-menu slot="dropdown" :divided=true>
                                 <el-dropdown-item style="height : 55px">Sign in as<P style="margin-top : -10px">111</P>
-                                    </el-dropdown-item>
+                                </el-dropdown-item>
 
                                 <el-dropdown-item :divided=true @click.native="usermsg">Your profile</el-dropdown-item>
                                 <el-dropdown-item>Your repositories</el-dropdown-item>
@@ -50,7 +54,7 @@
                                 <el-dropdown-item :divided=true>Settings</el-dropdown-item>
                                 <el-dropdown-item>About us</el-dropdown-item>
                                 <el-dropdown-item>Help</el-dropdown-item>
-                                <el-dropdown-item :divided=true>Sign out</el-dropdown-item>
+                                <el-dropdown-item @click.native="logout" :divided=true>Sign out</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
 
@@ -66,6 +70,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     name: "BreadcrumbNav",
     data: function () {
@@ -76,18 +81,37 @@ export default {
     mounted: function () {
         this.getBreadList(this.$route);
     },
+    computed: {
+        ...mapState({
+            tags: state => state.tab.tablist
+        })
+        // tablist() {
+        //     return this.$store.state.tab.tablist
+        // }
+    },
     watch: {
         $route(val) {
             this.getBreadList(val);
         },
     },
     methods: {
+        changeMenu() {
+            this.$router.push({name : item.name} )
+        },
         usermsg() {
             // this.$message({
             //     type: 'success',
             //     message: "成功"
             // })
             this.$router.push("/userInfo")
+        },
+        logout() {
+            this.$router.push("/login")
+            localStorage.setItem("token","")
+            logout().then(res => {
+
+            })
+            
         },
         getBreadList(val) {
             if (val.matched) {

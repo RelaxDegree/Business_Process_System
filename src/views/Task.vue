@@ -5,45 +5,25 @@
             style="width: 100%">
             <el-table-column align="center" label="ID" width="65">
                 <template slot-scope="{row}">
-                    <span>{{ row.id }}</span>
+                    <span>{{ row.taskId }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column width="180px" align="center" label="Date">
                 <template slot-scope="{row}">
-                    <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+                    <span>{{ row.taskOpenTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column min-width="300px" label="Title">
                 <template slot-scope="{row}">
-                    <span>{{ row.title }}</span>
+                    <span>{{ row.taskDetail }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column width="110px" align="center" label="Author">
                 <template slot-scope="{row}">
-                    <span>{{ row.author }}</span>
-                </template>
-            </el-table-column>
-
-            <el-table-column width="100px" label="Importance">
-                <template slot-scope="{row}">
-                    <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="icon-star" />
-                </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="Readings" width="95">
-                <template slot-scope="{row}">
-                    <span>{{ row.pageviews }}</span>
-                </template>
-            </el-table-column>
-
-            <el-table-column class-name="status-col" label="Status" width="110">
-                <template slot-scope="{row}">
-                    <el-tag :type="row.status | statusFilter">
-                        {{ row.status }}
-                    </el-tag>
+                    <span>{{ row.taskProgress }}</span>
                 </template>
             </el-table-column>
 
@@ -65,7 +45,8 @@
 <script>
 // import { fetchList } from '@/api/article'
 // import Sortable from 'sortablejs'
-
+import {getActTask} from '@/api/userInfo'
+import {mapState} from 'vuex'
 
 
 export default {
@@ -97,17 +78,25 @@ export default {
     created() {
         this.getList()
     },
+    computed: {
+        ...mapState({
+            userId: state => state.tab.userInfo.userId
+        })
+    },
     methods: {
         async getList() {
             this.listLoading = true
-            const { data } = await fetchList(this.listQuery)
-            this.list = data.items
-            this.total = data.total
-            this.listLoading = false
-            this.oldList = this.list.map(v => v.id)
-            this.newList = this.oldList.slice()
-            this.$nextTick(() => {
-                this.setSort()
+            // const { data } = await fetchList(this.listQuery)
+            // this.list = data.items
+            // this.total = data.total
+            // this.listLoading = false
+            // this.oldList = this.list.map(v => v.id)
+            // this.newList = this.oldList.slice()
+            // this.$nextTick(() => {
+            //     this.setSort()
+            // })
+            getActTask(this.userId).then(res => {
+                this.list = res.data.data
             })
         },
         setSort() {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <BreadcrumbZ></BreadcrumbZ>
-        <el-menu :default-active="activeIndex2" class="el-menu" mode="horizontal" @select="handleSelect">
+        <el-menu class="el-menu" mode="horizontal" @select="handleSelect">
             <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" v-if="item.role === '1'" :key="item.name"
                 :index="item.name">
                 <i :class="`el-icon-${item.icon}`"></i>
@@ -100,11 +100,11 @@ export default {
             console.log("handSelect")
         },
         clickMenu(item) {
-            //console.log(item)
+            console.log("clickmenu",item)
             if (this.$route.path !== item.path && !(this.$route.path === '\home' && (item.path === '/'))) {
                 this.$router.push(item.path)
             }
-            this.$store.commit('selectMenu', item)
+            this.$store.commit('tab/selectMenu', item)
         }
     },
     computed: {

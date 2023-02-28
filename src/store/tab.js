@@ -11,7 +11,7 @@ export default {
             }
         ], // 面包屑数据
         userInfo: {
-            userId: '111112',
+            userId: '1',
             name:'zzxx',
             password: 'wqqwweq',
             otherInfo: 'qwqwwwwwwwwwwwwww',

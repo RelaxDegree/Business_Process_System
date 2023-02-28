@@ -1,5 +1,6 @@
 <template>
-    <el-descriptions :column="3" border>
+    <el-card class="box-card" shadow="always" body-style="padding: '0px 0px 0px'">
+    <el-descriptions :column="3" border class="box-table">
         <el-descriptions-item label="项目名" label-class-name="my-label"
             content-class-name="my-content">kooriookami</el-descriptions-item>
         <el-descriptions-item label="项目负责人ID">18100000000</el-descriptions-item>
@@ -7,11 +8,12 @@
             <el-tag size="small">是</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="操作">
-                <el-button size="mini" @click="handleDetail()">编辑</el-button>
+                <el-button size="mini" type="success" round @click="handleDetail()">审阅</el-button>
         </el-descriptions-item>
         <el-descriptions-item label="项目细节" :contentStyle="{ 'text-align': 'right' }">江苏省苏州市吴中区吴中大道 1188
             号</el-descriptions-item>
     </el-descriptions>
+    </el-card>
 </template>
 
 <script>
@@ -36,5 +38,20 @@ export default {
 
 .my-content {
     background: #FDE2E2;
+}
+.box-card {
+    background: rgb(255, 255, 255);
+    padding: 0px 0px 0px;
+    margin-bottom: 32px;
+}
+
+.box-table {
+    padding: 0px 0px 0px;
+}
+
+.dashboard-editor-container .chart-wrapper[data-v-1d9b105c] {
+    background: #fff;
+    padding: 0px 0px 0;
+    margin-bottom: 32px;
 }
 </style>

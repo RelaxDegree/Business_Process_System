@@ -6,7 +6,7 @@
 
         <div class="user-profile">
             <div class="box-center">
-                <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
+                <pan-thumb :image="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'" :height="'100px'" :width="'100px'" :hoverable="false">
                     <div>Hello</div>
                     {{ user.name }}
                 </pan-thumb>

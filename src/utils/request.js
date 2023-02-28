@@ -17,8 +17,8 @@ service.interceptors.request.use(config => {
   config.headers = {
     'Content-Type': 'application/json' //配置请求头
   }
-  console.log("tokenOut:")
-  console.log(localStorage.getItem('token'))
+  // console.log("tokenOut:")
+  // console.log(localStorage.getItem('token'))
   config.headers.token = localStorage.getItem('token')
   // if (config.url !== '/api/v1/users/login' && config.url !== '/api/v1/users/register' && config.url !== 'api/v1/group/all') {
   //   const token = localStorage.getItem('token')

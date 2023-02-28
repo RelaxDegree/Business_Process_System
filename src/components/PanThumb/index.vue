@@ -7,6 +7,10 @@
         </div>
         <!-- eslint-disable-next-line -->
         <div :style="{ backgroundImage: `url(${image})` }" class="pan-thumb"></div>
+        <!-- <div :style="{ backgroundImage: url("https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg") }" class="pan-thumb"></div> -->
+        <!-- <el-avatar :size="50" style="margin-top:-18px"
+            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" >
+        </el-avatar> -->
     </div>
 </template>
 

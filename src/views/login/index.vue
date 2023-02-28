@@ -6,7 +6,7 @@
                 <el-form action="">
                     <h1>Create Account</h1>
                     <el-input v-model="registerData.username" placeholder="Username"></el-input>
-                    <el-select class="myinput" v-model="isPRValue" placeholder="Role">
+                    <el-select class="myinput" v-model="isPRValue" placeholder="Role" @click="getGroups">
                         <el-option v-for="item in isPROptions" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -113,12 +113,12 @@ export default {
             // this.loginData.password = this.$refs.password.$el.value
             login(this.loginData).then(res => {
                 //Cookie.set('token', res.data.data.token)
-                console.log("login.res:")
-                console.log(res.data)
+                console.log("login.res:",res.data)
                 localStorage.setItem("token", res.data.data.token)
-                console.log(localStorage.getItem("token"))
+                // console.log(localStorage.getItem("token"))
                 this.$router.push('/')
-
+                this.userId = res.data.data.userId
+                console.log("userId",this.userId)
                 // 存储userId
                 //
                 //
@@ -127,15 +127,15 @@ export default {
             })
 
 
-            this.$store.commit('updateUserId', userId)
+            this.$store.commit('tab/updateUserId', this.userId)
             // 获取个人信息
-            getInfo(userId).then(res => {
-                this.$store.commit('updateUserInfo', res.data.data)
+            getInfo(this.userId).then(res => {
+                this.$store.commit('tab/updateUserInfo', res.data.data)
             })
 
             // 更新
-            this.$store.commit('updateUserInfo', this.userdata)
-
+            this.$store.commit('tab/updateUserInfo', this.userdata)
+            console.log("userInfo",this.$store.tab.state.userInfo)
         },
         registerHandle() {
             // 注册事件

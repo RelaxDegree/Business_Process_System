@@ -37,11 +37,9 @@ export default {
         }
     },
     computed: {
-        ...mapGetters([
-            'name',
-            'avatar',
-            'roles'
-        ])
+        // ...mapGetters({
+        //     userInfo: state => state.tab.userInfo
+        // }),
     },
     created() {
         this.getUser()

@@ -24,7 +24,7 @@ export function getInfo(userId) {
 export function logout() {
     return request({
         url: 'api/v1/users/logout',
-        method: 'post'
+        method: 'get'
     })
 }
 

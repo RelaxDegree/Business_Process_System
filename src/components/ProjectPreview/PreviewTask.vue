@@ -17,11 +17,11 @@
                   <el-input v-model="thisTask.taskCloseTime" style="width : 400px"></el-input>
                 </el-col>
               </el-form-item>
-                <el-form-item label="参与任务人员" :label-width="formLabelWidth">
+                <!-- <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                     <el-col :offset="0">
                         <el-tag v-for="(params,index) in tagUser" :key="index" :type="params.type" >{{params.name}}</el-tag>
                     </el-col>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="任务描述" :label-width="formLabelWidth">
                     <el-input
                   type="textarea"
@@ -33,7 +33,6 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.stop="closeForm">关 闭</el-button>
-
             </div>
         </el-dialog>
 <!-- 二级对话框 添加项目组人员-->
