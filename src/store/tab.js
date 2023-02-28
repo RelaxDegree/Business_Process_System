@@ -1,4 +1,7 @@
+
+
 export default {
+    namespaced : true,
     state: {
         isCollapse: false, // 菜单展开
         tablist: [
@@ -11,11 +14,11 @@ export default {
             }
         ], // 面包屑数据
         userInfo: {
-            userId: '1',
+            userId: 1,
             name:'zzxx',
             password: 'wqqwweq',
             otherInfo: 'qwqwwwwwwwwwwwwww',
-            groupId: '1',
+            groupId: 1,
             headPic: ''
         },
         menu: []
@@ -27,6 +30,7 @@ export default {
         },
         // 更新面包屑数据
         selectMenu(state, val) {
+            console.log("selectMenu",val)
             if (val.name !== 'home') {
                 const index = state.tablist.findIndex(item => item.name === val.name)
                 if (index === -1) {
@@ -35,7 +39,7 @@ export default {
             }
         },
         // 更新个人信息
-        updateUserInfo(userinfo) {
+        updateUserInfo(state,userinfo) {
             state.userInfo.name = userinfo.name
             state.userInfo.password = userinfo.password
             state.userInfo.otherInfo = userinfo.otherInfo
@@ -43,11 +47,18 @@ export default {
             //state.userInfo.headPic = userinfo.headPic
         },
         // 头像
-        updateAvatar(avatar) {
+        updateAvatar(state,avatar) {
             state.userInfo.avatar = avatar
         },
-        updateUserId(userId) {
+        UPDATEUSERID(state,userId) {
+            console.log("update调用",userId)
             state.userInfo.userId = userId
+            console.log("-----------",state.userInfo.userId)
+
         }
+
+    },
+    actions:{
+
     }
 }

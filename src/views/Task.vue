@@ -15,21 +15,29 @@
                 </template>
             </el-table-column>
 
-            <el-table-column min-width="300px" label="Title">
+            <el-table-column min-width="300px" label="taskDetail">
                 <template slot-scope="{row}">
                     <span>{{ row.taskDetail }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column width="110px" align="center" label="Author">
+            <el-table-column class-name="status-col" label="taskProgress" width="110">
                 <template slot-scope="{row}">
-                    <span>{{ row.taskProgress }}</span>
+                    <el-tag :type="row.taskProgress | statusFilter">
+                        {{ row.taskProgress }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+
+            <el-table-column align="center" label="Detail" width="80">
+                <template slot-scope="{}">
+                    <el-button type="primary" icon="el-icon-edit" @click="editor()" circle></el-button>
                 </template>
             </el-table-column>
 
             <el-table-column align="center" label="Drag" width="80">
                 <template slot-scope="{}">
-                    <svg-icon class="drag-handler" icon-class="drag" />
+                    <i class="el-icon-rank"></i>
                 </template>
             </el-table-column>
         </el-table>
@@ -44,19 +52,22 @@
   
 <script>
 // import { fetchList } from '@/api/article'
-// import Sortable from 'sortablejs'
-import {getActTask} from '@/api/userInfo'
-import {mapState} from 'vuex'
+import Sortable from 'sortablejs'
+import { getActTask } from '@/api/userInfo'
+import { mapState } from 'vuex'
+import { store } from '@/store/index'
 
 
 export default {
+    store,
     name: 'DragTable',
     filters: {
         statusFilter(status) {
             const statusMap = {
-                published: 'success',
-                draft: 'info',
-                deleted: 'danger'
+                3: 'success',
+                0: 'info',
+                1: 'danger',
+                2: ''
             }
             return statusMap[status]
         }
@@ -80,24 +91,26 @@ export default {
     },
     computed: {
         ...mapState({
-            userId: state => state.tab.userInfo.userId
+            userId: state => state.xzwxzw.userInfo.userId
         })
     },
     methods: {
         async getList() {
-            this.listLoading = true
+            //this.listLoading = true
             // const { data } = await fetchList(this.listQuery)
             // this.list = data.items
-            // this.total = data.total
-            // this.listLoading = false
-            // this.oldList = this.list.map(v => v.id)
-            // this.newList = this.oldList.slice()
-            // this.$nextTick(() => {
-            //     this.setSort()
-            // })
             getActTask(this.userId).then(res => {
                 this.list = res.data.data
+                console.log("listdata:",res.data.data)
             })
+            // this.total = data.total
+             this.listLoading = false
+            this.oldList = this.list.map(v => v.id)
+            this.newList = this.oldList.slice()
+            this.$nextTick(() => {
+                this.setSort()
+            })
+            
         },
         setSort() {
             const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
@@ -110,12 +123,12 @@ export default {
                 onEnd: evt => {
                     const targetRow = this.list.splice(evt.oldIndex, 1)[0]
                     this.list.splice(evt.newIndex, 0, targetRow)
-
-                    // for show the changes, you can delete in you code
-                    const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
-                    this.newList.splice(evt.newIndex, 0, tempIndex)
                 }
             })
+        },
+        editor() {
+            this.$router.push("/documentShow")
+            // ...
         }
     }
 }
@@ -127,11 +140,12 @@ export default {
     color: #fff !important;
     background: #42b983 !important;
 }
+
 .icon-star {
     margin-right: 2px;
 }
 
-.drag-handler {
+.el-icon-rank {
     width: 20px;
     height: 20px;
     cursor: pointer;

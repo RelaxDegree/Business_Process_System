@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h2>Sign in/ Sign up</h2>
+    <div class="body">
+        <h2>通用业务管理系统</h2>
         <div class="container" id="container">
             <div class="form-container sign-up-container">
                 <el-form action="">
@@ -32,15 +32,15 @@
             <div class="overlay-container">
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
-                        <h1>Welcome Back!</h1>
+                        <h1>欢迎回来!</h1>
                         <p>
-                            To keep connected with us please login with your personal info
+                            欢迎使用通用业务管理系统，请输入你的用户名与密码
                         </p>
                         <el-button class="ghost" id="signIn" @click="removeNewCss">Sign In</el-button>
                     </div>
                     <div class="overlay-panel overlay-right">
-                        <h1>Hello,Friend!</h1>
-                        <p>Enter your personal details and start journey with us</p>
+                        <h1>欢迎使用！</h1>
+                        <p>欢迎注册通用业务管理系统，辅助任务流程写作管理</p>
                         <el-button class="ghost" id="signUp" @click="addNewCss">Sign Up</el-button>
                     </div>
                 </div>
@@ -52,15 +52,14 @@
 
 <script>
 import loginUtil from "../../utils/loginUtil";
-import { login } from "@/api/login"
-import { register } from "@/api/login";
+import { register, getInfo, getgroups, login } from "@/api/login";
 import Cookie from 'js-cookie';
-import { getgroups } from "@/api/login";
 import { mapGetters } from 'vuex'
-import { Store } from 'vuex';
+import { store } from '@/store/index';
 import { updateUserInfo } from "@/api/userInfo";
 
 export default {
+    store,
     name: "LoginPage",
     data() {
         return {
@@ -111,14 +110,26 @@ export default {
             }
             // this.loginData.username = this.$refs.username.$el.value
             // this.loginData.password = this.$refs.password.$el.value
+            // let that = this
             login(this.loginData).then(res => {
                 //Cookie.set('token', res.data.data.token)
-                console.log("login.res:",res.data)
+                console.log("login.res:", res.data)
                 localStorage.setItem("token", res.data.data.token)
-                // console.log(localStorage.getItem("token"))
+
+                this.$store.commit('xzwxzw/UPDATEUSERID', res.data.data.userId)
+
+                console.log("userId::::", this.$store.state.xzwxzw.userInfo.userId)
+
+                
+                getInfo((res.data.data.userId)).then(res => {
+                    console.log("getInfo", res.data)
+                    this.$store.commit('xzwxzw/updateUserInfo', res.data.data)
+                })
+
+                // 更新
+                //this.$store.commit('xzwxzw/updateUserInfo', this.$store.state.xzwxzw.userInfo.userId)
+                console.log("userInfo", this.$store.state.xzwxzw.userInfo)
                 this.$router.push('/')
-                this.userId = res.data.data.userId
-                console.log("userId",this.userId)
                 // 存储userId
                 //
                 //
@@ -127,15 +138,11 @@ export default {
             })
 
 
-            this.$store.commit('tab/updateUserId', this.userId)
+            // this.$store.commit('xzwxzw/updateUserId', this.userId)
             // 获取个人信息
-            getInfo(this.userId).then(res => {
-                this.$store.commit('tab/updateUserInfo', res.data.data)
-            })
+            console.log("userId", this.$store.state.xzwxzw.userInfo.userId)
 
-            // 更新
-            this.$store.commit('tab/updateUserInfo', this.userdata)
-            console.log("userInfo",this.$store.tab.state.userInfo)
+
         },
         registerHandle() {
             // 注册事件
@@ -191,8 +198,20 @@ export default {
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;1,100&display=swap');
 
+.out {
+    margin: auto;
+}
+
 * {
     box-sizing: border-box;
+}
+
+.el-input {
+    margin: 10px
+}
+
+.el-select {
+    margin: 10px
 }
 
 body {
@@ -236,8 +255,10 @@ a {
 
 button {
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #8BC6EC;
+    background-color: #8BC6EC;
+    background-image: linear-gradient(90deg, #8BC6EC 0%, #9599E2 100%);
+
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -288,6 +309,7 @@ input {
     width: 768px;
     max-width: 100%;
     min-height: 480px;
+    margin: auto;
 }
 
 .form-container {
@@ -352,9 +374,10 @@ input {
 }
 
 .overlay {
-    background: #ff4b2b;
-    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background-color: #8BC6EC;
+    background-image: linear-gradient(90deg, #8BC6EC 0%, #9599E2 100%);
+
+
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -435,10 +458,11 @@ footer p {
 }
 
 footer i {
-    color: red;
+    color: #8BC6EC;
 }
 
 footer a {
     color: #3c97bf;
     text-decoration: none;
-}</style>
+}
+</style>

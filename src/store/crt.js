@@ -103,6 +103,7 @@ const mutations = {
   // procreate组件的mounted方法调用，将从后端获取的数据传到总线
   SETUSER(state, users)
   {
+    console.log(111111)
     state.user = users
   },
   // 更新任务

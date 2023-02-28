@@ -31,7 +31,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style >
 .homeWrap {
   position: absolute;
   top: 0;

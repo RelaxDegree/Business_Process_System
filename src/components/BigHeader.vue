@@ -18,17 +18,18 @@
 </template>
 <script>
 import Cookie from 'js-cookie'
-import {Store} from 'vuex'
+import {store} from '@/store/index';
 // import { it } from 'node:test';
 import BreadcrumbZ from './BreadcrumbZ.vue';
 
 export default {
+    store,
     components: {
         BreadcrumbZ
     },
     data() {
         return {
-            activeTab: '',
+            activexzwxzw: '',
             menuData: [
                 {
                     path: '/',
@@ -104,7 +105,7 @@ export default {
             if (this.$route.path !== item.path && !(this.$route.path === '\home' && (item.path === '/'))) {
                 this.$router.push(item.path)
             }
-            this.$store.commit('tab/selectMenu', item)
+            this.$store.commit('xzwxzw/selectMenu', item)
         }
     },
     computed: {
@@ -121,7 +122,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.el-tabs__nav-wrap {
+.el-tabs-wrap {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
