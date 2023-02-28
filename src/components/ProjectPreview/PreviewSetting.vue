@@ -114,18 +114,21 @@ export default {
       let params = {
         projectId: 1
       }
+      let that = this
       propreviewGet(params).then(res=>{
         console.log("projectGet:")
         console.log(res.data)
-        this.stage = res.data.data.stage;
-        this.task = res.data.data.task;
-        this.project = res.data.data.project;
-        this.$store.commit("SETPROPREVIEW", {
-          'stage' : this.stage,
-          'task' : this.task,
-          'project' : this.project,
+        that.stage = res.data.data.stage;
+        that.task = res.data.data.task;
+        that.project = res.data.data.project;
+        console.log("提示",that.project);
+
+        that.$store.commit("proCreate/SETPROPREVIEW", {
+          'stage' : that.stage,
+          'task' : that.task,
+          'project' : that.project,
         })
-        console.log(this.$store.state.proPreview);
+        console.log("提示",that.$store.state.proCreate.proPreview);
       }).catch(function (error) {
         console.log(error);
       });

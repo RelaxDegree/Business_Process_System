@@ -83,10 +83,11 @@ export default {
     },
     methods: {
         usermsg() {
-            this.$message({
-                type: 'success',
-                message: "成功"
-            })
+            // this.$message({
+            //     type: 'success',
+            //     message: "成功"
+            // })
+            this.$router.push("/userInfo")
         },
         getBreadList(val) {
             if (val.matched) {

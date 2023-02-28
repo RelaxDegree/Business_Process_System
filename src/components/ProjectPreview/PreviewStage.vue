@@ -164,7 +164,7 @@ export default {
       };
     },
     mounted(){
-      this.task = this.$store.state.proPreview.task;
+      this.task = this.$store.state.proCreate.proPreview.task;
     },
     computed:{
         tagUser(){
@@ -210,18 +210,18 @@ export default {
             this.innerVisible = true;
 
         },
-        // 打开新建任务
-        openNewTaskForm(){
-            this.users = this.$store.state.user;
-            for (var i of this.users)
-                {
-                    i.choice = "NULL"
-                    // console.log(i)
-                }
-            // console.log(this.users)
-            if (!this.dialogFormVisible)
-                this.dialogFormVisible = true;
-        },
+        // // 打开新建任务
+        // openNewTaskForm(){
+        //     this.users = this.$store.state.proCreate.user;
+        //     for (var i of this.users)
+        //         {
+        //             i.choice = "NULL"
+        //             // console.log(i)
+        //         }
+        //     // console.log(this.users)
+        //     if (!this.dialogFormVisible)
+        //         this.dialogFormVisible = true;
+        // },
 
 
     },

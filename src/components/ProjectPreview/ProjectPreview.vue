@@ -1,59 +1,58 @@
 <template>
-    <div>
-      
-      <el-container style="height: 550px; border: 1px solid #eee">
-        <el-aside width="450px" style="background-color: rgb(238, 241, 246)">
-            <!-- 左侧任务部署 -->
-          <ProjectSetting></ProjectSetting>
-        </el-aside>
-        <!-- 右侧可视化任务图 -->
-        <project-graph></project-graph>
+  <div>
+
+    <el-container style="height: 550px; border: 1px solid #eee">
+      <el-aside width="450px" style="background-color: rgb(238, 241, 246)">
+        <!-- 左侧任务部署 -->
+        <ProjectSetting></ProjectSetting>
+      </el-aside>
+      <!-- 右侧可视化任务图 -->
+      <PreviewGraph></PreviewGraph>
     </el-container>
 
-      <footer>
-        <DFooter></DFooter>
-      </footer>
+    <footer>
+      <DFooter></DFooter>
+    </footer>
 
-    </div>
+  </div>
 </template>
   
-  <script>
-    import ProjectGraph from './PreviewGraph.vue'
-    import ProjectSetting from './PreviewSetting'
-    import { store } from '../../store/index';
-    import { procreateSetUser } from '@/api/api';
-    import { propreviewGet } from '@/api/api';
-    import DFooter from './footer'
-    export default {
-      store : store,
-      name : 'proj-preview',
-      components : {
-        DFooter,
-        ProjectSetting,
-        ProjectGraph
-      },
-      data(){
-        return{
-          project : {},
-          stage : [],
-          task : [],
-        }
-      },
-      methods: {
-      },
+<script>
+import PreviewGraph from './PreviewGraph.vue'
+import ProjectSetting from './PreviewSetting'
+import { store } from '../../store/index';
+import { procreateSetUser } from '@/api/api';
+import { propreviewGet } from '@/api/api';
+import DFooter from './footer'
+export default {
+  store: store,
+  name: 'proj-preview',
+  components: {
+    DFooter,
+    ProjectSetting,
+    PreviewGraph
+  },
+  data() {
+    return {
+      project: {},
+      stage: [],
+      task: [],
+    }
+  },
+  methods: {
+  },
 
-    }
-  </script>
+}
+</script>
   
   
-  <style scoped>
-    .el-header {
-      line-height: 60px;
-    }
-    
-    .el-aside {
-      color: #333;
-    }
-  </style>
+<style scoped>
+.el-header {
+  line-height: 60px;
+}
+
+.el-aside {
+  color: #333;
+}
+</style>
   
-this.$store.state.propreview.stage

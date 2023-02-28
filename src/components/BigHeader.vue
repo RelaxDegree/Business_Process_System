@@ -1,8 +1,7 @@
 <template>
     <div>
         <BreadcrumbZ></BreadcrumbZ>
-        <el-menu :default-active="activeIndex2" class="el-menu" mode="horizontal" @select="handleSelect"
-            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu :default-active="activeIndex2" class="el-menu" mode="horizontal" @select="handleSelect">
             <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" v-if="item.role === '1'" :key="item.name"
                 :index="item.name">
                 <i :class="`el-icon-${item.icon}`"></i>

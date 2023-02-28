@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     showNodes(){
-      console.log(this.$store.state.proPreview.task)
+      console.log(this.$store.state.proCreate.proPreview.task)
 
-      for (var i = 0 ; i < this.$store.state.proPreview.task.length; i ++)
+      for (var i = 0 ; i < this.$store.state.proCreate.proPreview.task.length; i ++)
         {
-          var t = this.$store.state.proPreview.task[i];
+          var t = this.$store.state.proCreate.proPreview.task[i];
           if (t.stageId == this.stageId){
             // this.makeNode(t.taskId, t.taskOpenTime,t.taskCloseTime, t.taskDetail,t.taskProgress, t.px, t.py, t.f)
             this.makeNode(t);

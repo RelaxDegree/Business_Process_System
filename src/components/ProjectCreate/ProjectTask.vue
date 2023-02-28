@@ -7,11 +7,11 @@
 <!-- 点击打开任务信息表单 -->
         <el-dialog title="任务详细信息" :visible.sync="dialogFormVisible">
             <el-form :model="taskdata">
-                <el-form-item label="任务名称" :label-width="formLabelWidth">
+                <!-- <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-col :span="11">
                         <el-input v-model="taskdata.taskName" style="width : 400px"></el-input>
                     </el-col>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="任务起止时间" :label-width="formLabelWidth">
                     <el-col :span="11">
                     <div class="block" style="width : 100%">
@@ -28,6 +28,8 @@
                 </el-form-item>
                 <el-form-item label="参与任务人员" :label-width="formLabelWidth">
                     <el-col :offset="0">
+                        <el-tag v-for="(params,index) in tagUser" :key="index" :type="params.type" >{{params.name}}</el-tag>
+                         
                         <el-button type="primary" style="margin-left : 10px" size="mini" @click="openUserForm">+</el-button>
                     </el-col>
                 </el-form-item>
@@ -85,7 +87,7 @@
 <script>
 export default {
     name : 'proj-task',
-    props:['taskNum','thisTask','stageNum'],
+    props:['taskNum','thisTask','stageId',],
     data() {
         return {
             formLabelWidth: '120px',
@@ -102,8 +104,37 @@ export default {
         // 计算属性  生成menuID
         indexName : {
             get(){
-                return this.stageNum + '-' + this.taskNum
+                return this.stageId + '-' + this.taskNum
             }
+        },
+        tagUser(){
+            var tempList = []
+            for (var i = 0; i <  this.users.length ; i ++)
+            {
+                var user = this.users[i];
+                if (user.choice == "编辑")
+                {
+                    tempList.push({
+                        name : user.name,
+                        type : "success"
+                    })
+                }
+                else if (user.choice == "审批")
+                {
+                    tempList.push({
+                        name : user.name,
+                    })
+                }
+                else if (user.choice == "会签")
+                {
+                    tempList.push({
+                        name : user.name,
+                        type : "warning"
+                    })
+                }
+            }
+            // console.log("计算属性", tempList);
+            return tempList;
         }
     },  
     methods : {
@@ -111,22 +142,21 @@ export default {
         init(){
             this.taskdata = this.thisTask;
             // console.log(this.taskdata);
-            // 从当前任务中把所有人提取出来
-            for (var i in this.taskdata.taskCompileusers)
+            this.users = this.$store.state.proCreate.user;
+            for (var i = 0 ; i < this.taskdata.follower ; i ++)
             {
-                // console.log(i);
-                this.users.push(i)
+                var usid = this.taskdata.follower[i].userId
+                var usst = this.taskdata.follower[i].state
+                for (var j = 0 ; j < this.users.length ; i ++)
+                {
+                    var user = this.users[j]
+                    if (user.userId === usid)
+                    {
+                        this.users[j].state = usst;
+                    }
+                }
             }
-            for (var i in this.taskdata.taskReviewusers)
-            {
-                this.users.push(i)
-            }
-            for (var i in this.taskdata.taskSignusers)
-            {
-                this.users.push(i)
-
-            }
-            // console.log(this.taskdata.taskCompileusers);
+            // console.log(this.users)
         },
         openForm(){
             if (!this.dialogFormVisible)
@@ -137,34 +167,49 @@ export default {
         },
         // 更新这个任务的信息
         updateTask(){
-            this.taskdata.Compileusers = []
-            this.taskdata.Reviewusers = []
-            this.taskdata.Signusers = []
+            if (!this.taskdata.taskTime)
+            {
+                this.$message({
+                type : 'warning',
+                message : "请填写日期"
+                })
+                return;
+            }
+            this.taskdata.follower = []
             for (var i  = 0 ; i < this.users.length ; i ++)
             {
                 var str = this.users[i];
                 if (str.choice == "编辑")
                 {
                     // console.log(str.userId)
-                    this.taskdata.Compileusers.push(str.userId)
+                    this.taskdata.follower.push({
+                        userId : str.userId,
+                        state : '1',
+                    })
                 }
                 else if (str.choice == "审批")
                 {
-                    this.taskdata.Reviewusers.push(str.userId)
+                    this.taskdata.follower.push({
+                        userId : str.userId,
+                        state : '2',
+                    })
                     
                 }
                 else if (str.choice == "会签")
                 {
-                    this.taskdata.Signusers.push(str.userId)
+                    this.taskdata.follower.push({
+                        userId : str.userId,
+                        state : '3',
+                    })
                     
                 }
             }
-            this.$store.commit("UPDATETASK", this.taskdata);
+            this.$store.commit("proCreate/UPDATETASK", this.taskdata);
             this.closeForm();
         },
         // 修改任务表单中进行人员添加  点击+触发
         openUserForm(){
-            // this.innerVisible = true;
+            this.innerVisible = true;
 
         },
     },

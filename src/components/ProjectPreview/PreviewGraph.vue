@@ -53,7 +53,7 @@
 
             :thisStage="s"> -->
             <el-tab-pane
-                v-for="(s,index) of this.$store.state.proPreview.stage"
+                v-for="(s,index) of this.$store.state.proCreate.proPreview.stage"
                 :key="(index+1).toString()"
                 :label="constName+(index+1).toString()" :name="(index+1).toString()">
 
@@ -92,7 +92,7 @@
 import {store} from '../../store/index';
 import PrevSubgraph from "@/components/ProjectPreview/PreviewSubgraph";
 export default {
-  name : "proj-graph",
+  name : "prev-graph",
   store,
   watch:{
     '$store.state.proCreate.nowStage'(newVal,oldVal)
