@@ -100,6 +100,7 @@ export default {
             this.lineChartData = lineChartData[type]
         }
     }
+    
 }
 </script>
 

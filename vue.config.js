@@ -17,7 +17,7 @@ module.exports = defineConfig({
       // 这里的api 表示如果我们的请求地址有/api的时候,就出触发代理机制
       // localhost:8888/api/abc  => 代理给另一个服务器
       '/api': {
-        target: 'http://1.117.144.92:8088', // 跨域请求的地址
+        target: 'http://122.51.52.220:8088', // 跨域请求的地址
         changeOrigin: true, // 只有这个值为true的情况下 才表示开启跨域
         secure: false, // 如果是https接口，需要配置这个参数
         // 路径重写

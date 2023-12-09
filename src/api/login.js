@@ -1,4 +1,3 @@
-import http from '../utils/request'
 import request from '@/utils/request';
 
 // 用户登录
