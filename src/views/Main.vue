@@ -1,33 +1,37 @@
 <template>
   <el-container class="homeWrap">
     <el-header height="20%">
-    <big-header></big-header>
+      <big-header></big-header>
     </el-header>
     <el-main>
       <router-view></router-view>
     </el-main>
-    <el-footer height="10%">
-      <Footer></Footer>
-    </el-footer>
   </el-container>
 </template>
 <script>
 import BigHeader from "../components/BigHeader.vue";
-import PersonAvatar from "../components/PersonAvatar.vue";
-import ComAside from "../components/ComAside.vue";
-import ComHeader from "../components/ComHeader.vue";
-import Footer from "../components/footer.vue";
+import { store } from "@/store/index";
+import { getInfo } from "@/api/login";
 
 export default {
+  store,
   data() {
     return {};
   },
+  mounted() {
+    this.getUserInfo();
+  },
+  methods: {
+    getUserInfo() {
+      const userId = localStorage.getItem("userId");
+      console.log(userId);
+      getInfo(userId).then((res) => {
+        this.$store.commit('xzwxzw/updateUserInfo', res.data.data)
+      });
+    },
+  },
   components: {
     BigHeader,
-    PersonAvatar,
-    ComAside,
-    ComHeader,
-    Footer
   },
 };
 </script>

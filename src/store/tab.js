@@ -15,12 +15,13 @@ export default {
         ], // 面包屑数据
         userInfo: {
             userId: 1,
-            name:'zzxx',
-            password: 'wqqwweq',
-            otherInfo: 'qwqwwwwwwwwwwwwww',
+            name:'',
+            password: '',
+            otherInfo: '这个人很赖 ，什么都没有写',
             groupId: 1,
             headPic: ''
         },
+        projectId: -1,
         menu: []
     },
     mutations: {
@@ -55,8 +56,10 @@ export default {
             state.userInfo.userId = userId
             console.log("-----------",state.userInfo.userId)
 
-        }
-
+        },
+        setProjectId(state,projectId) {
+            state.projectId = projectId
+        },
     },
     actions:{
 

@@ -24,9 +24,9 @@
         </el-dialog>
 
         <div class="manager-header">
-            <el-button @click="dialogVisible = true" type="primary">
+            <!-- <el-button @click="dialogVisible = true" type="primary">
                 +新增
-            </el-button>
+            </el-button> -->
             <template>
                 <el-table :data="tableData" stripe style="width: 100%">
                     <el-table-column prop="userId" label="用户ID" width="180">
@@ -37,8 +37,8 @@
                     </el-table-column>
                     <el-table-column prop="act" label="操作">
                         <template slot-scope="scope">
-                            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-                            <el-button type="danger" size="mini" @click="handleDel(scope.row)">删除</el-button>
+                            <el-button size="mini" @click="handleEdit(scope.row, scope.row.userId)">编辑</el-button>
+                            <el-button type="danger" size="mini" @click="handleDel(scope.row, scope.row.userId)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -49,6 +49,10 @@
 <script>
 import { getUser } from '@/api/user'
 import {delProUser, getProUser} from '@/api/user'
+import { delUser } from '@/api/user'
+import jsCookie from 'js-cookie'
+import Cookie from 'js-cookie';
+
 export default {
     data() {
         return {
@@ -62,7 +66,8 @@ export default {
             },
             tableData:
                 []
-
+            ,
+            id : 0
         }
     },
     methods: {
@@ -86,14 +91,21 @@ export default {
         cancel() {
             this.handleclose()
         },
-        handleEdit() {
+        handleEdit(row, id) {
+            Cookie.set("editUser", id)
             // 跳转到sja的页面
             this.$router.push('/useredit')
         },
-        handleDel() {
-            console.log("peodel")
-            delProUser(userId, taskId).then(res => {
-                console.log("del succed")
+        handleDel( row, id ) {
+            //this.id = row.data.userId
+            console.log("peodel",id)
+            delUser(id).then(res => {
+            //console.log("delUser:",res.data.message)
+            var gid = Cookie.get("groupId")
+            getUser(gid).then(res => {
+            console.log("只因",gid)
+            this.tableData = res.data.data
+        })
             }).catch(res => {
                 // wrong Handle
             })
@@ -103,7 +115,9 @@ export default {
         // getUser().then(({ data }) => {
         //     console.log('获取')
         // })
-        getUser("只因组").then(res => {
+        var gid = Cookie.get("groupId")
+        console.log("gid:",gid)
+        getUser(gid).then(res => {
             console.log("只因",res.data)
             this.tableData = res.data.data
         })

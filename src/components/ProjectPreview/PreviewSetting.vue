@@ -111,8 +111,12 @@ export default {
     },
     // 从后端获取全部项目 用于阅览
     propreviewGet(){
+      if(this.$store.state.proCreate.projectId == -1){
+        this.$router.push('/home')
+        return
+      }
       let params = {
-        projectId: 1
+        projectId: this.$store.state.xzwxzw.projectId,
       }
       let that = this
       propreviewGet(params).then(res=>{

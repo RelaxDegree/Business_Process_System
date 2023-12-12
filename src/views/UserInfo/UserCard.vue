@@ -8,71 +8,112 @@
             <div class="box-center">
                 <pan-thumb :image="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'" :height="'100px'" :width="'100px'" :hoverable="false">
                     <div>Hello</div>
-                    {{ user.name }}
+                    {{ this.name }}
                 </pan-thumb>
             </div>
             <div class="box-center">
-                <div class="user-name text-center">{{ user.name }}</div>
+                <div class="user-name text-center">{{ this.name }}</div>
                 <div class="user-role text-center text-muted">{{ user.role | uppercaseFirst }}</div>
             </div>
         </div>
 
         <div class="user-bio">
             <div class="user-education user-bio-section">
-                <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>Education</span></div>
+                <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>otherinfo</span></div>
                 <div class="user-bio-section-body">
                     <div class="text-muted">
-                        Undergraduate student at School of Software, Jilin University
+                        {{ this.otherInfo }}
                     </div>
                 </div>
             </div>
 
             <div class="user-skills user-bio-section">
-                <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
+                <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Infomation</span></div>
                 <div class="user-bio-section-body">
                     <div class="progress-item">
-                        <span>Vue</span>
-                        <el-progress :percentage="70" />
+                        <span>姓名：</span>
+                        {{ this.name }}
                     </div>
                     <div class="progress-item">
-                        <span>JavaScript</span>
-                        <el-progress :percentage="18" />
+                        <span>用户ID: </span>
+                        {{ this.userId }}
                     </div>
                     <div class="progress-item">
-                        <span>Css</span>
-                        <el-progress :percentage="12" />
-                    </div>
-                    <div class="progress-item">
-                        <span>ESLint</span>
-                        <el-progress :percentage="100" status="success" />
+                        <span>所属项目组ID：</span>
+                        {{ this.groupId }}
                     </div>
                 </div>
             </div>
         </div>
+        <!-- <div>
+            <el-button class="ghost" id="updt" @click="update">更新</el-button> 
+        </div> -->
     </el-card>
 </template>
 
 <script>
 import PanThumb from '../../components/PanThumb'
-import store from '../../store';
+// import store from '../../store';
+import { store } from '@/store/index'
+import Cookie from 'js-cookie';
+
 
 export default {
+    store,
     components: { PanThumb },
     props: {
-        user: {
-            type: Object,
-            default: () => {
-                return {
-                    name: '',
-                    email: '',
-                    avatar: '',
-                    role: ''
-                }
+
+    },
+    data() {
+        return {
+            user: {
+                userId: 0,
+                name:'',
+                password: '',
+                otherInfo: '',
+                groupId: 0,
+                headPic: ''
             }
         }
     },
+    created() {
+        
+    },
+    computed: {
+        //...mapState({
+            // userId: state => state.xzwxzw.userInfo.userId,
+            // name: state => state.xzwxzw.userInfo.name,
+            // otherInfo: state => state.xzwxzw.userInfo.otherInfo,
+            // groupId: state => state.xzwxzw.userInfo.groupId,
+            // password: state => state.xzwxzw.userInfo.password
+            userId: function () {
+                return Cookie.get("userId")
+            },
+            name: function () {
+                return Cookie.get("name")
+            },
+            otherInfo: function () {
+                return Cookie.get("otherInfo")
+            },
+            groupId: function () {
+                return Cookie.get("groupId")
+            },
+            password: function () {
+                return Cookie.get("password")
+            },
+        //})
+    },
     mounted() {
         // 从vuex获取头像: this.avatar = store...
+    },
+    methods: {
+        update() {
+            this.userId = Cookie.get("userId");
+            this.name = Cookie.get("name");
+            this.otherInfo = Cookie.get("otherInfo");
+            this.groupId = Cookie.get("groupId");
+            this.password = Cookie.get("password");
+        }
     }
 }
 </script>

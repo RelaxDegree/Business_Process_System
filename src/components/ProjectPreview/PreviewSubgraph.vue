@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {Cell, Graph, Shape, Vector,View,} from '@antv/x6'
+import {Graph, Shape, Vector,} from '@antv/x6'
 import {store} from '../../store/index';
 export default {
   name : "prev-subgraph",
@@ -50,19 +50,22 @@ export default {
   },
   mounted() {
     this.initGraph();
+    // 延迟一秒执行，否则会出现找不到节点的情况
+    setTimeout(() => {
+      this.zoom();
+    }, 1000);
     this.showNodes();
   },
   methods: {
     showNodes(){
-      console.log(this.$store.state.proCreate.proPreview.task)
+      console.log("我在这里哈哈哈哈哈哈"+this.$store.state.proCreate.proPreview.task)
 
       for (var i = 0 ; i < this.$store.state.proCreate.proPreview.task.length; i ++)
         {
           var t = this.$store.state.proCreate.proPreview.task[i];
-          if (t.stageId == this.stageId){
+          console.log(t)
             // this.makeNode(t.taskId, t.taskOpenTime,t.taskCloseTime, t.taskDetail,t.taskProgress, t.px, t.py, t.f)
             this.makeNode(t);
-          }
         }
     },
     makeNode(oneTask){
@@ -169,7 +172,9 @@ export default {
             }]
         }
       })
+      console.log("加了个节点1");
       this.graph.addNode(this.data.nodes[this.data.nodes.length - 1])
+      console.log("加了个节点2");
     },
     zoom(){
       console.log(this.graph.node)

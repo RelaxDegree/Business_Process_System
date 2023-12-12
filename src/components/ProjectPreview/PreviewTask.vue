@@ -17,7 +17,7 @@
                   <el-input v-model="thisTask.taskCloseTime" style="width : 400px"></el-input>
                 </el-col>
               </el-form-item>
-                <el-form-item label="参与任务人员" :label-width="formLabelWidth">
+                <el-form-item label="参与任务人员id" :label-width="formLabelWidth">
                     <el-col :offset="0">
                         <el-tag v-for="(params,index) in tagUser" :key="index" :type="params.type" >{{params.name}}</el-tag>
                     </el-col>
@@ -73,8 +73,9 @@
 </template>
 
 <script>
-import { Store } from 'vuex';
+import { store } from "@/store/index";
 export default {
+    store,
     name : 'proj-task',
     props:['taskNum','thisTask','stageId',],
     data() {
@@ -95,17 +96,13 @@ export default {
       },
         tagUser(){
           //从总线上接收users
-            this.users = this.$store.state.tab.userInfo;
-            var tempList = []
-            
+            this.users = this.$store.state.xzwxzw.userInfo;
+            var tempList = [];
+            console.log("this.thisTask.follower:", this.thisTask.follower);
             for( var j=0;j<this.thisTask.follower.length;j++)
             {
-              var user = this.thisTask.follower[j]
-              for(var i=0;i<this.users.length;i++)
-              {
-                if(this.users[i].userId == user.userId)
-                  var name = this.users[i].name;
-              }
+              var user = this.thisTask.follower[j];
+              let name = user.userId;
               if (user.state == 1)
               {
                 tempList.push({
@@ -129,7 +126,7 @@ export default {
             }
           console.log("templist:", tempList);
           return tempList;
-            }
+        }
     },  
     methods : {
         openForm(){

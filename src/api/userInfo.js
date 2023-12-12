@@ -1,4 +1,3 @@
-import http from '../utils/request'
 import request from '@/utils/request';
 
 // 更新用户信息

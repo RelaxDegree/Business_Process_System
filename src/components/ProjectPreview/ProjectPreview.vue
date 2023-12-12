@@ -19,10 +19,8 @@
   
 <script>
 import PreviewGraph from './PreviewGraph.vue'
-import ProjectSetting from './PreviewSetting'
+import ProjectSetting from './PreviewSetting.vue'
 import { store } from '../../store/index';
-import { procreateSetUser } from '@/api/api';
-import { propreviewGet } from '@/api/api';
 import DFooter from './footer'
 export default {
   store: store,

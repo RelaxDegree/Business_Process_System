@@ -5,12 +5,7 @@
                 <slot />
             </div>
         </div>
-        <!-- eslint-disable-next-line -->
         <div :style="{ backgroundImage: `url(${image})` }" class="pan-thumb"></div>
-        <!-- <div :style="{ backgroundImage: url("https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg") }" class="pan-thumb"></div> -->
-        <!-- <el-avatar :size="50" style="margin-top:-18px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" >
-        </el-avatar> -->
     </div>
 </template>
 
@@ -65,19 +60,6 @@ export default {
     transform-origin: 95% 40%;
     transition: all 0.3s ease-in-out;
 }
-
-/* .pan-thumb:after {
-  content: '';
-  width: 8px;
-  height: 8px;
-  position: absolute;
-  border-radius: 50%;
-  top: 40%;
-  left: 95%;
-  margin: -4px 0 0 -4px;
-  background: radial-gradient(ellipse at center, rgba(14, 14, 14, 1) 0%, rgba(125, 126, 125, 1) 100%);
-  box-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
-} */
 
 .pan-info {
     position: absolute;

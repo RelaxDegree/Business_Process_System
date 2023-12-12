@@ -60,17 +60,17 @@ const router = new VueRouter({
 
 
 // 创建路由守卫
-// router.beforeEach((to, from, next) => {
-//     // console.log(to, from)
-//     // 判断是否登录
-//     const token = localStorage.getItem('token');
-//     if (to.path === '/login' && token) {
-//         next('/home');
-//     } else if (to.path === '/home' && !token) {
-//         next('/login');
-//     } else {
-//         next();
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    // console.log(to, from)
+    // 判断是否登录
+    const token = localStorage.getItem('token');
+    if (to.path === '/login' && token) {
+        next('/home');
+    } else if (to.path === '/home' && !token) {
+        next('/login');
+    } else {
+        next();
+    }
+})
 
 export default router

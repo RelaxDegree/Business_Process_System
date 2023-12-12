@@ -1,133 +1,193 @@
 <template>
-    <div class="dashboard-editor-container">
-        <github-corner class="github-corner" />
-
-        <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
-
-        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-            <!-- <line-chart :chart-data="lineChartData" /> -->
+  <div class="dashboard-editor-container">
+    <github-corner class="github-corner" />
+    <el-container>
+      <el-aside>
+        <div class="user-info-box">
+          <user-card :userInfo="userInfo" :isDone="isDoneNum" :isNotDone="isNotDoneNum"/>
+        </div>
+      </el-aside>
+      <el-main>
+        <h2 class="f4 mb-2 text-normal">我的项目</h2>
+        <ul>
+          <!-- <li class="hbox-list-item">
             <hbox></hbox>
-        </el-row>
+          </li> -->
+          <li
+            v-for="(item, key) in paginatedProjects"
+            :key="key"
+            class="hbox-list-item"
+          >
+            <hbox :item="item"></hbox>
+          </li>
 
-        <el-row :gutter="32">
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <!-- <raddar-chart /> -->
-                    <!-- <line-chart :chart-data="lineChartData" /> -->
-                    <hbox></hbox>
-                </div>
-            </el-col>
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <!-- <pie-chart /> -->
-                    <!-- <line-chart :chart-data="lineChartData" /> -->
-                    <hbox></hbox>
-                </div>
-            </el-col>
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <!-- <bar-chart /> -->
-                    <!-- <line-chart :chart-data="lineChartData" /> -->
-                    <hbox></hbox>
-                </div>
-            </el-col>
-        </el-row>
-
-        <el-row :gutter="8">
-            <el-col :xs="{ span: 24 }" :sm="{ span: 24 }" :md="{ span: 24 }" :lg="{ span: 12 }" :xl="{ span: 12 }"
-                style="padding-right:8px;margin-bottom:30px;">
-                <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
-            </el-col>
-            <el-col :xs="{ span: 24 }" :sm="{ span: 12 }" :md="{ span: 12 }" :lg="{ span: 6 }" :xl="{ span: 6 }"
-                style="margin-bottom:30px;">
-                <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
-            </el-col>
-            <el-col :xs="{ span: 24 }" :sm="{ span: 12 }" :md="{ span: 12 }" :lg="{ span: 6 }" :xl="{ span: 6 }"
-                style="margin-bottom:30px;">
-                <!-- <line-chart :chart-data="lineChartData" /> -->
-            <el-card></el-card>
-            </el-col>
-        </el-row>
-    </div>
+        </ul>
+        <el-pagination
+          background
+          :page-size="6"
+          layout="prev, pager, next"
+          :total="projectList.length"
+          @current-change="handlePageChange"
+        ></el-pagination>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
 //import { getData } from '../../api';
-import Hbox from './hbox.vue'
-import GithubCorner from '@/components/GithubCorner.vue';
-import LineChart from './LineChart.vue';
-
-const lineChartData = {
-    newVisitis: {
-        expectedData: [100, 120, 161, 134, 105, 160, 165],
-        actualData: [120, 82, 91, 154, 162, 140, 145]
-    },
-    messages: {
-        expectedData: [200, 192, 120, 144, 160, 130, 140],
-        actualData: [180, 160, 151, 106, 145, 150, 130]
-    },
-    purchases: {
-        expectedData: [80, 100, 121, 104, 105, 90, 100],
-        actualData: [120, 90, 100, 138, 142, 130, 130]
-    },
-    shoppings: {
-        expectedData: [130, 140, 141, 142, 145, 150, 160],
-        actualData: [120, 82, 91, 154, 162, 140, 130]
-    }
-}
+import Hbox from "./hbox.vue";
+import GithubCorner from "@/components/GithubCorner.vue";
+import UserCard from "../UserInfo/UserInfoBox.vue";
+import { getActPro } from "../../api/userInfo";
+import { store } from "@/store/index";
+// import { mapState } from 'vuex'
 
 export default {
-    components: {
-        GithubCorner,
-        LineChart,
-        Hbox
+  store,
+  components: {
+    GithubCorner,
+    UserCard,
+    Hbox,
+  },
+  data() {
+    return {
+      projectList: [],
+      currentPage: 1,
+      userInfo: "",
+      isDoneNum: 0,
+      isNotDoneNum: 0,
+    };
+  },
+  computed: {
+    paginatedProjects() {
+      const startIndex = (this.currentPage - 1) * 6;
+      const endIndex = startIndex + 6;
+      return this.projectList.slice(startIndex, endIndex);
     },
-    data() {
-        return {}
+  },
+  methods: {
+    getActiveProject(id) {
+      getActPro(id).then((res) => {
+        // console.log(res);
+        this.projectList = res.data.data;
+        const { isDoneNum, isNotDoneNum } = this.projectList.reduce(
+          (acc, project) => {
+            if (project.projectIsdone) {
+              acc.isDoneNum++;
+            } else {
+              acc.isNotDoneNum++;
+            }
+            return acc;
+          },
+          { isDoneNum: 0, isNotDoneNum: 0 }
+        );
+        this.isDoneNum = isDoneNum;
+        this.isNotDoneNum = isNotDoneNum;
+      });
     },
-    mounted() {
-        // getData().then((data) => {
-        //     console.log(data)
-        // })
-        // routerGenerate() {
+    handlePageChange(page) {
+      this.currentPage = page;
+    },
+  },
 
-        // };
-    },
-    methods: {
-        handleSetLineChartData(type) {
-            this.lineChartData = lineChartData[type]
-        }
-    }
-    
-}
+  mounted() {
+    // console.log(this.$store.state.xzwxzw.userInfo.userId);
+    this.getActiveProject(localStorage.getItem("userId"));
+    this.userInfo = this.$store.state.xzwxzw.userInfo;
+  },
+};
 </script>
 
 
 <style lang="scss" scoped>
+* {
+  box-sizing: border-box;
+}
 .dashboard-editor-container {
-    padding: 32px;
-    background-color: rgb(240, 242, 245);
-    position: relative;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
+  align-items: center;
 
-    .github-corner {
-        position: absolute;
-        top: 0px;
-        border: 0;
-        right: 0;
-    }
+  .github-corner {
+    position: absolute;
+    top: 0px;
+    border: 0;
+    right: 0;
+  }
 
-    .chart-wrapper {
-        background: #fff;
-        padding: 16px 16px 0;
-        margin-bottom: 32px;
-    }
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
 }
 
-@media (max-width:1024px) {
-    .chart-wrapper {
-        padding: 8px;
-    }
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
+}
+
+.el-container {
+  /* 默认样式 */
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  /* 在小屏幕上应用的样式 */
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  /* 在中等屏幕上应用的样式 */
+  @media (min-width: 1025px) and (max-width: 1600px) {
+    width: 90%;
+  }
+
+  /* 在大屏幕上应用的样式 */
+  @media (min-width: 1600px) {
+    width: 70%;
+  }
+}
+
+.hbox-list-item {
+  padding: 8px 8px 8px 0;
+}
+ul {
+  display: flex;
+  list-style-type: none;
+  width: 100% !important;
+  flex-wrap: wrap !important;
+  padding: 0 !important;
+}
+
+li {
+  display: flex;
+  width: 49%;
+  flex-basis: 50% !important;
+}
+
+.text-normal {
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  text-align: left;
+}
+
+.mb-2 {
+  margin-bottom: 8px !important;
+  margin-top: 0;
+}
+
+.el-aside {
+  width: 256px !important;
+  margin-left: -40px;
+}
+
+.el-main {
+  padding: 20px !important;
+}
+.user-info-box {
+  margin-top: 70px;
 }
 </style>

@@ -18,6 +18,7 @@
   import ProjectSetting from './ProjectSetting.vue'
   import { procreateSetUser } from '@/api/proCreateApi';
   import {store} from '../../store/index';
+  import Cookie from 'js-cookie'
   export default {
     store : store,
     name : 'proj-create',
@@ -40,8 +41,9 @@
         let users = []
         // console.log("初始化用户列表")
         let params = {
-                userId: 100
+                userId: Cookie.get("userId"),
             }
+        
         procreateSetUser(params).then(res=>{
           console.log("api 打印用户",res.data)
           for (var i of res.data.data.user)

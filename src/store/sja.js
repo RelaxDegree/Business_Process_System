@@ -46,8 +46,10 @@ export default {
       state.allPros = []
       state.allProAndTask = []
       state.userProAndTask = []
+    },
+    setTaskId(state, taskId) {
+      state.taskId = taskId
     }
-
 
   }
 }

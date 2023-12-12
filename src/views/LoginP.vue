@@ -117,7 +117,7 @@ export default {
             // 存入cookie / 存入localstorage
             Cookie.set('token', token)
 
-            this.$router.push('\home')
+            this.$router.push('/home')
 
 
 

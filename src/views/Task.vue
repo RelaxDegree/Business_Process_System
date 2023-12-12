@@ -9,50 +9,38 @@
                 </template>
             </el-table-column>
 
-            <el-table-column width="180px" align="center" label="OpenDate">
+            <el-table-column width="180px" align="center" label="开始时间">
                 <template slot-scope="{row}">
                     <span>{{ row.taskOpenTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column width="180px" align="center" label="CloseDate">
+            <el-table-column width="180px" align="center" label="截至时间">
                 <template slot-scope="{row}">
                     <span>{{ row.taskCloseTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column min-width="300px" label="taskDetail">
+            <el-table-column min-width="300px" label="任务细节">
                 <template slot-scope="{row}">
                     <span>{{ row.taskDetail }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column class-name="status-col" label="taskProgress" width="110">
+            <el-table-column class-name="status-col" label="任务完成情况" width="110">
                 <template slot-scope="{row}">
                     <el-tag :type="row.taskProgress | statusFilter">
-                        {{ row.taskProgress }}
+                        {{ progressText[row.taskProgress] }}
                     </el-tag>
                 </template>
             </el-table-column>
 
-            <el-table-column align="center" label="Detail" width="80">
-                <template slot-scope="{}">
-                    <el-button type="primary" icon="el-icon-edit" @click="editor()" circle></el-button>
-                </template>
-            </el-table-column>
-
-            <el-table-column align="center" label="Drag" width="80">
-                <template slot-scope="{}">
-                    <i class="el-icon-rank"></i>
+            <el-table-column align="center" label="文档细节" width="80">
+                <template slot-scope="{row}">
+                    <el-button type="primary" icon="el-icon-edit" @click="editor(row.taskId)" circle></el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <div class="show-d">
-            <el-tag>The default order :</el-tag> {{ oldList }}
-        </div>
-        <div class="show-d">
-            <el-tag>The after dragging order :</el-tag> {{ newList }}
-        </div>
     </div>
 </template>
   
@@ -71,9 +59,9 @@ export default {
         statusFilter(status) {
             const statusMap = {
                 3: 'success',
-                0: 'info',
-                1: 'danger',
-                2: ''
+                0: 'warning',
+                1: 'primary',
+                2: 'primary'
             }
             return statusMap[status]
         }
@@ -89,7 +77,13 @@ export default {
             },
             sortable: null,
             oldList: [],
-            newList: []
+            newList: [],
+            progressText: {
+                0:'编写中',
+                1:'待审核',
+                2:'待会签',
+                3:'已完成'
+            }
         }
     },
     created() {
@@ -132,9 +126,10 @@ export default {
                 }
             })
         },
-        editor() {
+        editor(taskId) {
+            this.$store.commit('sja/setTaskId',taskId)
             this.$router.push("/documentShow")
-            // ...
+            
         }
     }
 }

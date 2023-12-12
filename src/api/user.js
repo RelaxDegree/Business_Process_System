@@ -1,12 +1,11 @@
-import http from '../utils/request'
 import request from '@/utils/request';
 
 // 获取项目组成员
-export function getUser(groupName) {
+export function getUser(groupId) {
     return request({
         url: 'api/v1/group/users',
         method: 'get',
-        params : { groupName }
+        params : { groupId}
     })
 }
 
@@ -42,5 +41,32 @@ export function delProUser(userId, taskId) {
     return request({
         url: `api/v1/projects/user?userId=${userId}&taskId=${taskId}`,
         method: 'post',
+    })
+}
+
+// 删除用户
+export function delUser(userId) {
+    return request({
+        url: `api/v1/user/id?id=${userId}`,
+        method: 'delete',
+        
+    })
+}
+
+// 根据用户id获取项目任务
+export function getUserTask(userId) {
+    return request({
+        url: `api/v1/task/user/id?id=${userId}`,
+        method: 'get',
+        
+    })
+}
+
+// 删除用户的任务
+export function delUserTask(userId, taskId, state) {
+    return request({
+        url: `api/v1/project/userdel?id=${userId}&taskId=${taskId}&state=${state}`,
+        method: 'delete',
+        
     })
 }

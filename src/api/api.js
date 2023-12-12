@@ -1,8 +1,4 @@
 import request from '@/utils/request';
-import qs from "qs";
-
-const baseUrl = '/api/jwt/auth'
-
 
 // 创建项目时首先获取用户
 export function procreateSetUser(params) {
@@ -109,6 +105,14 @@ export function findDiary(params){
         url : "api/v1/project/log",
         method : 'get',
         params : params,
+    })
+}
+
+export function updateDocument(params){
+    return request({
+        url : "api/v1/process/id",
+        method : 'put',
+        data : params,
     })
 }
 

@@ -5,22 +5,24 @@
             <div class="form-container sign-up-container">
                 <el-form action="">
                     <h1>Create Account</h1>
-                    <el-input v-model="registerData.username" placeholder="Username"></el-input>
-                    <el-select class="myinput" v-model="isPRValue" placeholder="Role" @click="getGroups">
+                    <el-input v-model="registerData.name" placeholder="Username"></el-input>
+                    <el-select class="myinput" v-model="isPRValue" placeholder="Role" >
                         <el-option v-for="item in isPROptions" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                     <!-- Group输入框 -->
-                    <el-select class="myinput" v-model="GroupValue" placeholder="Group" @click="getGroups"
-                        @focus="getGroups">
+                    <el-select class="myinput" v-model="GroupValue" placeholder="Group" 
+                       >
                         <el-option v-for="item in GroupOptions" :key="item.groupId" :label="item.name"
-                            :value="item.groupId">
+                            :value="item.name">
                         </el-option>
                     </el-select>
+                    <el-input v-model="newGroup" placeholder="新建组名"></el-input>
                     <el-input v-model="registerData.password" placeholder="Password" show-password></el-input>
                     <el-button @click="registerHandle">Sign Up</el-button>
                 </el-form>
             </div>
+
             <div class="form-container sign-in-container">
                 <el-form action="">
                     <h1>Sign in</h1>
@@ -51,12 +53,9 @@
 </template>
 
 <script>
-import loginUtil from "../../utils/loginUtil";
 import { register, getInfo, getgroups, login } from "@/api/login";
 import Cookie from 'js-cookie';
-import { mapGetters } from 'vuex'
 import { store } from '@/store/index';
-import { updateUserInfo } from "@/api/userInfo";
 
 export default {
     store,
@@ -68,35 +67,53 @@ export default {
                 name: '',
                 password: ''
             },
+            newGroup: '',
             registerData: {
-                username: '',
+                name: '',
                 password: '',
                 isPR: '',
                 group: ''
             },
+            testdata: {
+                name: 'nihao',
+                password: '123321',
+                isPR: 'false',
+                group: '只因组'
+            },
             isPRValue: '',
             GroupValue: '',
             isPROptions: [{
-                value: 1,
+                value: true,
                 label: '项目经理'
             },
             {
-                value: 0,
+                value: false,
                 label: '普通员工'
             }],
-            GroupOptions: [
+            GroupOptions: [{
+                groupId: '',
+                name: '',
+                memberCount: ''
+            }
 
             ]
         }
     },
     methods: {
         addNewCss() {
-            console.log("add")
+            console.log("切换1")
             const container = document.getElementById('container')
             container.classList.add("right-panel-active")
+
+            // getGroup
+            getgroups().then(res => {
+                console.log("GroupOptions:", res.data.data)
+                this.GroupOptions = res.data.data
+            }
+            )
         },
         removeNewCss() {
-            console.log("remove")
+            console.log("切换2")
             const container = document.getElementById('container')
             container.classList.remove("right-panel-active")
         },
@@ -109,21 +126,32 @@ export default {
             // let that = this
             login(this.loginData).then(res => {
                 //Cookie.set('token', res.data.data.token)
+                this.$message({
+                message: res.data.message,
+                type: 'success',
+                duration: 1 * 1000
+            })
                 console.log("login.res:", res.data)
                 localStorage.setItem("token", res.data.data.token)
+                localStorage.setItem("userId", res.data.data.userId)
 
                 this.$store.commit('xzwxzw/UPDATEUSERID', res.data.data.userId)
 
-                console.log("userId::::", this.$store.state.xzwxzw.userInfo.userId)
+                //console.log("userId::::", this.$store.state.xzwxzw.userInfo.userId)
 
                 
                 getInfo((res.data.data.userId)).then(res => {
                     console.log("getInfo", res.data)
                     this.$store.commit('xzwxzw/updateUserInfo', res.data.data)
+                    Cookie.set('userId', res.data.data.userId)
+                    Cookie.set('name', res.data.data.name)
+                    Cookie.set('password', res.data.data.password)
+                    Cookie.set('otherInfo', res.data.data.otherInfo)
+                    Cookie.set('groupId', res.data.data.groupId)
                 })
 
                 // 更新
-                console.log("userInfo", this.$store.state.xzwxzw.userInfo)
+                //console.log("userInfo", this.$store.state.xzwxzw.userInfo)
                 this.$router.push('/')
             }).catch(res => {
                 //this.$message.error(res.response.data.message)
@@ -138,17 +166,25 @@ export default {
         },
         registerHandle() {
             // 注册事件
-            if (!this.registerData.username || !this.registerData.password) {
+            if (!this.registerData.name || !this.registerData.password) {
                 this.$message.error('用户名或密码不能为空')
                 return
             }
-            // this.registerData.username = this.$refs.username.$el.value
+            // this.registerData.name = this.$refs.username.$el.value
             this.registerData.isPR = this.isPRValue
-            this.registerData.group = this.GroupValue
+            console.log("GroupValue:",this.GroupValue)
+            if(this.isPRValue){
+                this.registerData.group = this.newGroup
+            }
+            else{
+                this.registerData.group = this.GroupValue
+            }
+            
             // this.registerData.password = this.$refs.password.$el.value
-            console.log(this.registerData)
-            register(this.registerData).then(() => {
-                this.$alert('注册成功，请登录', '提示', {
+            console.log("registerData:",this.registerData)
+            register(this.registerData).then(res => {
+                console.log("registerBack:",res.data)
+                this.$alert(res.data.message, '提示', {
                     confirmButtonText: '确定',
                     callback: () => {
                         this.removeNewCss()
@@ -158,24 +194,24 @@ export default {
                 //this.$message.error(err.response.data.message)
             })
         },
-        getGroups() {
-            console.log("groupSearching...")
-            // 向后端请求 group 信息
-            getgroups().then(res => {
-                // 将后端传回的 group 信息存储到 GroupOptions 中
-                this.GroupOptions = []
-                for (let i = 0; i < res.data.data.groups.length; i++) {
-                    this.GroupOptions.push({
-                        groupId: res.data.data[i].groupsId,
-                        name: res.data.data[i].name,
-                        memberCount: res.data.data[i].memberCount
-                    })
-                }
-                console.log("group")
-            }).catch(err => {
-                // 处理错误信息
-            })
-        }
+        // getGroups() {
+        //     console.log("groupSearching...")
+        //     // 向后端请求 group 信息
+        //     getgroups().then(res => {
+        //         // 将后端传回的 group 信息存储到 GroupOptions 中
+        //         this.GroupOptions = []
+        //         for (let i = 0; i < res.data.data.groups.length; i++) {
+        //             this.GroupOptions.push({
+        //                 groupId: res.data.data[i].groupsId,
+        //                 name: res.data.data[i].name,
+        //                 memberCount: res.data.data[i].memberCount
+        //             })
+        //         }
+        //         console.log("group")
+        //     }).catch(err => {
+        //         // 处理错误信息
+        //     })
+        // }
     },
     mounted() {
     },
